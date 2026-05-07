@@ -18,6 +18,9 @@
       --shadow: 0 6px 18px rgba(28, 176, 246, 0.14);
       --radius: 18px;
       --tap-highlight: rgba(0, 0, 0, 0);
+      --screen-pad-x: clamp(14px, 4.2vw, 18px);
+      --screen-pad-top: clamp(16px, 4.6vw, 22px);
+      --screen-pad-bottom: clamp(16px, 3.8vw, 20px);
     }
 
     * {
@@ -46,15 +49,7 @@
     }
 
     .top-nav {
-      position: absolute;
-      top: 14px;
-      left: 12px;
-      right: 12px;
-      z-index: 5;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      pointer-events: none;
+      display: none;
     }
 
     .back-btn {
@@ -80,7 +75,7 @@
     .screen {
       position: absolute;
       inset: 0;
-      padding: 22px 18px 20px;
+      padding: var(--screen-pad-top) var(--screen-pad-x) calc(var(--screen-pad-bottom) + env(safe-area-inset-bottom));
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -110,6 +105,10 @@
       text-align: center;
     }
 
+    .center.with-progress {
+      justify-content: flex-start;
+    }
+
     .headline {
       font-size: 30px;
       line-height: 1.1;
@@ -135,15 +134,19 @@
       border-radius: 16px;
       min-height: 52px;
       width: 100%;
-      font-size: 18px;
+      font-size: clamp(16px, 4.3vw, 18px);
       font-weight: 800;
       padding: 12px 16px;
       cursor: pointer;
-      transition: transform 0.06s ease, filter 0.12s ease, box-shadow 0.15s ease;
+      transition: transform 0.08s ease, filter 0.16s ease, box-shadow 0.18s ease;
     }
 
     .btn:active {
       transform: scale(0.98);
+    }
+
+    .btn:hover {
+      filter: brightness(1.03);
     }
 
     .btn-primary {
@@ -177,9 +180,64 @@
       text-align: center;
     }
 
+    .welcome-layout {
+      position: relative;
+      flex: 1;
+      margin-top: 10px;
+      min-height: clamp(270px, 46vh, 340px);
+    }
+
+    .welcome-layout .bubble {
+      max-width: min(62vw, 248px);
+      margin-top: clamp(94px, 20vh, 118px);
+      margin-left: 0;
+      position: relative;
+      z-index: 1;
+      text-align: left;
+      font-size: clamp(16px, 5vw, 22px);
+      line-height: 1.18;
+    }
+
+    .welcome-layout .bubble::after {
+      content: "";
+      position: absolute;
+      right: -14px;
+      top: 56%;
+      width: 0;
+      height: 0;
+      border-left: 14px solid #ffffff;
+      border-top: 11px solid transparent;
+      border-bottom: 11px solid transparent;
+      transform: translateY(-50%);
+    }
+
+    .welcome-duo {
+      width: clamp(228px, 76vw, 312px);
+      position: absolute;
+      right: calc(clamp(228px, 76vw, 312px) * -0.52);
+      top: clamp(136px, 28vh, 172px);
+      transform: translateX(160px) rotate(-14deg);
+      opacity: 0;
+      cursor: pointer;
+      transition: filter 0.16s ease;
+    }
+
+    .welcome-duo.fly-in {
+      animation: duoFlyIn 620ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .welcome-duo.tap-bounce {
+      animation: duoTapBounce 260ms ease;
+    }
+
+    .welcome-duo:hover {
+      filter: brightness(1.04);
+    }
+
     .bottom-wrap {
       margin-top: auto;
       padding-top: 14px;
+      padding-bottom: env(safe-area-inset-bottom);
     }
 
     .progress-wrap {
@@ -195,7 +253,18 @@
       height: 100%;
       width: 0%;
       background: linear-gradient(90deg, #58cc02, #7be82a);
-      transition: width 0.22s ease;
+      transition: width 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-bar::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, 0.26) 50%, transparent 100%);
+      transform: translateX(-120%);
+      animation: progressShimmer 1.4s ease-out;
     }
 
     .grid {
@@ -219,7 +288,7 @@
       min-height: 52px;
       width: 100%;
       cursor: pointer;
-      transition: border-color 0.12s ease, transform 0.08s ease, background 0.12s ease;
+      transition: border-color 0.14s ease, transform 0.12s ease, background 0.14s ease, box-shadow 0.16s ease;
       text-align: center;
     }
 
@@ -228,6 +297,13 @@
     .option-btn:active,
     .word-btn:active {
       transform: scale(0.98);
+    }
+
+    .lang-btn:hover,
+    .topic-btn:hover,
+    .option-btn:hover,
+    .word-btn:hover {
+      box-shadow: 0 4px 10px rgba(31, 31, 31, 0.08);
     }
 
     .selected {
@@ -364,6 +440,10 @@
       color: #fff;
     }
 
+    #screen-0 {
+      padding: 0;
+    }
+
     @font-face {
       font-family: "Feather";
       src: url("./Feather.woff2") format("woff2");
@@ -373,32 +453,420 @@
     .duo-logo {
       font-family: "Feather", ui-rounded, "SF Pro Rounded", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       font-weight: 900;
-      font-size: 44px;
+      font-size: 52px;
       letter-spacing: -0.02em;
       line-height: 1;
       margin-top: 18px;
       text-transform: lowercase;
+      color: #ffffff;
+      text-shadow: none;
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      padding: 0;
     }
 
-    .duo-logo-badge {
-      width: 112px;
-      height: 112px;
-      border-radius: 28px;
-      background: rgba(255, 255, 255, 0.14);
-      border: 2px solid rgba(255, 255, 255, 0.25);
+    .splash-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .splash-eyes {
+      width: 170px;
+      height: auto;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .splash-logo {
+      position: absolute;
+      left: 50%;
+      bottom: 14px;
+      transform: translateX(-50%);
+      margin: 0;
+      color: #ffffff !important;
+    }
+
+    .top-nav.off {
+      display: none;
+    }
+
+    .mascot-img {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-select: none;
+      animation: mascotFloat 3.2s ease-in-out infinite;
+    }
+
+    .mascot-splash {
+      width: 160px;
+      margin-top: 14px;
+      background: rgba(255, 255, 255, 0.16);
+      border: 2px solid rgba(255, 255, 255, 0.24);
+      border-radius: 24px;
+      padding: 10px;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.16);
+    }
+
+    .mascot-welcome {
+      width: 84px;
+      margin: 8px auto 14px;
+    }
+
+    .topic-visuals {
       display: grid;
-      place-items: center;
-      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.12);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin: 4px 0 10px;
     }
 
-    .duo-logo-badge svg {
-      width: 70px;
-      height: 70px;
+    .topic-visual {
+      border-radius: 12px;
+      border: 2px solid #e6e8ef;
+      background: #fff;
+      padding: 8px;
+      min-height: 88px;
+    }
+
+    .topic-visual img {
+      width: 100%;
+      max-height: 70px;
+    }
+
+    .topic-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 4px 0 10px;
+    }
+
+    .topic-question {
+      flex: 1;
+      background: #efefef;
+      border: 3px solid #d4d4d4;
+      border-radius: 16px;
+      padding: 14px 16px;
+      color: #4a4a4a;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.15;
+      position: relative;
+    }
+
+    .topic-question::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      top: 40px;
+      width: 0;
+      height: 0;
+      border-left: 10px solid #d4d4d4;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+    }
+
+    .topic-question::before {
+      content: "";
+      position: absolute;
+      right: -6px;
+      top: 42px;
+      width: 0;
+      height: 0;
+      border-left: 8px solid #efefef;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      z-index: 1;
+    }
+
+    .topic-duo {
+      width: 84px;
+      flex-shrink: 0;
+    }
+
+    .topic-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .topic-picker-grid .topic-btn {
+      min-height: 146px;
+      border-radius: 18px;
+      padding: 10px 8px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 6px;
+      background: #efefef;
+      border-color: #dcdcdc;
+      font-size: 33px;
+      box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.03);
+    }
+
+    .topic-picker-grid .topic-btn.selected {
+      border-color: var(--blue);
+      background: #ecf8ff;
+    }
+
+    .topic-card-img {
+      width: 86px;
+      height: 86px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .topic-label {
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.15;
+      color: #444;
+      text-align: center;
+      white-space: normal;
+    }
+
+    .reward-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #e880cb;
+      font-size: 20px;
+      font-weight: 900;
+      margin: 4px 0 12px;
+      justify-content: flex-end;
+    }
+
+    #screen-1,
+    #screen-2,
+    #screen-3 {
+      padding-top: calc(clamp(62px, 11vh, 72px) + env(safe-area-inset-top));
+      padding-bottom: calc(96px + env(safe-area-inset-bottom));
+    }
+
+    #screen-1 .progress-wrap,
+    #screen-2 .progress-wrap,
+    #screen-3 .progress-wrap {
+      position: absolute;
+      top: calc(clamp(16px, 3.8vh, 24px) + env(safe-area-inset-top));
+      left: var(--screen-pad-x);
+      right: clamp(84px, 24vw, 110px);
+      width: auto;
+      margin: 0;
+      z-index: 2;
+    }
+
+    #screen-1 .reward-pill,
+    #screen-2 .reward-pill,
+    #screen-3 .reward-pill {
+      position: absolute;
+      top: calc(clamp(14px, 3.6vh, 22px) + env(safe-area-inset-top));
+      right: var(--screen-pad-x);
+      margin: 0;
+      z-index: 2;
+    }
+
+    #screen-1 .bottom-wrap,
+    #screen-2 .bottom-wrap,
+    #screen-3 .bottom-wrap {
+      position: absolute;
+      left: var(--screen-pad-x);
+      right: var(--screen-pad-x);
+      bottom: calc(16px + env(safe-area-inset-bottom));
+      margin-top: 0;
+      padding-top: 0;
+      z-index: 3;
+    }
+
+    .reward-pill span {
+      display: inline-block;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .language-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 4px 0 10px;
+    }
+
+    .language-duo {
+      width: 90px;
+      flex-shrink: 0;
+    }
+
+    .language-question {
+      flex: 1;
+      background: #efefef;
+      border: 3px solid #d4d4d4;
+      border-radius: 16px;
+      padding: 14px 16px;
+      color: #4a4a4a;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.15;
+      position: relative;
+    }
+
+    .language-question::after {
+      content: "";
+      position: absolute;
+      left: -10px;
+      top: 38px;
+      width: 0;
+      height: 0;
+      border-right: 10px solid #d4d4d4;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+    }
+
+    .language-question::before {
+      content: "";
+      position: absolute;
+      left: -6px;
+      top: 40px;
+      width: 0;
+      height: 0;
+      border-right: 8px solid #efefef;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      z-index: 1;
+    }
+
+    .language-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .language-list .lang-btn {
+      min-height: 52px;
+      border-radius: 14px;
+      border: 2px solid #dcdcdc;
+      background: #ececec;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      justify-content: flex-start;
+      font-size: 32px;
+      box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.03);
+    }
+
+    .language-list .lang-btn.selected {
+      border-color: var(--blue);
+      background: #ecf8ff;
+    }
+
+    .flag {
+      width: 58px;
+      height: 38px;
+      border-radius: 5px;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .flag-label {
+      font-size: 33px;
+      font-weight: 800;
+      color: #4a4a4a;
+    }
+
+    .flag-en {
+      background:
+        linear-gradient(to right, transparent 42%, #d9142a 42%, #d9142a 58%, transparent 58%),
+        linear-gradient(to bottom, transparent 42%, #d9142a 42%, #d9142a 58%, transparent 58%),
+        #ffffff;
+    }
+
+    .flag-fr {
+      background: linear-gradient(to right, #042f7a 33.33%, #ffffff 33.33%, #ffffff 66.66%, #d9142a 66.66%);
+    }
+
+    .flag-de {
+      background: linear-gradient(to bottom, #000000 33.33%, #d9142a 33.33%, #d9142a 66.66%, #f1c40f 66.66%);
+    }
+
+    .flag-it {
+      background: linear-gradient(to right, #008c45 33.33%, #ffffff 33.33%, #ffffff 66.66%, #cd212a 66.66%);
+    }
+
+    .flag-es {
+      background: linear-gradient(to bottom, #c60b1e 25%, #ffc400 25%, #ffc400 75%, #c60b1e 75%);
+    }
+
+    .flag-jp {
+      background: #ffffff;
+    }
+
+    .flag-jp::after {
+      content: "";
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #be002f;
+      top: 7px;
+      left: 17px;
+    }
+
+    .flag-cn {
+      background: #ff1d25;
+    }
+
+    .flag-cn::before {
+      content: "★";
+      position: absolute;
+      top: 3px;
+      left: 7px;
+      color: #ffde00;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .mascot-xp {
+      width: 120px;
+      margin: 0 auto 8px;
+    }
+
+    .mascot-streak {
+      width: 120px;
+      margin: 0 auto 8px;
+    }
+
+    .mascot-cta {
+      width: 130px;
+      margin: 6px auto 10px;
     }
 
     .hidden {
       visibility: hidden;
     }
+
+    .anim-fade-up {
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeUp 360ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .anim-stagger-1 { animation-delay: 40ms; }
+    .anim-stagger-2 { animation-delay: 90ms; }
+    .anim-stagger-3 { animation-delay: 140ms; }
+    .anim-stagger-4 { animation-delay: 190ms; }
 
     @keyframes shake {
       0% { transform: translateX(0); }
@@ -425,46 +893,107 @@
       0%, 90%, 100% { transform: scaleY(1); }
       94% { transform: scaleY(0.15); }
     }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes mascotFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    @keyframes progressShimmer {
+      0% { transform: translateX(-120%); }
+      100% { transform: translateX(120%); }
+    }
+
+    @keyframes duoFlyIn {
+      0% {
+        transform: translateX(170px) rotate(-16deg);
+        opacity: 0;
+      }
+      70% {
+        transform: translateX(-10px) rotate(2deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(0) rotate(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes duoTapBounce {
+      0% { transform: translateX(0) scale(1); }
+      45% { transform: translateX(0) scale(1.06); }
+      100% { transform: translateX(0) scale(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    @media (max-height: 740px) {
+      .welcome-layout {
+        min-height: 230px;
+      }
+
+      .welcome-layout .bubble {
+        margin-top: 74px;
+        max-width: min(60vw, 220px);
+      }
+
+      .welcome-duo {
+        top: 108px;
+      }
+    }
   </style>
 </head>
 <body>
   <div id="app">
-    <div class="top-nav" aria-hidden="false">
-      <button type="button" id="backBtn" class="back-btn hidden" data-action="goBack" data-i18n="back">Back</button>
-      <span style="width: 1px; height: 1px;"></span>
-    </div>
     <section class="screen splash active" id="screen-0">
-      <div class="center" style="height: 100%;">
-        <div class="duo-logo-badge" aria-hidden="true">
-          <svg viewBox="0 0 64 64" fill="none" role="img" aria-label="Duolingo">
-            <path d="M32 8c10.8 0 19.6 8.8 19.6 19.6v8.8C51.6 47.2 42.8 56 32 56S12.4 47.2 12.4 36.4v-8.8C12.4 16.8 21.2 8 32 8Z" fill="rgba(255,255,255,0.92)"/>
-            <path d="M22.2 28.8c0-3.9 3.2-7.1 7.1-7.1h5.4c3.9 0 7.1 3.2 7.1 7.1v8.4c0 5.3-4.3 9.6-9.6 9.6h-.4c-5.3 0-9.6-4.3-9.6-9.6v-8.4Z" fill="rgba(88,204,2,0.95)"/>
-            <path d="M26.2 29.2c0-1.8 1.5-3.3 3.3-3.3h1.7c1.8 0 3.3 1.5 3.3 3.3v3.1c0 1.8-1.5 3.3-3.3 3.3h-1.7c-1.8 0-3.3-1.5-3.3-3.3v-3.1Z" fill="#1f1f1f"/>
-            <path d="M35.5 29.2c0-1.8 1.5-3.3 3.3-3.3h1.7c1.8 0 3.3 1.5 3.3 3.3v3.1c0 1.8-1.5 3.3-3.3 3.3h-1.7c-1.8 0-3.3-1.5-3.3-3.3v-3.1Z" fill="#1f1f1f"/>
-            <path d="M24.2 42.8c2.4 2.5 5.3 3.8 7.8 3.8s5.4-1.3 7.8-3.8" stroke="rgba(255,255,255,0.9)" stroke-width="4" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="duo-logo" data-i18n="brand">duolingo</div>
+      <div class="center splash-center">
+        <img class="splash-eyes" src="./assets/eyes%20duo.png" alt="Duo eyes" loading="eager" decoding="async">
       </div>
     </section>
 
     <section class="screen" id="screen-1">
-      <div class="bubble" data-i18n="welcomeBubble">Welcome to your first short lesson</div>
+      <div class="progress-wrap"><div class="progress-bar" data-progress="auto"></div></div>
+      <div class="reward-pill" aria-label="reward">
+        <span>⚡</span>
+        <span>25</span>
+      </div>
+      <div class="welcome-layout">
+        <div class="bubble" data-i18n="welcomeBubble">Welcome to your first short lesson</div>
+        <img class="mascot-img welcome-duo" src="./assets/duo%20happy.png" alt="Duo mascot" loading="lazy" decoding="async">
+      </div>
       <div class="bottom-wrap">
         <button class="btn btn-primary" data-action="welcomeContinue" data-i18n="continue">Continue</button>
       </div>
     </section>
 
     <section class="screen" id="screen-2">
-      <div class="progress-wrap"><div class="progress-bar" data-progress="10"></div></div>
-      <h1 class="title" data-i18n="chooseLanguage">Choose your language</h1>
-      <p class="subtitle" data-i18n="pickLanguage">Pick one to start your lesson</p>
-      <div class="grid">
-        <button class="lang-btn" data-lang="en" data-i18n="langEnglish">English</button>
-        <button class="lang-btn" data-lang="fr" data-i18n="langFrench">French</button>
-        <button class="lang-btn" data-lang="de" data-i18n="langGerman">German</button>
-        <button class="lang-btn" data-lang="it" data-i18n="langItalian">Italian</button>
-        <button class="lang-btn" data-lang="es" data-i18n="langSpanish" style="grid-column: span 2;">Spanish</button>
+      <div class="progress-wrap"><div class="progress-bar" data-progress="auto"></div></div>
+      <div class="reward-pill" aria-label="reward">
+        <span>⚡</span>
+        <span>25</span>
+      </div>
+      <div class="language-header">
+        <img class="mascot-img language-duo" src="./assets/duo-happy.png" alt="Duo mascot" loading="lazy" decoding="async">
+        <div class="language-question" data-i18n="languageQuestion">What language do you like to learn?</div>
+      </div>
+      <div class="language-list">
+        <button class="lang-btn" data-lang="en"><span class="flag flag-en" aria-hidden="true"></span><span class="flag-label" data-i18n="langEnglish">English</span></button>
+        <button class="lang-btn" data-lang="fr"><span class="flag flag-fr" aria-hidden="true"></span><span class="flag-label" data-i18n="langFrench">French</span></button>
+        <button class="lang-btn" data-lang="de"><span class="flag flag-de" aria-hidden="true"></span><span class="flag-label" data-i18n="langGerman">German</span></button>
+        <button class="lang-btn" data-lang="it"><span class="flag flag-it" aria-hidden="true"></span><span class="flag-label" data-i18n="langItalian">Italian</span></button>
+        <button class="lang-btn" data-lang="es"><span class="flag flag-es" aria-hidden="true"></span><span class="flag-label" data-i18n="langSpanish">Spanish</span></button>
+        <button class="lang-btn" data-lang="ja"><span class="flag flag-jp" aria-hidden="true"></span><span class="flag-label" data-i18n="langJapanese">Japanese</span></button>
+        <button class="lang-btn" data-lang="zh"><span class="flag flag-cn" aria-hidden="true"></span><span class="flag-label" data-i18n="langChinese">Chinese</span></button>
       </div>
       <div class="bottom-wrap">
         <button class="btn btn-primary" data-action="languageContinue" data-i18n="continue">Continue</button>
@@ -472,77 +1001,46 @@
     </section>
 
     <section class="screen" id="screen-3">
-      <h1 class="title" data-i18n="pickTopic">Pick a topic</h1>
-      <p class="subtitle" data-i18n="topicHint">Choose what you want to practice</p>
-      <div class="grid">
-        <button class="topic-btn" data-topic="travel" data-i18n="topicTravel">Travel</button>
-        <button class="topic-btn" data-topic="food" data-i18n="topicFood">Food</button>
-        <button class="topic-btn" data-topic="basics" data-i18n="topicBasics" style="grid-column: span 2;">Basics</button>
+      <div class="progress-wrap"><div class="progress-bar" data-progress="auto"></div></div>
+      <div class="reward-pill" aria-label="reward">
+        <span>⚡</span>
+        <span>25</span>
+      </div>
+      <div class="topic-header">
+        <div class="topic-question" data-i18n="topicQuestion">What topic do you want to learn?</div>
+        <img class="mascot-img topic-duo" src="./assets/duo-happy.png" alt="Duo mascot" loading="lazy" decoding="async">
+      </div>
+      <div class="topic-picker-grid">
+        <button class="topic-btn" data-topic="art">
+          <img class="mascot-img topic-card-img" src="./assets/topic-art.png" alt="" loading="lazy" decoding="async">
+          <span class="topic-label" data-i18n="topicArt">Art & Creativity</span>
+        </button>
+        <button class="topic-btn" data-topic="culture">
+          <img class="mascot-img topic-card-img" src="./assets/topic-culture.png" alt="" loading="lazy" decoding="async">
+          <span class="topic-label" data-i18n="topicCulture">Culture & Traditions</span>
+        </button>
+        <button class="topic-btn" data-topic="travel">
+          <img class="mascot-img topic-card-img" src="./assets/topic-travel.png" alt="" loading="lazy" decoding="async">
+          <span class="topic-label" data-i18n="topicTravel">Landmarks & Travel</span>
+        </button>
+        <button class="topic-btn" data-topic="beginner">
+          <img class="mascot-img topic-card-img" src="./assets/topic-beginner.png" alt="" loading="lazy" decoding="async">
+          <span class="topic-label" data-i18n="topicBeginner">Beginner Lessons</span>
+        </button>
+        <button class="topic-btn" data-topic="food">
+          <img class="mascot-img topic-card-img" src="./assets/topic-cooking.png" alt="" loading="lazy" decoding="async">
+          <span class="topic-label" data-i18n="topicFood">Food & Drinks</span>
+        </button>
+        <button class="topic-btn" data-topic="pop">
+          <img class="mascot-img topic-card-img" src="./assets/duo-guitar.png" alt="" loading="lazy" decoding="async">
+          <span class="topic-label" data-i18n="topicPop">Pop Culture & Media</span>
+        </button>
       </div>
       <div class="bottom-wrap">
         <button class="btn btn-primary" data-action="topicContinue" data-i18n="continue">Continue</button>
       </div>
     </section>
 
-    <section class="screen" id="screen-4">
-      <div class="progress-wrap"><div class="progress-bar" data-progress="30"></div></div>
-      <h1 class="title" data-i18n="exercise1Title">Translate this sentence</h1>
-      <p class="card" style="font-size: 22px; font-weight: 800; margin-top: 0;" data-i18n="exercise1Prompt">I ran worse than before</p>
-      <div class="grid" id="exercise1Options"></div>
-    </section>
-
-    <section class="screen center" id="screen-5">
-      <div class="xp">+10 XP</div>
-      <h1 class="title" data-i18n="xpGreat">Great job!</h1>
-      <p class="subtitle" data-i18n="xpMotivation">You're learning fast. Keep the streak alive.</p>
-      <div class="bottom-wrap" style="width: 100%;">
-        <button class="btn btn-primary" data-action="xpContinue" data-i18n="continue">Continue</button>
-      </div>
-    </section>
-
-    <section class="screen" id="screen-6">
-      <div class="progress-wrap"><div class="progress-bar" data-progress="60"></div></div>
-      <h1 class="title" data-i18n="exercise2Title">Listen and build the sentence</h1>
-      <div class="audio-pill" aria-hidden="true">🔊</div>
-      <div class="sentence-box" id="constructedSentence" data-i18n-placeholder="tapWords">Tap words to build the sentence</div>
-      <div class="word-bank" id="wordBank"></div>
-      <div class="bottom-wrap">
-        <button class="btn btn-primary disabled" id="checkSentenceBtn" data-action="checkSentence" data-i18n="check">Check</button>
-      </div>
-    </section>
-
-    <section class="screen" id="screen-7">
-      <div class="progress-wrap"><div class="progress-bar" data-progress="85"></div></div>
-      <h1 class="title" data-i18n="exercise3Title">Finish the sentence</h1>
-      <p class="card" style="font-size: 20px; font-weight: 800; margin-top: 0;" data-i18n="exercise3Prompt">I need this new ____ to improve my skills</p>
-      <div class="grid" id="exercise3Options"></div>
-    </section>
-
-    <section class="screen center" id="screen-8">
-      <div class="streak">🔥</div>
-      <h1 class="title" data-i18n="streakTitle">1 day practiced</h1>
-      <p class="subtitle" data-i18n="streakSubtitle">Small steps every day lead to big wins</p>
-      <div class="dots" aria-label="weekly progress">
-        <span class="dot active"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-      </div>
-      <div class="bottom-wrap" style="width: 100%;">
-        <button class="btn btn-primary" data-action="streakContinue" data-i18n="continue">Continue</button>
-      </div>
-    </section>
-
-    <section class="screen center" id="screen-9">
-      <h1 class="headline" data-i18n="ctaTitle">Keep your streak going 🔥</h1>
-      <p class="subtitle" data-i18n="ctaSubtitle">You're doing great!</p>
-      <div class="bottom-wrap" style="width: 100%;">
-        <button class="btn btn-primary" data-action="downloadNow" data-i18n="downloadNow">Download now</button>
-      </div>
-    </section>
   </div>
 
   <script>
@@ -550,7 +1048,7 @@
       "use strict";
 
       const FLOW_DELAYS = {
-        splash: 1500,
+        splash: 3200,
         answer: 800
       };
 
@@ -578,15 +1076,23 @@
           welcomeBubble: "Welcome to your first short lesson",
           chooseLanguage: "Choose your language",
           pickLanguage: "Pick one to start your lesson",
+          languageQuestion: "What language do you like to learn?",
           langEnglish: "English",
           langFrench: "French",
           langGerman: "German",
           langItalian: "Italian",
           langSpanish: "Spanish",
+          langJapanese: "Japanese",
+          langChinese: "Chinese",
           pickTopic: "Pick a topic",
           topicHint: "Choose what you want to practice",
-          topicTravel: "Travel",
-          topicFood: "Food",
+          topicQuestion: "What topic do you want to learn?",
+          topicArt: "Art & Creativity",
+          topicCulture: "Culture & Traditions",
+          topicTravel: "Landmarks & Travel",
+          topicBeginner: "Beginner Lessons",
+          topicFood: "Food & Drinks",
+          topicPop: "Pop Culture & Media",
           topicBasics: "Basics",
           exercise1Title: "Translate this sentence",
           exercise1Prompt: "I ran worse than before",
@@ -618,15 +1124,23 @@
           welcomeBubble: "Bienvenido a tu primera leccion corta",
           chooseLanguage: "Elige tu idioma",
           pickLanguage: "Escoge uno para empezar tu leccion",
+          languageQuestion: "Que idioma te gustaria aprender?",
           langEnglish: "Ingles",
           langFrench: "Frances",
           langGerman: "Aleman",
           langItalian: "Italiano",
           langSpanish: "Espanol",
+          langJapanese: "Japones",
+          langChinese: "Chino",
           pickTopic: "Elige un tema",
           topicHint: "Selecciona lo que quieres practicar",
-          topicTravel: "Viajes",
-          topicFood: "Comida",
+          topicQuestion: "Que tema quieres aprender?",
+          topicArt: "Arte y creatividad",
+          topicCulture: "Cultura y tradiciones",
+          topicTravel: "Lugares y viajes",
+          topicBeginner: "Lecciones basicas",
+          topicFood: "Comida y bebidas",
+          topicPop: "Cultura pop y medios",
           topicBasics: "Basicos",
           exercise1Title: "Traduce esta frase",
           exercise1Prompt: "Corri peor que antes",
@@ -658,15 +1172,23 @@
           welcomeBubble: "Bienvenue dans ta premiere lecon courte",
           chooseLanguage: "Choisis ta langue",
           pickLanguage: "Choisis-en une pour commencer la lecon",
+          languageQuestion: "Quelle langue veux-tu apprendre ?",
           langEnglish: "Anglais",
           langFrench: "Francais",
           langGerman: "Allemand",
           langItalian: "Italien",
           langSpanish: "Espagnol",
+          langJapanese: "Japonais",
+          langChinese: "Chinois",
           pickTopic: "Choisis un sujet",
           topicHint: "Choisis ce que tu veux pratiquer",
-          topicTravel: "Voyage",
-          topicFood: "Nourriture",
+          topicQuestion: "Quel sujet veux-tu apprendre ?",
+          topicArt: "Art et creativite",
+          topicCulture: "Culture et traditions",
+          topicTravel: "Lieux et voyage",
+          topicBeginner: "Lecons debutant",
+          topicFood: "Cuisine et boissons",
+          topicPop: "Culture pop et medias",
           topicBasics: "Bases",
           exercise1Title: "Traduis cette phrase",
           exercise1Prompt: "J'ai couru moins bien qu'avant",
@@ -698,15 +1220,23 @@
           welcomeBubble: "Willkommen zu deiner ersten kurzen Lektion",
           chooseLanguage: "Wahle deine Sprache",
           pickLanguage: "Wahle eine Sprache fur den Start",
+          languageQuestion: "Welche Sprache willst du lernen?",
           langEnglish: "Englisch",
           langFrench: "Franzosisch",
           langGerman: "Deutsch",
           langItalian: "Italienisch",
           langSpanish: "Spanisch",
+          langJapanese: "Japanisch",
+          langChinese: "Chinesisch",
           pickTopic: "Wahle ein Thema",
           topicHint: "Wahle, was du uben mochtest",
-          topicTravel: "Reisen",
-          topicFood: "Essen",
+          topicQuestion: "Welches Thema willst du lernen?",
+          topicArt: "Kunst und Kreativitat",
+          topicCulture: "Kultur und Traditionen",
+          topicTravel: "Sehenswurdigkeiten und Reisen",
+          topicBeginner: "Lektionen fur Anfanger",
+          topicFood: "Essen und Trinken",
+          topicPop: "Popkultur und Medien",
           topicBasics: "Grundlagen",
           exercise1Title: "Ubersetze den Satz",
           exercise1Prompt: "Ich lief schlechter als vorher",
@@ -738,15 +1268,23 @@
           welcomeBubble: "Benvenuto alla tua prima lezione breve",
           chooseLanguage: "Scegli la tua lingua",
           pickLanguage: "Scegline una per iniziare la lezione",
+          languageQuestion: "Quale lingua vuoi imparare?",
           langEnglish: "Inglese",
           langFrench: "Francese",
           langGerman: "Tedesco",
           langItalian: "Italiano",
           langSpanish: "Spagnolo",
+          langJapanese: "Giapponese",
+          langChinese: "Cinese",
           pickTopic: "Scegli un argomento",
           topicHint: "Scegli cosa vuoi praticare",
-          topicTravel: "Viaggio",
-          topicFood: "Cibo",
+          topicQuestion: "Quale argomento vuoi imparare?",
+          topicArt: "Arte e creativita",
+          topicCulture: "Cultura e tradizioni",
+          topicTravel: "Luoghi e viaggi",
+          topicBeginner: "Lezioni base",
+          topicFood: "Cibo e bevande",
+          topicPop: "Cultura pop e media",
           topicBasics: "Basi",
           exercise1Title: "Traduci questa frase",
           exercise1Prompt: "Ho corso peggio di prima",
@@ -768,39 +1306,102 @@
           streakSubtitle: "Piccoli passi ogni giorno portano a grandi risultati",
           ctaTitle: "Mantieni viva la tua serie 🔥",
           ctaSubtitle: "Stai andando alla grande!"
-        }
-      };
-
-      const exerciseData = {
-        en: {
-          ex1Correct: "ex1opt4",
-          ex3Correct: "ex3opt1",
-          sentenceTarget: ["this", "new", "opportunity", "to", "improve", "my", "skills"],
-          wordBank: ["four", "improve", "my", "new", "opportunity", "skills", "this", "to"]
         },
-        es: {
-          ex1Correct: "ex1opt1",
-          ex3Correct: "ex3opt1",
-          sentenceTarget: ["esta", "nueva", "oportunidad", "para", "mejorar", "mis", "habilidades"],
-          wordBank: ["cuatro", "mejorar", "mis", "nueva", "oportunidad", "habilidades", "esta", "para"]
+        ja: {
+          brand: "duolingo",
+          back: "Back",
+          continue: "Continue",
+          check: "Check",
+          downloadNow: "Download now",
+          welcomeBubble: "Welcome to your first short lesson",
+          chooseLanguage: "Choose your language",
+          pickLanguage: "Pick one to start your lesson",
+          languageQuestion: "What language do you like to learn?",
+          langEnglish: "English",
+          langFrench: "French",
+          langGerman: "German",
+          langItalian: "Italian",
+          langSpanish: "Spanish",
+          langJapanese: "Japanese",
+          langChinese: "Chinese",
+          pickTopic: "Pick a topic",
+          topicHint: "Choose what you want to practice",
+          topicQuestion: "What topic do you want to learn?",
+          topicArt: "Art & Creativity",
+          topicCulture: "Culture & Traditions",
+          topicTravel: "Landmarks & Travel",
+          topicBeginner: "Beginner Lessons",
+          topicFood: "Food & Drinks",
+          topicPop: "Pop Culture & Media",
+          topicBasics: "Basics",
+          exercise1Title: "Translate this sentence",
+          exercise1Prompt: "I ran worse than before",
+          ex1opt1: "Corri peggio di prima",
+          ex1opt2: "J'ai couru moins bien qu'avant",
+          ex1opt3: "Ich lief schlechter als vorher",
+          ex1opt4: "I ran better than before",
+          xpGreat: "Great job!",
+          xpMotivation: "You're learning fast. Keep the streak alive.",
+          exercise2Title: "Listen and build the sentence",
+          tapWords: "Tap words to build the sentence",
+          exercise3Title: "Finish the sentence",
+          exercise3Prompt: "I need this new ____ to improve my skills",
+          ex3opt1: "opportunity",
+          ex3opt2: "banana",
+          ex3opt3: "window",
+          ex3opt4: "book",
+          streakTitle: "1 day practiced",
+          streakSubtitle: "Small steps every day lead to big wins",
+          ctaTitle: "Keep your streak going 🔥",
+          ctaSubtitle: "You're doing great!"
         },
-        fr: {
-          ex1Correct: "ex1opt1",
-          ex3Correct: "ex3opt1",
-          sentenceTarget: ["cette", "nouvelle", "opportunite", "pour", "ameliorer", "mes", "competences"],
-          wordBank: ["quatre", "ameliorer", "mes", "nouvelle", "opportunite", "competences", "cette", "pour"]
-        },
-        de: {
-          ex1Correct: "ex1opt1",
-          ex3Correct: "ex3opt1",
-          sentenceTarget: ["diese", "neue", "gelegenheit", "um", "meine", "fahigkeiten", "zu", "verbessern"],
-          wordBank: ["vier", "verbessern", "meine", "neue", "gelegenheit", "fahigkeiten", "diese", "um"]
-        },
-        it: {
-          ex1Correct: "ex1opt1",
-          ex3Correct: "ex3opt1",
-          sentenceTarget: ["questa", "nuova", "opportunita", "per", "migliorare", "le", "mie", "abilita"],
-          wordBank: ["quattro", "migliorare", "mie", "nuova", "opportunita", "abilita", "questa", "per"]
+        zh: {
+          brand: "duolingo",
+          back: "Back",
+          continue: "Continue",
+          check: "Check",
+          downloadNow: "Download now",
+          welcomeBubble: "Welcome to your first short lesson",
+          chooseLanguage: "Choose your language",
+          pickLanguage: "Pick one to start your lesson",
+          languageQuestion: "What language do you like to learn?",
+          langEnglish: "English",
+          langFrench: "French",
+          langGerman: "German",
+          langItalian: "Italian",
+          langSpanish: "Spanish",
+          langJapanese: "Japanese",
+          langChinese: "Chinese",
+          pickTopic: "Pick a topic",
+          topicHint: "Choose what you want to practice",
+          topicQuestion: "What topic do you want to learn?",
+          topicArt: "Art & Creativity",
+          topicCulture: "Culture & Traditions",
+          topicTravel: "Landmarks & Travel",
+          topicBeginner: "Beginner Lessons",
+          topicFood: "Food & Drinks",
+          topicPop: "Pop Culture & Media",
+          topicBasics: "Basics",
+          exercise1Title: "Translate this sentence",
+          exercise1Prompt: "I ran worse than before",
+          ex1opt1: "Corri peggio di prima",
+          ex1opt2: "J'ai couru moins bien qu'avant",
+          ex1opt3: "Ich lief schlechter als vorher",
+          ex1opt4: "I ran better than before",
+          xpGreat: "Great job!",
+          xpMotivation: "You're learning fast. Keep the streak alive.",
+          exercise2Title: "Listen and build the sentence",
+          tapWords: "Tap words to build the sentence",
+          exercise3Title: "Finish the sentence",
+          exercise3Prompt: "I need this new ____ to improve my skills",
+          ex3opt1: "opportunity",
+          ex3opt2: "banana",
+          ex3opt3: "window",
+          ex3opt4: "book",
+          streakTitle: "1 day practiced",
+          streakSubtitle: "Small steps every day lead to big wins",
+          ctaTitle: "Keep your streak going 🔥",
+          ctaSubtitle: "You're doing great!"
         }
       };
 
@@ -812,13 +1413,9 @@
       const screens = Array.from(document.querySelectorAll(".screen"));
       const languageButtons = Array.from(document.querySelectorAll(".lang-btn"));
       const topicButtons = Array.from(document.querySelectorAll(".topic-btn"));
-      const checkSentenceBtn = document.getElementById("checkSentenceBtn");
-      const sentenceBox = document.getElementById("constructedSentence");
-      const exercise1Options = document.getElementById("exercise1Options");
-      const exercise3Options = document.getElementById("exercise3Options");
-      const wordBank = document.getElementById("wordBank");
       const app = document.getElementById("app");
       const backBtn = document.getElementById("backBtn");
+      const welcomeDuo = document.querySelector(".welcome-duo");
 
       function getT(key) {
         const langPack = translations[state.selectedLanguage] || translations.en;
@@ -827,7 +1424,7 @@
 
       function safeAdvance(nextStep) {
         const step = Number.isInteger(nextStep) ? nextStep : state.currentStep + 1;
-        const clamped = Math.max(0, Math.min(9, step));
+        const clamped = Math.max(0, Math.min(3, step));
         showScreen(clamped);
       }
 
@@ -838,13 +1435,10 @@
           state.answers.exercise3 = null;
           state.sentenceWords = [];
         }
-        if (step === 6) {
-          state.sentenceWords = [];
-        }
       }
 
       function shouldShowBack(step) {
-        return step >= 2 && step <= 8;
+        return step >= 2 && step <= 3;
       }
 
       function showScreen(step, opts) {
@@ -860,20 +1454,50 @@
         screens.forEach((screen, idx) => {
           screen.classList.toggle("active", idx === step);
         });
+        const dynamicProgress = getProgressForStep(step);
         document.querySelectorAll(".progress-bar").forEach((bar) => {
           const target = bar.getAttribute("data-progress");
-          bar.style.width = target ? target + "%" : "0%";
+          if (!target || target === "auto") {
+            bar.style.width = dynamicProgress + "%";
+            return;
+          }
+          bar.style.width = target + "%";
         });
+        animateScreenIn(step);
+        triggerWelcomeDuo(step);
 
-        backBtn.classList.toggle("hidden", !shouldShowBack(step) || state.navStack.length === 0);
+        const showBack = shouldShowBack(step) && state.navStack.length > 0;
+        if (backBtn) backBtn.classList.toggle("hidden", !showBack);
 
         resetInteractiveStateForStep(step);
-        if (step === 4 || step === 7) renderExercises();
-        if (step === 6) {
-          renderWordBank();
-          renderConstructedSentence();
-          sentenceBox.classList.remove("correct", "wrong");
-        }
+      }
+
+      function triggerWelcomeDuo(step) {
+        if (!welcomeDuo || step !== 1) return;
+        welcomeDuo.classList.remove("fly-in");
+        void welcomeDuo.offsetWidth;
+        welcomeDuo.classList.add("fly-in");
+      }
+
+      function animateScreenIn(step) {
+        const screen = screens[step];
+        if (!screen) return;
+        const nodes = screen.querySelectorAll("h1, h2, p, .bubble, .card, .mascot-img, .btn, .lang-btn, .topic-btn, .option-btn, .word-btn, .sentence-box, .audio-pill, .dots");
+        nodes.forEach(function (node, idx) {
+          node.classList.remove("anim-fade-up", "anim-stagger-1", "anim-stagger-2", "anim-stagger-3", "anim-stagger-4");
+          void node.offsetWidth;
+          node.classList.add("anim-fade-up");
+          node.classList.add("anim-stagger-" + ((idx % 4) + 1));
+        });
+      }
+
+      function getProgressForStep(step) {
+        const firstInteractiveStep = 1;
+        const lastInteractiveStep = screens.length - 1;
+        if (step < firstInteractiveStep || lastInteractiveStep <= 0) return 0;
+        const completed = step - firstInteractiveStep + 1;
+        const total = Math.max(1, lastInteractiveStep - firstInteractiveStep + 1);
+        return Math.max(0, Math.min(100, Math.round((completed / total) * 100)));
       }
 
       function applyTranslations() {
@@ -882,9 +1506,6 @@
           const key = node.getAttribute("data-i18n");
           node.textContent = getT(key);
         });
-        renderExercises();
-        renderWordBank();
-        renderConstructedSentence();
       }
 
       function lockFor(ms, cb) {
@@ -901,117 +1522,6 @@
           if (state.locked) return;
           action();
         };
-      }
-
-      function renderExercises() {
-        const ex1 = ["ex1opt1", "ex1opt2", "ex1opt3", "ex1opt4"];
-        const ex3 = ["ex3opt1", "ex3opt2", "ex3opt3", "ex3opt4"];
-        exercise1Options.innerHTML = "";
-        exercise3Options.innerHTML = "";
-
-        ex1.forEach((key) => {
-          const btn = document.createElement("button");
-          btn.className = "option-btn";
-          btn.type = "button";
-          btn.textContent = getT(key);
-          btn.dataset.key = key;
-          btn.addEventListener("click", handleTap(function () {
-            evaluateExerciseChoice(btn, key, "exercise1");
-          }));
-          exercise1Options.appendChild(btn);
-        });
-
-        ex3.forEach((key) => {
-          const btn = document.createElement("button");
-          btn.className = "option-btn";
-          btn.type = "button";
-          btn.textContent = getT(key);
-          btn.dataset.key = key;
-          btn.addEventListener("click", handleTap(function () {
-            evaluateExerciseChoice(btn, key, "exercise3");
-          }));
-          exercise3Options.appendChild(btn);
-        });
-      }
-
-      function evaluateExerciseChoice(button, key, exercise) {
-        const data = exerciseData[state.selectedLanguage] || exerciseData.en;
-        const correctKey = exercise === "exercise1" ? data.ex1Correct : data.ex3Correct;
-        const allButtons = button.parentElement.querySelectorAll(".option-btn");
-        allButtons.forEach((b) => b.disabled = true);
-
-        const isCorrect = key === correctKey;
-        state.answers[exercise] = key;
-        button.classList.add(isCorrect ? "correct" : "wrong");
-
-        if (!isCorrect) {
-          const correctBtn = Array.from(allButtons).find((el) => el.dataset.key === correctKey);
-          if (correctBtn) correctBtn.classList.add("correct");
-        }
-
-        lockFor(FLOW_DELAYS.answer, function () {
-          allButtons.forEach((b) => b.disabled = false);
-          safeAdvance();
-        });
-      }
-
-      function renderWordBank() {
-        const data = exerciseData[state.selectedLanguage] || exerciseData.en;
-        wordBank.innerHTML = "";
-        data.wordBank.forEach((word) => {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "word-btn";
-          btn.textContent = word;
-          btn.dataset.word = word;
-          btn.disabled = false;
-          btn.addEventListener("click", handleTap(function () {
-            if (state.sentenceWords.length >= data.sentenceTarget.length) return;
-            state.sentenceWords.push(word);
-            btn.classList.add("selected");
-            btn.disabled = true;
-            renderConstructedSentence();
-          }));
-          wordBank.appendChild(btn);
-        });
-        checkSentenceBtn.disabled = true;
-        checkSentenceBtn.classList.add("disabled");
-      }
-
-      function renderConstructedSentence() {
-        const placeholderKey = sentenceBox.getAttribute("data-i18n-placeholder");
-        if (!state.sentenceWords.length) {
-          sentenceBox.textContent = getT(placeholderKey);
-        } else {
-          sentenceBox.textContent = state.sentenceWords.join(" ");
-        }
-        const data = exerciseData[state.selectedLanguage] || exerciseData.en;
-        const ready = state.sentenceWords.length >= Math.max(3, data.sentenceTarget.length - 2);
-        checkSentenceBtn.disabled = !ready;
-        checkSentenceBtn.classList.toggle("disabled", !ready);
-      }
-
-      function checkSentence() {
-        const data = exerciseData[state.selectedLanguage] || exerciseData.en;
-        const made = state.sentenceWords.join(" ").toLowerCase();
-        const target = data.sentenceTarget.join(" ").toLowerCase();
-        const closeEnough = made === target || target.indexOf(made) === 0;
-
-        sentenceBox.classList.remove("correct", "wrong");
-        sentenceBox.classList.add(closeEnough ? "correct" : "wrong");
-        state.answers.exercise2 = made;
-
-        if (!closeEnough) {
-          state.sentenceWords = data.sentenceTarget.slice();
-          renderConstructedSentence();
-          sentenceBox.classList.remove("wrong");
-          sentenceBox.classList.add("correct");
-        }
-
-        lockFor(FLOW_DELAYS.answer, function () {
-          sentenceBox.classList.remove("correct", "wrong");
-          safeAdvance();
-        });
       }
 
       function selectLanguage(lang) {
@@ -1035,11 +1545,7 @@
         const map = {
           welcomeContinue: function () { safeAdvance(2); },
           languageContinue: function () { safeAdvance(3); },
-          topicContinue: function () { safeAdvance(4); },
-          xpContinue: function () { safeAdvance(6); },
-          checkSentence: function () { checkSentence(); },
-          streakContinue: function () { safeAdvance(9); },
-          downloadNow: function () { exitAd(); },
+          topicContinue: function () { exitAd(); },
           goBack: function () {
             if (!state.navStack.length) return;
             const step = state.navStack.pop();
@@ -1065,11 +1571,16 @@
         topicButtons.forEach((btn) => {
           btn.addEventListener("click", handleTap(function () {
             selectTopic(btn.dataset.topic);
-            lockFor(160, function () {
-              safeAdvance(4);
-            });
           }), { passive: false });
         });
+
+        if (welcomeDuo) {
+          welcomeDuo.addEventListener("click", handleTap(function () {
+            welcomeDuo.classList.remove("tap-bounce");
+            void welcomeDuo.offsetWidth;
+            welcomeDuo.classList.add("tap-bounce");
+          }), { passive: false });
+        }
       }
 
       function init() {
