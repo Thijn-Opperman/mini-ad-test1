@@ -253,7 +253,7 @@
       height: 100%;
       width: 0%;
       background: linear-gradient(90deg, #58cc02, #7be82a);
-      transition: width 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: width 0.68s cubic-bezier(0.22, 1, 0.36, 1);
       position: relative;
       overflow: hidden;
     }
@@ -480,6 +480,7 @@
       pointer-events: none;
       user-select: none;
       -webkit-user-select: none;
+      animation: eyesFloatBlink 3.2s ease-in-out infinite;
     }
 
     .splash-logo {
@@ -549,6 +550,11 @@
       margin: 4px 0 10px;
     }
 
+    .topic-header--duo-speaks {
+      align-items: flex-end;
+      gap: 6px;
+    }
+
     .topic-question {
       flex: 1;
       background: #efefef;
@@ -562,26 +568,33 @@
       position: relative;
     }
 
-    .topic-question::after {
+    /* Speech tail points left toward Duo’s face */
+    .topic-header--duo-speaks .topic-question::after {
       content: "";
       position: absolute;
-      right: -10px;
-      top: 40px;
+      left: -10px;
+      right: auto;
+      top: 40%;
+      bottom: auto;
+      margin-top: -8px;
       width: 0;
       height: 0;
-      border-left: 10px solid #d4d4d4;
+      border-right: 10px solid #d4d4d4;
       border-top: 8px solid transparent;
       border-bottom: 8px solid transparent;
     }
 
-    .topic-question::before {
+    .topic-header--duo-speaks .topic-question::before {
       content: "";
       position: absolute;
-      right: -6px;
-      top: 42px;
+      left: -6px;
+      right: auto;
+      top: 40%;
+      bottom: auto;
+      margin-top: -6px;
       width: 0;
       height: 0;
-      border-left: 8px solid #efefef;
+      border-right: 8px solid #efefef;
       border-top: 6px solid transparent;
       border-bottom: 6px solid transparent;
       z-index: 1;
@@ -590,6 +603,35 @@
     .topic-duo {
       width: 84px;
       flex-shrink: 0;
+    }
+
+    .duo-airborne {
+      width: auto;
+      height: clamp(102px, 30vw, 128px);
+      max-width: min(46vw, 200px);
+      object-fit: contain;
+      transform-origin: 55% 45%;
+      filter: drop-shadow(0 10px 14px rgba(31, 31, 31, 0.18));
+      animation: duoAirborne 2.9s ease-in-out infinite;
+    }
+
+    @keyframes duoAirborne {
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(-6deg) scale(1);
+      }
+      20% {
+        transform: translate(6px, -14px) rotate(2deg) scale(1.03);
+      }
+      40% {
+        transform: translate(-4px, -20px) rotate(-3deg) scale(1.02);
+      }
+      60% {
+        transform: translate(8px, -10px) rotate(5deg) scale(1.04);
+      }
+      80% {
+        transform: translate(-6px, -16px) rotate(-4deg) scale(1.01);
+      }
     }
 
     .topic-picker-grid {
@@ -648,14 +690,168 @@
 
     #screen-1,
     #screen-2,
-    #screen-3 {
+    #screen-3,
+    #screen-4,
+    #screen-5,
+    #screen-6,
+    #screen-7 {
       padding-top: calc(clamp(62px, 11vh, 72px) + env(safe-area-inset-top));
       padding-bottom: calc(96px + env(safe-area-inset-bottom));
     }
 
+    #screen-2,
+    #screen-3 {
+      overflow: visible;
+      padding-top: calc(
+        env(safe-area-inset-top) + clamp(16px, 3.8vh, 24px) + 12px + clamp(4px, 0.8vh, 8px)
+      );
+    }
+
+    #screen-2 {
+      --lang-duo-enter-dur: 1.12s;
+    }
+
+    #screen-2 .language-header {
+      margin-top: 0;
+      margin-bottom: 4px;
+    }
+
+    #screen-2 .language-header.language-header--duo-speaks {
+      flex-shrink: 0;
+      align-self: stretch;
+      align-items: center;
+      margin-top: -10px;
+      margin-bottom: 0;
+    }
+
+    #screen-2 .language-header--duo-speaks .language-question {
+      margin-top: -18px;
+    }
+
+    #screen-2 .language-duo-enter-wrap,
+    #screen-3 .language-duo-enter-wrap {
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+      align-self: center;
+    }
+
+    /* Zelfde Duo-formaat als taalscherm */
+    #screen-2 .language-duo.duo-airborne,
+    #screen-3 .language-duo.duo-airborne {
+      height: clamp(138px, 42vw, 188px);
+      max-width: min(62vw, 288px);
+      opacity: 1;
+    }
+
+    #screen-3 .topic-header {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    #screen-3 .topic-header.topic-header--duo-speaks {
+      flex-shrink: 0;
+      align-self: stretch;
+      align-items: center;
+      margin-top: -10px;
+      margin-bottom: 0;
+    }
+
+    #screen-3 .topic-header--duo-speaks .topic-question {
+      margin-top: -18px;
+    }
+
+    #screen-3 .topic-picker-grid {
+      margin-top: clamp(-26px, -4vh, -16px);
+      flex: 1 1 0;
+      min-height: 0;
+      overflow: hidden;
+      grid-template-rows: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      align-content: stretch;
+    }
+
+    #screen-3 .topic-picker-grid .topic-btn {
+      min-height: 0;
+      height: 100%;
+      align-self: stretch;
+      padding: 5px 6px 4px;
+      gap: 3px;
+      justify-content: center;
+    }
+
+    /* Vaste canvas: alle PNG's zelfde slot als Art & Creativity (vierkant, contain) */
+    #screen-3 .topic-card-img {
+      width: clamp(58px, 18vw, 72px);
+      height: clamp(58px, 18vw, 72px);
+      flex-shrink: 0;
+      object-fit: contain;
+      object-position: center center;
+    }
+
+    /* Iets grotere sprites: Beginner, Pop, Travel */
+    #screen-3 .topic-btn[data-topic="beginner"] .topic-card-img,
+    #screen-3 .topic-btn[data-topic="pop"] .topic-card-img,
+    #screen-3 .topic-btn[data-topic="travel"] .topic-card-img {
+      width: clamp(68px, 22vw, 86px);
+      height: clamp(68px, 22vw, 86px);
+    }
+
+    /* Nog groter: Culture & Traditions */
+    #screen-3 .topic-btn[data-topic="culture"] .topic-card-img {
+      width: clamp(78px, 27vw, 100px);
+      height: clamp(78px, 27vw, 100px);
+    }
+
+    #screen-3 .topic-label {
+      font-size: clamp(11px, 3.1vw, 13px);
+      line-height: 1.12;
+    }
+
+    #screen-2 .language-list {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-top: clamp(-20px, -2.8vh, -14px);
+      padding-right: 8px;
+      margin-right: -4px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--green) #e3e8f0;
+    }
+
+    #screen-2 .language-list::-webkit-scrollbar {
+      width: 11px;
+    }
+
+    #screen-2 .language-list::-webkit-scrollbar-track {
+      background: linear-gradient(180deg, #f0f2f7 0%, #e5e9f2 100%);
+      border-radius: 999px;
+      margin: 8px 0 10px;
+      border: 1px solid rgba(31, 31, 31, 0.06);
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.85);
+    }
+
+    #screen-2 .language-list::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #89e92e 0%, var(--green) 42%, var(--green-dark) 100%);
+      border-radius: 999px;
+      border: 2px solid #e8ecf4;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.45),
+        0 2px 4px rgba(70, 163, 2, 0.22);
+    }
+
+    #screen-2 .language-list::-webkit-scrollbar-thumb:active {
+      background: linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%);
+    }
+
     #screen-1 .progress-wrap,
     #screen-2 .progress-wrap,
-    #screen-3 .progress-wrap {
+    #screen-3 .progress-wrap,
+    #screen-4 .progress-wrap,
+    #screen-5 .progress-wrap,
+    #screen-6 .progress-wrap,
+    #screen-7 .progress-wrap {
       position: absolute;
       top: calc(clamp(16px, 3.8vh, 24px) + env(safe-area-inset-top));
       left: var(--screen-pad-x);
@@ -667,7 +863,11 @@
 
     #screen-1 .reward-pill,
     #screen-2 .reward-pill,
-    #screen-3 .reward-pill {
+    #screen-3 .reward-pill,
+    #screen-4 .reward-pill,
+    #screen-5 .reward-pill,
+    #screen-6 .reward-pill,
+    #screen-7 .reward-pill {
       position: absolute;
       top: calc(clamp(14px, 3.6vh, 22px) + env(safe-area-inset-top));
       right: var(--screen-pad-x);
@@ -677,7 +877,11 @@
 
     #screen-1 .bottom-wrap,
     #screen-2 .bottom-wrap,
-    #screen-3 .bottom-wrap {
+    #screen-3 .bottom-wrap,
+    #screen-4 .bottom-wrap,
+    #screen-6 .bottom-wrap,
+    #screen-7 .bottom-wrap,
+    #screen-8 .bottom-wrap {
       position: absolute;
       left: var(--screen-pad-x);
       right: var(--screen-pad-x);
@@ -687,10 +891,530 @@
       z-index: 3;
     }
 
+    #screen-4 .translate-stage {
+      margin-top: clamp(12px, 3.4vh, 18px);
+    }
+
+    #screen-6 .listen-stage,
+    #screen-7 .finish-stage {
+      margin-top: clamp(6px, 2vh, 12px);
+      padding-bottom: 84px;
+    }
+
+    #screen-6 .bottom-wrap {
+      gap: 2px;
+    }
+
+    #screen-6 .listen-lines {
+      margin-top: 6px;
+      margin-bottom: 10px;
+    }
+
+    #screen-6 .word-bank-grid {
+      column-gap: 10px;
+      row-gap: 8px;
+      margin-top: -4px;
+      margin-bottom: 6px;
+    }
+
     .reward-pill span {
       display: inline-block;
       font-size: 16px;
       line-height: 1;
+    }
+
+    .xp-label {
+      font-size: 15px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+    }
+
+    .translate-stage {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .translate-title {
+      font-size: clamp(20px, 6vw, 30px);
+      line-height: 1.12;
+      font-weight: 700;
+      color: #4e4e4e;
+      margin: 6px 0 12px;
+    }
+
+    .translate-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .translate-character {
+      width: clamp(84px, 25vw, 106px);
+      flex-shrink: 0;
+      object-fit: contain;
+      filter: drop-shadow(0 5px 6px rgba(0, 0, 0, 0.08));
+      animation: characterBob 2.5s ease-in-out infinite;
+    }
+
+    .translate-prompt {
+      flex: 1;
+      border: 3px solid #dddddd;
+      border-radius: 16px;
+      background: #f9f9f9;
+      color: #474747;
+      font-size: clamp(14px, 4.2vw, 18px);
+      line-height: 1.2;
+      font-weight: 800;
+      padding: 14px 14px;
+      position: relative;
+    }
+
+    .translate-prompt::before {
+      content: "";
+      position: absolute;
+      left: -11px;
+      top: 48%;
+      margin-top: -8px;
+      width: 0;
+      height: 0;
+      border-right: 11px solid #dddddd;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+    }
+
+    .translate-prompt::after {
+      content: "";
+      position: absolute;
+      left: -7px;
+      top: 48%;
+      margin-top: -6px;
+      width: 0;
+      height: 0;
+      border-right: 8px solid #f9f9f9;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+    }
+
+    .translate-answer {
+      margin-top: 14px;
+      border-radius: 16px;
+      border: 2px solid #dedede;
+      background: #f8f8f8;
+      min-height: clamp(106px, 23vh, 132px);
+      padding: 14px 16px;
+      font-size: 30px;
+      font-weight: 700;
+      color: #8a8a8a;
+      outline: none;
+    }
+
+    .translate-answer::placeholder {
+      color: #aeaeae;
+      opacity: 1;
+    }
+
+    .speak-btn {
+      width: 100%;
+      min-height: 54px;
+      border: 2px solid #d6d6d6;
+      border-radius: 15px;
+      background: #f5f5f5;
+      color: #20a8f2;
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 0.03em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-transform: uppercase;
+    }
+
+    .speak-icon {
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    #screen-4 .bottom-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn.btn-inactive {
+      background: #dcdcdc;
+      color: #f2f2f2;
+      box-shadow: inset 0 -3px 0 #cbcbcb;
+      cursor: not-allowed;
+      filter: none;
+    }
+
+    .btn.btn-inactive:active {
+      transform: none;
+    }
+
+    .xp-result-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      min-height: 0;
+      padding-top: clamp(10px, 2vh, 16px);
+    }
+
+    .xp-result-value {
+      margin: 6px 0 16px;
+      color: #49a40c;
+      font-size: clamp(52px, 13.5vw, 66px);
+      line-height: 1;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    .xp-result-value.xp-pop-in {
+      animation: xpPopIn 560ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .xp-result-visual {
+      margin-top: 8px;
+      width: clamp(210px, 60vw, 270px);
+      min-height: clamp(170px, 48vw, 220px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .xp-result-photo {
+      width: 100%;
+      max-width: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.14));
+      animation: mascotFloat 2.8s ease-in-out infinite;
+    }
+
+    .result-footer {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #cbefb8;
+      border-top: 1px solid #b6e8a0;
+      padding: 14px var(--screen-pad-x) calc(12px + env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .result-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #49a40c;
+      font-size: 36px;
+      font-weight: 800;
+    }
+
+    .result-status.amazing-pop-in {
+      animation: amazingPopIn 520ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .result-status-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #49a40c;
+      color: #fff;
+      font-size: 15px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    #screen-5 {
+      padding-bottom: calc(166px + env(safe-area-inset-bottom));
+    }
+
+    .listen-stage,
+    .finish-stage {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .listen-title,
+    .finish-title {
+      font-size: clamp(22px, 6.6vw, 36px);
+      font-weight: 800;
+      color: #4c4c4c;
+      line-height: 1.12;
+      margin: 8px 0 12px;
+    }
+
+    .listen-header {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 10px;
+    }
+
+    .listen-character {
+      width: clamp(80px, 25vw, 102px);
+      flex-shrink: 0;
+      animation: characterBob 2.6s ease-in-out infinite;
+    }
+
+    .listen-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      flex: 1;
+      border: 3px solid #d8d8d8;
+      border-radius: 16px;
+      overflow: visible;
+      background: #ffffff;
+      min-height: 66px;
+      max-width: 168px;
+      position: relative;
+      margin-left: -4px;
+    }
+
+    .listen-controls::before {
+      content: "";
+      position: absolute;
+      left: -16px;
+      top: 50%;
+      margin-top: -12px;
+      width: 0;
+      height: 0;
+      border-right: 16px solid #d8d8d8;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+    }
+
+    .listen-controls::after {
+      content: "";
+      position: absolute;
+      left: -11px;
+      top: 50%;
+      margin-top: -10px;
+      width: 0;
+      height: 0;
+      border-right: 12px solid #ffffff;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      z-index: 1;
+    }
+
+    .listen-icon-btn {
+      border: 0;
+      background: transparent;
+      font-size: 35px;
+      color: #4f88e8;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .listen-icon-btn + .listen-icon-btn {
+      border-left: 3px solid #d8d8d8;
+    }
+
+    .listen-lines {
+      display: grid;
+      grid-template-rows: repeat(3, 1fr);
+      gap: 22px;
+      margin: 16px 0 14px;
+    }
+
+    .listen-line {
+      height: 2px;
+      border-radius: 999px;
+      background: #d3d3d3;
+    }
+
+    .word-bank-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .word-chip {
+      border: 2px solid #d7dbe3;
+      border-radius: 14px;
+      background: #ffffff;
+      color: #4b4b4b;
+      font-size: clamp(14px, 4.2vw, 31px);
+      font-weight: 800;
+      padding: 9px 14px;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #d0d0d0;
+      transition: transform 0.08s ease, filter 0.14s ease;
+    }
+
+    .word-chip.selected {
+      border-color: #1cb0f6;
+      background: #eef9ff;
+      box-shadow: 0 4px 0 #bfe9fd;
+      color: #1a6f95;
+    }
+
+    .word-chip:nth-child(3n) {
+      font-size: clamp(13px, 3.8vw, 18px);
+      padding: 8px 11px;
+    }
+
+    .word-chip:nth-child(4n) {
+      font-size: clamp(16px, 4.5vw, 23px);
+      padding: 10px 16px;
+    }
+
+    .word-chip:nth-child(5n) {
+      font-size: clamp(12px, 3.6vw, 16px);
+      padding: 8px 10px;
+    }
+
+    .cant-listen {
+      margin: 8px 0 10px;
+      text-align: center;
+      font-size: clamp(12px, 3.7vw, 17px);
+      font-weight: 800;
+      color: #a0a0a0;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .finish-character {
+      width: clamp(136px, 40vw, 182px);
+      margin: 8px auto 12px;
+      animation: characterBob 2.7s ease-in-out infinite;
+    }
+
+    .finish-sentence {
+      color: #4b4b4b;
+      font-size: clamp(17px, 4.7vw, 25px);
+      line-height: 1.45;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .finish-blank {
+      border-bottom: 2px solid #888;
+      display: inline-block;
+      min-width: 112px;
+      height: 1em;
+      transform: translateY(3px);
+    }
+
+    .finish-options {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: auto;
+      margin-bottom: 10px;
+    }
+
+    .finish-option-btn {
+      border: 2px solid #d7dbe3;
+      border-radius: 14px;
+      background: #ffffff;
+      color: #4b4b4b;
+      font-size: clamp(14px, 4.2vw, 31px);
+      font-weight: 800;
+      min-height: 48px;
+      padding: 9px 14px;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #d0d0d0;
+      transition: transform 0.08s ease, filter 0.14s ease;
+    }
+
+    .finish-option-btn.selected {
+      border-color: #1cb0f6;
+      background: #eef9ff;
+      box-shadow: 0 4px 0 #bfe9fd;
+      color: #1a6f95;
+    }
+
+    .streak-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      min-height: 0;
+      padding-top: 16px;
+      padding-bottom: 102px;
+    }
+
+    .streak-hero {
+      width: clamp(220px, 64vw, 294px);
+      margin: 8px 0 4px;
+      animation: mascotFloat 2.8s ease-in-out infinite;
+    }
+
+    .streak-number {
+      color: #f47b20;
+      font-size: clamp(92px, 24vw, 132px);
+      line-height: 0.95;
+      font-weight: 500;
+      margin-top: -4px;
+    }
+
+    .streak-label {
+      color: #f47b20;
+      font-size: clamp(28px, 8vw, 49px);
+      line-height: 1;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .streak-week {
+      width: 100%;
+      max-width: 340px;
+      margin-top: 8px;
+    }
+
+    .streak-days {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 7px;
+      margin-bottom: 8px;
+      color: #b5b5b5;
+      font-size: clamp(15px, 4.1vw, 18px);
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .streak-dots {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .streak-dot {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 999px;
+      background: #dddddd;
+      border: 2px solid #d8d8d8;
+    }
+
+    .streak-dot.active {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, #f9bb2f 0%, #f49a2a 100%);
+      border-color: #f1c538;
+      color: #ffffff;
+      font-size: clamp(14px, 4vw, 22px);
+      font-weight: 900;
+      box-shadow: inset 0 -3px 0 #de8e23;
     }
 
     .language-header {
@@ -700,9 +1424,24 @@
       margin: 4px 0 10px;
     }
 
+    .language-header--duo-speaks {
+      align-items: flex-end;
+      gap: 6px;
+    }
+
+    .language-duo-enter-wrap {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: flex-end;
+    }
+
     .language-duo {
       width: 90px;
       flex-shrink: 0;
+    }
+
+    .language-duo.duo-airborne {
+      width: auto;
     }
 
     .language-question {
@@ -718,11 +1457,15 @@
       position: relative;
     }
 
-    .language-question::after {
+    /* Tail aims at Duo on the left */
+    .language-header--duo-speaks .language-question::after {
       content: "";
       position: absolute;
       left: -10px;
-      top: 38px;
+      right: auto;
+      top: 40%;
+      bottom: auto;
+      margin-top: -8px;
       width: 0;
       height: 0;
       border-right: 10px solid #d4d4d4;
@@ -730,17 +1473,50 @@
       border-bottom: 8px solid transparent;
     }
 
-    .language-question::before {
+    .language-header--duo-speaks .language-question::before {
       content: "";
       position: absolute;
       left: -6px;
-      top: 40px;
+      right: auto;
+      top: 40%;
+      bottom: auto;
+      margin-top: -6px;
       width: 0;
       height: 0;
       border-right: 8px solid #efefef;
       border-top: 6px solid transparent;
       border-bottom: 6px solid transparent;
       z-index: 1;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      #screen-2:not(.active) .language-duo-enter-wrap {
+        transform: translate3d(calc(-100vw - 40px), 0, 0);
+        animation: none;
+      }
+
+      #screen-2.active .language-duo-enter-wrap {
+        animation: languageDuoFlyInFromLeft var(--lang-duo-enter-dur) cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+
+      #screen-2 .language-duo.duo-airborne {
+        animation: duoAirborne 2.9s ease-in-out var(--lang-duo-enter-dur) infinite;
+      }
+
+      #screen-2 .language-header--duo-speaks .language-question {
+        opacity: 0;
+        transform: translateX(14px);
+      }
+
+      #screen-2:not(.active) .language-header--duo-speaks .language-question {
+        animation: none;
+        opacity: 0;
+        transform: translateX(14px);
+      }
+
+      #screen-2.active .language-header--duo-speaks .language-question {
+        animation: languageQuestionReveal 0.5s cubic-bezier(0.22, 1, 0.36, 1) var(--lang-duo-enter-dur) forwards;
+      }
     }
 
     .language-list {
@@ -930,10 +1706,90 @@
       100% { transform: translateX(0) scale(1); }
     }
 
+    @keyframes languageDuoFlyInFromLeft {
+      from {
+        transform: translate3d(calc(-100vw - 40px), 0, 0);
+      }
+      to {
+        transform: translate3d(0, 0, 0);
+      }
+    }
+
+    @keyframes languageQuestionReveal {
+      from {
+        opacity: 0;
+        transform: translateX(14px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes xpPopIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.72) translateY(-10px);
+      }
+      60% {
+        opacity: 1;
+        transform: scale(1.08) translateY(0);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    @keyframes amazingPopIn {
+      0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.88);
+      }
+      60% {
+        opacity: 1;
+        transform: translateY(-2px) scale(1.04);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes characterBob {
+      0%,
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-5px) rotate(-1.2deg);
+      }
+    }
+
+    @keyframes eyesFloatBlink {
+      0%,
+      100% {
+        transform: translateY(0) scaleY(1);
+      }
+      44% {
+        transform: translateY(-2px) scaleY(1);
+      }
+      47% {
+        transform: translateY(-2px) scaleY(0.18);
+      }
+      50% {
+        transform: translateY(-2px) scaleY(1);
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       * {
         animation: none !important;
         transition: none !important;
+      }
+
+      #screen-2 .language-duo-enter-wrap {
+        transform: none !important;
       }
     }
 
@@ -962,10 +1818,10 @@
     </section>
 
     <section class="screen" id="screen-1">
-      <div class="progress-wrap"><div class="progress-bar" data-progress="auto"></div></div>
+      <div class="progress-wrap"><div class="progress-bar" data-progress="14"></div></div>
       <div class="reward-pill" aria-label="reward">
-        <span>⚡</span>
-        <span>25</span>
+        <span class="xp-label">XP</span>
+        <span data-xp-count>0</span>
       </div>
       <div class="welcome-layout">
         <div class="bubble" data-i18n="welcomeBubble">Welcome to your first short lesson</div>
@@ -977,13 +1833,15 @@
     </section>
 
     <section class="screen" id="screen-2">
-      <div class="progress-wrap"><div class="progress-bar" data-progress="auto"></div></div>
+      <div class="progress-wrap"><div class="progress-bar" data-progress="28"></div></div>
       <div class="reward-pill" aria-label="reward">
-        <span>⚡</span>
-        <span>25</span>
+        <span class="xp-label">XP</span>
+        <span data-xp-count>0</span>
       </div>
-      <div class="language-header">
-        <img class="mascot-img language-duo" src="./assets/duo-happy.png" alt="Duo mascot" loading="lazy" decoding="async">
+      <div class="language-header language-header--duo-speaks">
+        <div class="language-duo-enter-wrap">
+          <img class="mascot-img language-duo duo-airborne" src="./assets/duo%20flying.png" alt="Duo mascot" width="288" height="188" loading="eager" decoding="async">
+        </div>
         <div class="language-question" data-i18n="languageQuestion">What language do you like to learn?</div>
       </div>
       <div class="language-list">
@@ -1001,43 +1859,177 @@
     </section>
 
     <section class="screen" id="screen-3">
-      <div class="progress-wrap"><div class="progress-bar" data-progress="auto"></div></div>
+      <div class="progress-wrap"><div class="progress-bar" data-progress="42"></div></div>
       <div class="reward-pill" aria-label="reward">
-        <span>⚡</span>
-        <span>25</span>
+        <span class="xp-label">XP</span>
+        <span data-xp-count>0</span>
       </div>
-      <div class="topic-header">
+      <div class="topic-header topic-header--duo-speaks">
+        <div class="language-duo-enter-wrap">
+          <img class="mascot-img language-duo duo-airborne" src="./assets/duo%20flying.png" alt="Duo mascot" width="288" height="188" loading="lazy" decoding="async">
+        </div>
         <div class="topic-question" data-i18n="topicQuestion">What topic do you want to learn?</div>
-        <img class="mascot-img topic-duo" src="./assets/duo-happy.png" alt="Duo mascot" loading="lazy" decoding="async">
       </div>
       <div class="topic-picker-grid">
         <button class="topic-btn" data-topic="art">
-          <img class="mascot-img topic-card-img" src="./assets/topic-art.png" alt="" loading="lazy" decoding="async">
+          <img class="mascot-img topic-card-img" src="./assets/duo%20art.png" alt="" loading="lazy" decoding="async">
           <span class="topic-label" data-i18n="topicArt">Art & Creativity</span>
         </button>
         <button class="topic-btn" data-topic="culture">
-          <img class="mascot-img topic-card-img" src="./assets/topic-culture.png" alt="" loading="lazy" decoding="async">
+          <img class="mascot-img topic-card-img" src="./assets/duo%20culture.png" alt="" loading="lazy" decoding="async">
           <span class="topic-label" data-i18n="topicCulture">Culture & Traditions</span>
         </button>
         <button class="topic-btn" data-topic="travel">
-          <img class="mascot-img topic-card-img" src="./assets/topic-travel.png" alt="" loading="lazy" decoding="async">
+          <img class="mascot-img topic-card-img" src="./assets/duo%20travel.png" alt="" loading="lazy" decoding="async">
           <span class="topic-label" data-i18n="topicTravel">Landmarks & Travel</span>
         </button>
         <button class="topic-btn" data-topic="beginner">
-          <img class="mascot-img topic-card-img" src="./assets/topic-beginner.png" alt="" loading="lazy" decoding="async">
+          <img class="mascot-img topic-card-img" src="./assets/duo%20beginner%20lessons.png" alt="" loading="lazy" decoding="async">
           <span class="topic-label" data-i18n="topicBeginner">Beginner Lessons</span>
         </button>
         <button class="topic-btn" data-topic="food">
-          <img class="mascot-img topic-card-img" src="./assets/topic-cooking.png" alt="" loading="lazy" decoding="async">
+          <img class="mascot-img topic-card-img" src="./assets/duo%20food.png" alt="" loading="lazy" decoding="async">
           <span class="topic-label" data-i18n="topicFood">Food & Drinks</span>
         </button>
         <button class="topic-btn" data-topic="pop">
-          <img class="mascot-img topic-card-img" src="./assets/duo-guitar.png" alt="" loading="lazy" decoding="async">
+          <img class="mascot-img topic-card-img" src="./assets/duo%20music.png" alt="" loading="lazy" decoding="async">
           <span class="topic-label" data-i18n="topicPop">Pop Culture & Media</span>
         </button>
       </div>
       <div class="bottom-wrap">
         <button class="btn btn-primary" data-action="topicContinue" data-i18n="continue">Continue</button>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-4">
+      <div class="progress-wrap"><div class="progress-bar" data-progress="56"></div></div>
+      <div class="reward-pill" aria-label="reward">
+        <span class="xp-label">XP</span>
+        <span data-xp-count>0</span>
+      </div>
+      <div class="translate-stage">
+        <h2 class="translate-title" data-i18n="exercise1Title">Translate this sentence.</h2>
+        <div class="translate-header">
+          <img class="mascot-img translate-character" src="./assets/eddy.png" alt="Lesson character" loading="lazy" decoding="async">
+          <div class="translate-prompt">.................</div>
+        </div>
+        <input class="translate-answer" type="text" inputmode="text" autocomplete="off" spellcheck="false" data-i18n-placeholder="answerInEnglish" placeholder="Answer in english">
+      </div>
+      <div class="bottom-wrap">
+        <button class="speak-btn" type="button">
+          <span class="speak-icon">&#127908;</span>
+          <span data-i18n="tapToSpeak">Tap to speak</span>
+        </button>
+        <button class="btn btn-primary btn-inactive" data-action="exerciseContinue" data-role="exerciseContinue" data-i18n="continue" disabled>Continue</button>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-5">
+      <div class="progress-wrap"><div class="progress-bar" data-progress="70"></div></div>
+      <div class="reward-pill" aria-label="reward">
+        <span class="xp-label">XP</span>
+        <span data-xp-count>10</span>
+      </div>
+      <div class="xp-result-stage">
+        <div class="xp-result-value" data-i18n="resultXp">+ 10XP</div>
+        <div class="xp-result-visual">
+          <img class="mascot-img xp-result-photo" src="./assets/xp%20foto.png" alt="XP visual" loading="lazy" decoding="async">
+        </div>
+      </div>
+      <div class="result-footer">
+        <div class="result-status">
+          <span class="result-status-icon" aria-hidden="true">&#10003;</span>
+          <span data-i18n="resultAmazing">Amazing!</span>
+        </div>
+        <button class="btn btn-primary" data-action="resultContinue" data-i18n="continue">Continue</button>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-6">
+      <div class="progress-wrap"><div class="progress-bar" data-progress="84"></div></div>
+      <div class="reward-pill" aria-label="reward">
+        <span class="xp-label">XP</span>
+        <span data-xp-count>10</span>
+      </div>
+      <div class="listen-stage">
+        <h2 class="listen-title" data-i18n="listenTitle">Type what you hear</h2>
+        <div class="listen-header">
+          <img class="mascot-img listen-character" src="./assets/bea.png" alt="Lesson character" loading="lazy" decoding="async">
+          <div class="listen-controls">
+            <button class="listen-icon-btn" type="button" aria-label="Play audio">&#128266;</button>
+            <button class="listen-icon-btn" type="button" aria-label="Slow audio">&#128034;</button>
+          </div>
+        </div>
+        <div class="listen-lines">
+          <div class="listen-line"></div>
+          <div class="listen-line"></div>
+          <div class="listen-line"></div>
+        </div>
+        <div class="word-bank-grid">
+          <button class="word-chip" data-word="dot-1">.....</button>
+          <button class="word-chip" data-word="dot-2">.....</button>
+          <button class="word-chip" data-word="dot-3">.....</button>
+          <button class="word-chip" data-word="dot-4">.....</button>
+          <button class="word-chip" data-word="dot-5">.....</button>
+          <button class="word-chip" data-word="dot-6">.....</button>
+          <button class="word-chip" data-word="dot-7">.....</button>
+          <button class="word-chip" data-word="dot-8">.....</button>
+        </div>
+        <div class="cant-listen" data-i18n="cantListenNow">Cant listen right now</div>
+      </div>
+      <div class="bottom-wrap">
+        <button class="speak-btn" type="button">
+          <span class="speak-icon">&#127908;</span>
+          <span data-i18n="tapToSpeak">Tap to speak</span>
+        </button>
+        <button class="btn btn-primary btn-inactive" data-action="listenContinue" data-role="listenContinue" data-i18n="continue" disabled>Continue</button>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-7">
+      <div class="progress-wrap"><div class="progress-bar" data-progress="90"></div></div>
+      <div class="reward-pill" aria-label="reward">
+        <span class="xp-label">XP</span>
+        <span data-xp-count>20</span>
+      </div>
+      <div class="finish-stage">
+        <h2 class="finish-title" data-i18n="finishTitle">Finish the sentence</h2>
+        <img class="mascot-img finish-character" src="./assets/junior.png" alt="Lesson character" loading="lazy" decoding="async">
+        <p class="finish-sentence">............. <span class="finish-blank"></span> .............</p>
+        <div class="finish-options">
+          <button class="finish-option-btn" data-finish-option="dot-1">.....</button>
+          <button class="finish-option-btn" data-finish-option="dot-2">.....</button>
+          <button class="finish-option-btn" data-finish-option="dot-3">.....</button>
+          <button class="finish-option-btn" data-finish-option="dot-4">.....</button>
+        </div>
+      </div>
+      <div class="bottom-wrap">
+        <button class="btn btn-primary btn-inactive" data-action="finishContinue" data-role="finishContinue" data-i18n="continue" disabled>Continue</button>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-8">
+      <div class="streak-stage">
+        <img class="mascot-img streak-hero" src="./assets/xp%20foto.png" alt="Streak visual" loading="lazy" decoding="async">
+        <div class="streak-number">1</div>
+        <div class="streak-label" data-i18n="streakDaysPracticed">days practiced</div>
+        <div class="streak-week">
+          <div class="streak-days">
+            <span>Ma</span><span>Di</span><span>Wo</span><span>Do</span><span>Vr</span><span>Za</span><span>Zo</span>
+          </div>
+          <div class="streak-dots">
+            <span class="streak-dot active">&#10003;</span>
+            <span class="streak-dot"></span>
+            <span class="streak-dot"></span>
+            <span class="streak-dot"></span>
+            <span class="streak-dot"></span>
+            <span class="streak-dot"></span>
+            <span class="streak-dot"></span>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-wrap">
+        <button class="btn btn-primary" data-action="streakContinue" data-i18n="continue">Continue</button>
       </div>
     </section>
 
@@ -1056,6 +2048,9 @@
         currentStep: 0,
         selectedLanguage: "en",
         selectedTopic: "",
+        xp: 0,
+        animatedProgress: 0,
+        progressAnimFrame: null,
         answers: {
           exercise1: null,
           exercise2: null,
@@ -1100,6 +2095,18 @@
           ex1opt2: "J'ai couru moins bien qu'avant",
           ex1opt3: "Ich lief schlechter als vorher",
           ex1opt4: "I ran better than before",
+          answerInEnglish: "Answer in english",
+          tapToSpeak: "Tap to speak",
+          listenTitle: "Type what you hear",
+          cantListenNow: "Cant listen right now",
+          finishTitle: "Finish the sentence",
+          streakLead: "Je behoort tot de eerste ",
+          streakTail: " die vandaag leren op Duolingo!",
+          streakDaysPracticed: "days practiced",
+          resultXp: "+ 10XP",
+          resultLead: "You belong to the first ",
+          resultTail: " learning today on Duolingo!",
+          resultAmazing: "Amazing!",
           xpGreat: "Great job!",
           xpMotivation: "You're learning fast. Keep the streak alive.",
           exercise2Title: "Listen and build the sentence",
@@ -1148,6 +2155,8 @@
           ex1opt2: "I ran better than before",
           ex1opt3: "I ate before running",
           ex1opt4: "I walked faster than before",
+          answerInEnglish: "Respuesta en ingles",
+          tapToSpeak: "Toca para hablar",
           xpGreat: "Buen trabajo!",
           xpMotivation: "Aprendes rapido. Mantén tu racha.",
           exercise2Title: "Escucha y forma la frase",
@@ -1196,6 +2205,8 @@
           ex1opt2: "I ran better than before",
           ex1opt3: "I was running before lunch",
           ex1opt4: "I run every day",
+          answerInEnglish: "Reponse en anglais",
+          tapToSpeak: "Appuie pour parler",
           xpGreat: "Super travail !",
           xpMotivation: "Tu progresses vite. Continue ta serie.",
           exercise2Title: "Ecoute et construis la phrase",
@@ -1244,6 +2255,8 @@
           ex1opt2: "I ran better than before",
           ex1opt3: "I cooked before running",
           ex1opt4: "I learned faster than before",
+          answerInEnglish: "Antwort auf Englisch",
+          tapToSpeak: "Zum Sprechen tippen",
           xpGreat: "Stark gemacht!",
           xpMotivation: "Du lernst schnell. Halte deine Serie.",
           exercise2Title: "Hore zu und baue den Satz",
@@ -1292,6 +2305,8 @@
           ex1opt2: "I ran better than before",
           ex1opt3: "I listened before running",
           ex1opt4: "I walked yesterday",
+          answerInEnglish: "Risposta in inglese",
+          tapToSpeak: "Tocca per parlare",
           xpGreat: "Ottimo lavoro!",
           xpMotivation: "Stai imparando in fretta. Continua la serie.",
           exercise2Title: "Ascolta e costruisci la frase",
@@ -1340,6 +2355,8 @@
           ex1opt2: "J'ai couru moins bien qu'avant",
           ex1opt3: "Ich lief schlechter als vorher",
           ex1opt4: "I ran better than before",
+          answerInEnglish: "Answer in english",
+          tapToSpeak: "Tap to speak",
           xpGreat: "Great job!",
           xpMotivation: "You're learning fast. Keep the streak alive.",
           exercise2Title: "Listen and build the sentence",
@@ -1388,6 +2405,8 @@
           ex1opt2: "J'ai couru moins bien qu'avant",
           ex1opt3: "Ich lief schlechter als vorher",
           ex1opt4: "I ran better than before",
+          answerInEnglish: "Answer in english",
+          tapToSpeak: "Tap to speak",
           xpGreat: "Great job!",
           xpMotivation: "You're learning fast. Keep the streak alive.",
           exercise2Title: "Listen and build the sentence",
@@ -1406,7 +2425,7 @@
       };
 
       function exitAd() {
-        window.open("https://example.com", "_blank");
+        window.open("https://www.duolingo.com", "_blank");
       }
       window.exitAd = exitAd;
 
@@ -1416,6 +2435,15 @@
       const app = document.getElementById("app");
       const backBtn = document.getElementById("backBtn");
       const welcomeDuo = document.querySelector(".welcome-duo");
+      const exerciseAnswerInput = document.querySelector(".translate-answer");
+      const exerciseContinueButton = document.querySelector('[data-role="exerciseContinue"]');
+      const listenContinueButton = document.querySelector('[data-role="listenContinue"]');
+      const finishContinueButton = document.querySelector('[data-role="finishContinue"]');
+      const xpCountNodes = Array.from(document.querySelectorAll("[data-xp-count]"));
+      const wordChipButtons = Array.from(document.querySelectorAll(".word-chip"));
+      const finishOptionButtons = Array.from(document.querySelectorAll(".finish-option-btn"));
+      const xpResultValue = document.querySelector(".xp-result-value");
+      const resultStatus = document.querySelector(".result-status");
 
       function getT(key) {
         const langPack = translations[state.selectedLanguage] || translations.en;
@@ -1424,7 +2452,7 @@
 
       function safeAdvance(nextStep) {
         const step = Number.isInteger(nextStep) ? nextStep : state.currentStep + 1;
-        const clamped = Math.max(0, Math.min(3, step));
+        const clamped = Math.max(0, Math.min(8, step));
         showScreen(clamped);
       }
 
@@ -1438,7 +2466,7 @@
       }
 
       function shouldShowBack(step) {
-        return step >= 2 && step <= 3;
+        return step >= 2 && step <= 8;
       }
 
       function showScreen(step, opts) {
@@ -1455,16 +2483,29 @@
           screen.classList.toggle("active", idx === step);
         });
         const dynamicProgress = getProgressForStep(step);
+        let activeProgressBar = null;
+        screens.forEach((screen, idx) => {
+          if (idx !== step) return;
+          activeProgressBar = screen.querySelector(".progress-bar");
+        });
         document.querySelectorAll(".progress-bar").forEach((bar) => {
           const target = bar.getAttribute("data-progress");
+          const isActiveBar = activeProgressBar === bar;
+          if (isActiveBar) return;
           if (!target || target === "auto") {
             bar.style.width = dynamicProgress + "%";
             return;
           }
           bar.style.width = target + "%";
         });
+        if (activeProgressBar) {
+          const target = activeProgressBar.getAttribute("data-progress");
+          const targetProgress = !target || target === "auto" ? dynamicProgress : Number(target);
+          animateProgressTo(activeProgressBar, targetProgress);
+        }
         animateScreenIn(step);
         triggerWelcomeDuo(step);
+        triggerResultAnimations(step);
 
         const showBack = shouldShowBack(step) && state.navStack.length > 0;
         if (backBtn) backBtn.classList.toggle("hidden", !showBack);
@@ -1479,11 +2520,35 @@
         welcomeDuo.classList.add("fly-in");
       }
 
+      function triggerResultAnimations(step) {
+        if (step !== 5) return;
+        if (xpResultValue) {
+          xpResultValue.classList.remove("xp-pop-in");
+          void xpResultValue.offsetWidth;
+          xpResultValue.classList.add("xp-pop-in");
+        }
+        if (resultStatus) {
+          resultStatus.classList.remove("amazing-pop-in");
+          void resultStatus.offsetWidth;
+          resultStatus.classList.add("amazing-pop-in");
+        }
+      }
+
       function animateScreenIn(step) {
         const screen = screens[step];
         if (!screen) return;
-        const nodes = screen.querySelectorAll("h1, h2, p, .bubble, .card, .mascot-img, .btn, .lang-btn, .topic-btn, .option-btn, .word-btn, .sentence-box, .audio-pill, .dots");
-        nodes.forEach(function (node, idx) {
+        const all = Array.from(screen.querySelectorAll("h1, h2, p, .bubble, .card, .mascot-img, .btn, .lang-btn, .topic-btn, .option-btn, .word-btn, .sentence-box, .audio-pill, .dots"));
+        const nodes = all.filter(function (node) {
+          if (!node.classList.contains("language-duo")) return true;
+          return step !== 2 && step !== 3;
+        });
+        const nodesWithoutIdleCharacters = nodes.filter(function (node) {
+          if (!node.classList) return true;
+          return !node.classList.contains("listen-character")
+            && !node.classList.contains("finish-character")
+            && !node.classList.contains("translate-character");
+        });
+        nodesWithoutIdleCharacters.forEach(function (node, idx) {
           node.classList.remove("anim-fade-up", "anim-stagger-1", "anim-stagger-2", "anim-stagger-3", "anim-stagger-4");
           void node.offsetWidth;
           node.classList.add("anim-fade-up");
@@ -1500,11 +2565,48 @@
         return Math.max(0, Math.min(100, Math.round((completed / total) * 100)));
       }
 
+      function animateProgressTo(bar, targetProgress) {
+        const target = Math.max(0, Math.min(100, Number(targetProgress) || 0));
+        const start = Math.max(0, Math.min(100, Number(state.animatedProgress) || 0));
+        if (state.progressAnimFrame) {
+          window.cancelAnimationFrame(state.progressAnimFrame);
+          state.progressAnimFrame = null;
+        }
+        if (Math.abs(target - start) < 0.1) {
+          bar.style.width = target + "%";
+          state.animatedProgress = target;
+          return;
+        }
+        const duration = 560;
+        const startAt = performance.now();
+        const easeOutCubic = function (t) {
+          return 1 - Math.pow(1 - t, 3);
+        };
+        const tick = function (now) {
+          const elapsed = now - startAt;
+          const t = Math.max(0, Math.min(1, elapsed / duration));
+          const eased = easeOutCubic(t);
+          const next = start + (target - start) * eased;
+          bar.style.width = next + "%";
+          if (t < 1) {
+            state.progressAnimFrame = window.requestAnimationFrame(tick);
+            return;
+          }
+          state.animatedProgress = target;
+          state.progressAnimFrame = null;
+        };
+        state.progressAnimFrame = window.requestAnimationFrame(tick);
+      }
+
       function applyTranslations() {
         document.documentElement.lang = state.selectedLanguage;
         document.querySelectorAll("[data-i18n]").forEach((node) => {
           const key = node.getAttribute("data-i18n");
           node.textContent = getT(key);
+        });
+        document.querySelectorAll("[data-i18n-placeholder]").forEach((node) => {
+          const key = node.getAttribute("data-i18n-placeholder");
+          node.setAttribute("placeholder", getT(key));
         });
       }
 
@@ -1541,11 +2643,59 @@
         });
       }
 
+      function updateExerciseContinueState() {
+        if (!exerciseContinueButton || !exerciseAnswerInput) return;
+        const hasAnswer = exerciseAnswerInput.value.trim().length > 0;
+        exerciseContinueButton.disabled = !hasAnswer;
+        exerciseContinueButton.classList.toggle("btn-inactive", !hasAnswer);
+      }
+
+      function updateListenContinueState() {
+        if (!listenContinueButton) return;
+        const hasSelection = wordChipButtons.some(function (btn) {
+          return btn.classList.contains("selected");
+        });
+        listenContinueButton.disabled = !hasSelection;
+        listenContinueButton.classList.toggle("btn-inactive", !hasSelection);
+      }
+
+      function updateFinishContinueState() {
+        if (!finishContinueButton) return;
+        const hasSelection = finishOptionButtons.some(function (btn) {
+          return btn.classList.contains("selected");
+        });
+        finishContinueButton.disabled = !hasSelection;
+        finishContinueButton.classList.toggle("btn-inactive", !hasSelection);
+      }
+
+      function updateXpCounters() {
+        xpCountNodes.forEach(function (node) {
+          node.textContent = String(state.xp);
+        });
+      }
+
       function bindStaticActions() {
         const map = {
           welcomeContinue: function () { safeAdvance(2); },
           languageContinue: function () { safeAdvance(3); },
-          topicContinue: function () { exitAd(); },
+          topicContinue: function () { safeAdvance(4); },
+          exerciseContinue: function () {
+            state.xp += 10;
+            updateXpCounters();
+            safeAdvance(5);
+          },
+          resultContinue: function () { safeAdvance(6); },
+          listenContinue: function () {
+            state.xp += 10;
+            updateXpCounters();
+            safeAdvance(7);
+          },
+          finishContinue: function () {
+            state.xp += 10;
+            updateXpCounters();
+            safeAdvance(8);
+          },
+          streakContinue: function () { exitAd(); },
           goBack: function () {
             if (!state.navStack.length) return;
             const step = state.navStack.pop();
@@ -1581,6 +2731,25 @@
             welcomeDuo.classList.add("tap-bounce");
           }), { passive: false });
         }
+
+        if (exerciseAnswerInput) {
+          exerciseAnswerInput.addEventListener("input", updateExerciseContinueState, { passive: true });
+        }
+
+        wordChipButtons.forEach(function (btn) {
+          btn.addEventListener("click", handleTap(function () {
+            btn.classList.toggle("selected");
+            updateListenContinueState();
+          }), { passive: false });
+        });
+
+        finishOptionButtons.forEach(function (btn) {
+          btn.addEventListener("click", handleTap(function () {
+            finishOptionButtons.forEach(function (b) { b.classList.remove("selected"); });
+            btn.classList.add("selected");
+            updateFinishContinueState();
+          }), { passive: false });
+        });
       }
 
       function init() {
@@ -1588,6 +2757,10 @@
         bindOptionPickers();
         selectLanguage("en");
         selectTopic("travel");
+        updateXpCounters();
+        updateExerciseContinueState();
+        updateListenContinueState();
+        updateFinishContinueState();
         showScreen(0);
         window.setTimeout(function () {
           safeAdvance(1);
