@@ -999,15 +999,19 @@
 
     .translate-prompt {
       flex: 1;
+      min-width: 0;
       border: 3px solid #dddddd;
       border-radius: 16px;
       background: #f9f9f9;
       color: #474747;
       font-size: clamp(14px, 4.2vw, 18px);
-      line-height: 1.2;
+      line-height: 1.25;
       font-weight: 800;
       padding: 14px 14px;
       position: relative;
+      text-align: center;
+      word-break: break-word;
+      hyphens: auto;
     }
 
     .translate-prompt::before {
@@ -1286,13 +1290,21 @@
       border-radius: 14px;
       background: #ffffff;
       color: #4b4b4b;
-      font-size: clamp(14px, 4.2vw, 31px);
+      font-size: clamp(13px, 3.5vw, 17px);
       font-weight: 800;
-      padding: 9px 14px;
-      line-height: 1;
+      padding: 10px 12px;
+      line-height: 1.15;
+      min-height: 44px;
       cursor: pointer;
       box-shadow: 0 4px 0 #d0d0d0;
       transition: transform 0.08s ease, filter 0.14s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      max-width: 100%;
+      word-break: break-word;
+      hyphens: auto;
     }
 
     .word-chip.selected {
@@ -1302,29 +1314,37 @@
       color: #1a6f95;
     }
 
-    .word-chip:nth-child(3n) {
-      font-size: clamp(13px, 3.8vw, 18px);
-      padding: 8px 11px;
-    }
-
-    .word-chip:nth-child(4n) {
-      font-size: clamp(16px, 4.5vw, 23px);
-      padding: 10px 16px;
-    }
-
-    .word-chip:nth-child(5n) {
-      font-size: clamp(12px, 3.6vw, 16px);
-      padding: 8px 10px;
-    }
-
-    .cant-listen {
+    .exercise-help-links {
       margin: 8px 0 10px;
       text-align: center;
-      font-size: clamp(12px, 3.7vw, 17px);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .cant-listen,
+    .show-answer-link {
+      border: 0;
+      background: transparent;
+      padding: 0;
+      font-size: clamp(12px, 3.5vw, 15px);
       font-weight: 800;
       color: #a0a0a0;
       letter-spacing: 0.02em;
       text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .show-answer-link {
+      color: #7d7d86;
+    }
+
+    .show-answer-link:active,
+    .cant-listen:active {
+      opacity: 0.75;
     }
 
     .finish-character {
@@ -1351,10 +1371,11 @@
 
     .finish-options {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 8px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
       margin-top: auto;
       margin-bottom: 10px;
+      width: 100%;
     }
 
     .finish-option-btn {
@@ -1362,14 +1383,23 @@
       border-radius: 14px;
       background: #ffffff;
       color: #4b4b4b;
-      font-size: clamp(14px, 4.2vw, 31px);
+      font-size: clamp(14px, 3.6vw, 18px);
       font-weight: 800;
-      min-height: 48px;
-      padding: 9px 14px;
-      line-height: 1;
+      min-height: 52px;
+      min-width: 0;
+      width: 100%;
+      padding: 10px 12px;
+      line-height: 1.15;
       cursor: pointer;
       box-shadow: 0 4px 0 #d0d0d0;
       transition: transform 0.08s ease, filter 0.14s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      word-break: break-word;
+      hyphens: auto;
+      box-sizing: border-box;
     }
 
     .finish-option-btn.selected {
@@ -1377,6 +1407,77 @@
       background: #eef9ff;
       box-shadow: 0 4px 0 #bfe9fd;
       color: #1a6f95;
+    }
+
+    .helaas-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 30;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: var(--screen-pad-top) var(--screen-pad-x) calc(var(--screen-pad-bottom) + env(safe-area-inset-bottom));
+      background: rgba(247, 247, 251, 0.97);
+    }
+
+    .helaas-overlay.active {
+      display: flex;
+    }
+
+    .helaas-screen {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+      justify-content: center;
+      padding-bottom: 88px;
+    }
+
+    .helaas-title {
+      margin: 0 0 8px;
+      font-size: clamp(34px, 9vw, 44px);
+      font-weight: 800;
+      color: #e86b6b;
+      line-height: 1.05;
+    }
+
+    .helaas-subtitle {
+      margin: 0 0 16px;
+      font-size: clamp(15px, 4.2vw, 18px);
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .helaas-answer-box {
+      width: 100%;
+      max-width: 340px;
+      border: 2px solid #d7dbe3;
+      border-radius: 16px;
+      background: #ffffff;
+      padding: 18px 16px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .helaas-answer-text {
+      margin: 0;
+      font-size: clamp(20px, 5.5vw, 28px);
+      font-weight: 800;
+      color: #4b4b4b;
+      line-height: 1.25;
+      word-break: break-word;
+    }
+
+    .helaas-overlay .bottom-wrap {
+      position: absolute;
+      left: var(--screen-pad-x);
+      right: var(--screen-pad-x);
+      bottom: calc(16px + env(safe-area-inset-bottom));
+      margin-top: 0;
+      padding-top: 0;
+      width: auto;
     }
 
     .streak-stage {
@@ -1997,6 +2098,9 @@
         </div>
         <input class="translate-answer" type="text" inputmode="text" autocomplete="off" spellcheck="false" data-i18n-placeholder="answerInEnglish" placeholder="Answer in english">
         <div class="answer-feedback" data-role="exerciseFeedback" aria-live="polite"></div>
+        <div class="exercise-help-links">
+          <button type="button" class="show-answer-link" data-action="revealAnswer" data-exercise="translate" data-i18n="showAnswer">Show answer</button>
+        </div>
       </div>
       <div class="bottom-wrap">
         <button class="speak-btn" type="button">
@@ -2059,7 +2163,10 @@
           <button class="word-chip" data-word="word-8" data-i18n="ex2word8">please</button>
         </div>
         <div class="answer-feedback" data-role="listenFeedback" aria-live="polite"></div>
-        <div class="cant-listen" data-i18n="cantListenNow">Cant listen right now</div>
+        <div class="exercise-help-links">
+          <div class="cant-listen" data-i18n="cantListenNow">Cant listen right now</div>
+          <button type="button" class="show-answer-link" data-action="revealAnswer" data-exercise="listen" data-i18n="showAnswer">Show answer</button>
+        </div>
       </div>
       <div class="bottom-wrap">
         <button class="speak-btn" type="button">
@@ -2087,6 +2194,9 @@
           <button class="finish-option-btn" data-finish-option="word-4" data-i18n="ex3opt4">green</button>
         </div>
         <div class="answer-feedback" data-role="finishFeedback" aria-live="polite"></div>
+        <div class="exercise-help-links">
+          <button type="button" class="show-answer-link" data-action="revealAnswer" data-exercise="finish" data-i18n="showAnswer">Show answer</button>
+        </div>
       </div>
       <div class="bottom-wrap">
         <button class="btn btn-primary btn-inactive" data-action="finishContinue" data-role="finishContinue" data-i18n="continue" disabled>Continue</button>
@@ -2118,6 +2228,18 @@
       </div>
     </section>
 
+    <div class="helaas-overlay" id="helaas-overlay" aria-hidden="true">
+      <div class="helaas-screen">
+        <h2 class="helaas-title" data-i18n="helaasTitle">Unfortunately!</h2>
+        <p class="helaas-subtitle" data-i18n="helaasSubtitle">The correct answer is:</p>
+        <div class="helaas-answer-box">
+          <p class="helaas-answer-text" data-role="helaasAnswer"></p>
+        </div>
+      </div>
+      <div class="bottom-wrap">
+        <button class="btn btn-primary" data-action="helaasContinue" data-i18n="continue">Continue</button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -2144,7 +2266,8 @@
         },
         sentenceWords: [],
         locked: false,
-        navStack: []
+        navStack: [],
+        helaasContinueStep: null
       };
 
       const LESSON_BY_PAIR = {
@@ -2220,6 +2343,9 @@
           answerInEnglish: "Type your answer",
           answerCorrect: "Correct!",
           answerTryAgain: "Try again",
+          showAnswer: "Show answer",
+          helaasTitle: "Unfortunately!",
+          helaasSubtitle: "The correct answer is:",
           tapToSpeak: "Tap to speak",
           listenTitle: "Type what you hear",
           ex2word1: "I",
@@ -2298,6 +2424,9 @@
           answerInEnglish: "Typ je antwoord",
           answerCorrect: "Goed!",
           answerTryAgain: "Probeer opnieuw",
+          showAnswer: "Toon antwoord",
+          helaasTitle: "Helaas!",
+          helaasSubtitle: "Het juiste antwoord is:",
           tapToSpeak: "Tik om te spreken",
           listenTitle: "Typ wat je hoort",
           ex2word1: "Ik",
@@ -2668,6 +2797,8 @@
       const exerciseFeedback = document.querySelector('[data-role="exerciseFeedback"]');
       const listenFeedback = document.querySelector('[data-role="listenFeedback"]');
       const finishFeedback = document.querySelector('[data-role="finishFeedback"]');
+      const helaasOverlay = document.getElementById("helaas-overlay");
+      const helaasAnswerNode = document.querySelector('[data-role="helaasAnswer"]');
 
       function getT(key) {
         const langPack = translations[state.uiLanguage] || translations.en;
@@ -2755,6 +2886,7 @@
         if (backBtn) backBtn.classList.toggle("hidden", !showBack);
 
         resetInteractiveStateForStep(step);
+        hideHelaasOverlay();
       }
 
       function triggerWelcomeDuo(step) {
@@ -3014,6 +3146,61 @@
         lockFor(FLOW_DELAYS.answer, function () { safeAdvance(step); });
       }
 
+      function getListenSentenceText() {
+        const lesson = getLessonPack();
+        return ["ex2word1", "ex2word2", "ex2word3", "ex2word4"]
+          .map(function (key) { return lesson[key]; })
+          .filter(Boolean)
+          .join(" ");
+      }
+
+      function getRevealAnswerText(exerciseType) {
+        const lesson = getLessonPack();
+        if (exerciseType === "translate") {
+          return lesson.exercise1[0];
+        }
+        if (exerciseType === "listen") {
+          return getListenSentenceText();
+        }
+        if (exerciseType === "finish") {
+          const correctBtn = finishOptionButtons.find(function (btn) {
+            return btn.dataset.finishOption === lesson.exercise3;
+          });
+          return correctBtn ? correctBtn.textContent.trim() : lesson.ex3opt1 || "";
+        }
+        return "";
+      }
+
+      function getContinueStepAfterReveal(exerciseType) {
+        if (exerciseType === "translate") return 7;
+        if (exerciseType === "listen") return 8;
+        if (exerciseType === "finish") return 9;
+        return state.currentStep + 1;
+      }
+
+      function hideHelaasOverlay() {
+        if (!helaasOverlay) return;
+        helaasOverlay.classList.remove("active");
+        helaasOverlay.setAttribute("aria-hidden", "true");
+        state.helaasContinueStep = null;
+      }
+
+      function showHelaasOverlay(exerciseType) {
+        if (!helaasOverlay || !helaasAnswerNode) return;
+        helaasAnswerNode.textContent = getRevealAnswerText(exerciseType);
+        state.helaasContinueStep = getContinueStepAfterReveal(exerciseType);
+        helaasOverlay.querySelectorAll("[data-i18n]").forEach(function (node) {
+          const key = node.getAttribute("data-i18n");
+          node.textContent = getT(key);
+        });
+        helaasOverlay.setAttribute("aria-hidden", "false");
+        helaasOverlay.classList.add("active");
+      }
+
+      function revealAnswer(exerciseType) {
+        showHelaasOverlay(exerciseType);
+      }
+
       function checkExerciseAnswer() {
         if (!exerciseAnswerInput) return false;
         const answer = normalizeAnswer(exerciseAnswerInput.value);
@@ -3090,6 +3277,11 @@
           resultContinue: function () { safeAdvance(7); },
           listenContinue: checkListenAnswer,
           finishContinue: checkFinishAnswer,
+          helaasContinue: function () {
+            const step = state.helaasContinueStep;
+            hideHelaasOverlay();
+            if (Number.isInteger(step)) safeAdvance(step);
+          },
           streakContinue: function () { exitAd(); },
           goBack: function () {
             if (!state.navStack.length) return;
@@ -3100,10 +3292,25 @@
 
         app.querySelectorAll("[data-action]").forEach((el) => {
           const actionKey = el.getAttribute("data-action");
+          if (actionKey === "revealAnswer") {
+            el.addEventListener("click", handleTap(function () {
+              revealAnswer(el.getAttribute("data-exercise"));
+            }), { passive: false });
+            return;
+          }
           const action = map[actionKey];
           if (!action) return;
           el.addEventListener("click", handleTap(action), { passive: false });
         });
+
+        if (helaasOverlay) {
+          helaasOverlay.querySelectorAll("[data-action]").forEach(function (el) {
+            const actionKey = el.getAttribute("data-action");
+            const action = map[actionKey];
+            if (!action) return;
+            el.addEventListener("click", handleTap(action), { passive: false });
+          });
+        }
       }
 
       function bindOptionPickers() {
