@@ -2194,8 +2194,8 @@
         <div class="listen-header">
           <img class="mascot-img listen-character" src="./assets/bea.png" alt="Lesson character" loading="lazy" decoding="async">
           <div class="listen-controls">
-            <button class="listen-icon-btn" type="button" aria-label="Play audio">&#128266;</button>
-            <button class="listen-icon-btn" type="button" aria-label="Slow audio">&#128034;</button>
+            <button class="listen-icon-btn" type="button" data-listen-play aria-label="Play audio">&#128266;</button>
+            <button class="listen-icon-btn" type="button" data-listen-slow aria-label="Slow audio">&#128034;</button>
           </div>
         </div>
         <div class="listen-sentence-area is-empty" data-role="listenSentence" aria-live="polite"></div>
@@ -2954,6 +2954,9 @@
       const wordBankGrid = document.querySelector(".word-bank-grid");
       const wordChipButtons = Array.from(document.querySelectorAll(".word-chip"));
       const listenSentenceNode = document.querySelector('[data-role="listenSentence"]');
+      const listenPlayButton = document.querySelector("[data-listen-play]");
+      const listenSlowButton = document.querySelector("[data-listen-slow]");
+      const listenAudioPlayer = new Audio();
       const finishOptionButtons = Array.from(document.querySelectorAll(".finish-option-btn"));
       const xpResultValue = document.querySelector(".xp-result-value");
       const resultStatus = document.querySelector(".result-status");
@@ -3386,6 +3389,20 @@
         lockFor(FLOW_DELAYS.answer, function () { safeAdvance(step); });
       }
 
+      function getListenAudioSrc() {
+        const pair = getLessonPairKey();
+        const topic = state.selectedTopic || "beginner";
+        return "./assets/audio/" + pair + "/" + topic + ".mp3";
+      }
+
+      function playListenAudio(slow) {
+        listenAudioPlayer.pause();
+        listenAudioPlayer.src = getListenAudioSrc();
+        listenAudioPlayer.currentTime = 0;
+        listenAudioPlayer.playbackRate = slow ? 0.72 : 1;
+        listenAudioPlayer.play().catch(function () {});
+      }
+
       function getListenSentenceText() {
         const lesson = getLessonPack();
         return lesson.exercise2.map(function (wordId) {
@@ -3594,6 +3611,18 @@
 
         if (exerciseAnswerInput) {
           exerciseAnswerInput.addEventListener("input", updateExerciseContinueState, { passive: true });
+        }
+
+        if (listenPlayButton) {
+          listenPlayButton.addEventListener("click", handleTap(function () {
+            playListenAudio(false);
+          }), { passive: false });
+        }
+
+        if (listenSlowButton) {
+          listenSlowButton.addEventListener("click", handleTap(function () {
+            playListenAudio(true);
+          }), { passive: false });
         }
 
         wordChipButtons.forEach(function (btn) {

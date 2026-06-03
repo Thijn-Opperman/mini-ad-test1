@@ -25,6 +25,21 @@ Kort: voor reguliere apps zou je sneller splitsen naar meerdere bestanden/module
 
 - `index.html`: complete playable flow (HTML + CSS + JavaScript)
 - `assets/`: karakterafbeeldingen en visuals
+- `assets/audio/`: MP3-bestanden voor “Type what you hear”
+
+### Audio (MP3) voor listen-oefeningen
+
+Plaats je MP3’s in deze mappen met **exact deze bestandsnamen**:
+
+**`assets/audio/nl-en/`** (Nederlands spreken → Engels leren)
+
+- `art.mp3`, `culture.mp3`, `travel.mp3`, `beginner.mp3`, `food.mp3`, `pop.mp3`
+
+**`assets/audio/en-nl/`** (Engels spreken → Nederlands leren)
+
+- `art.mp3`, `culture.mp3`, `travel.mp3`, `beginner.mp3`, `food.mp3`, `pop.mp3`
+
+De play-knop speelt het bestand af; de schildpad-knop hetzelfde bestand op langzame snelheid (72%). Je hoeft geen aparte slow-MP3 te maken.
 
 ## Huidige flow (globaal)
 
