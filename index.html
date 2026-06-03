@@ -323,6 +323,30 @@
       animation: shake 300ms ease;
     }
 
+    .answer-feedback {
+      min-height: 24px;
+      margin-top: 10px;
+      font-size: 15px;
+      font-weight: 800;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: opacity 0.16s ease, transform 0.16s ease;
+    }
+
+    .answer-feedback.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .answer-feedback.is-wrong {
+      color: var(--danger);
+    }
+
+    .answer-feedback.is-correct {
+      color: var(--success);
+    }
+
     .xp {
       font-size: 52px;
       font-weight: 900;
@@ -694,7 +718,8 @@
     #screen-4,
     #screen-5,
     #screen-6,
-    #screen-7 {
+    #screen-7,
+    #screen-8 {
       padding-top: calc(clamp(62px, 11vh, 72px) + env(safe-area-inset-top));
       padding-bottom: calc(96px + env(safe-area-inset-bottom));
     }
@@ -707,16 +732,19 @@
       );
     }
 
-    #screen-2 {
+    #screen-2,
+    #screen-3 {
       --lang-duo-enter-dur: 1.12s;
     }
 
-    #screen-2 .language-header {
+    #screen-2 .language-header,
+    #screen-3 .language-header {
       margin-top: 0;
       margin-bottom: 4px;
     }
 
-    #screen-2 .language-header.language-header--duo-speaks {
+    #screen-2 .language-header.language-header--duo-speaks,
+    #screen-3 .language-header.language-header--duo-speaks {
       flex-shrink: 0;
       align-self: stretch;
       align-items: center;
@@ -724,7 +752,8 @@
       margin-bottom: 0;
     }
 
-    #screen-2 .language-header--duo-speaks .language-question {
+    #screen-2 .language-header--duo-speaks .language-question,
+    #screen-3 .language-header--duo-speaks .language-question {
       margin-top: -18px;
     }
 
@@ -744,12 +773,12 @@
       opacity: 1;
     }
 
-    #screen-3 .topic-header {
+    #screen-4 .topic-header {
       margin-top: 0;
       margin-bottom: 0;
     }
 
-    #screen-3 .topic-header.topic-header--duo-speaks {
+    #screen-4 .topic-header.topic-header--duo-speaks {
       flex-shrink: 0;
       align-self: stretch;
       align-items: center;
@@ -757,11 +786,11 @@
       margin-bottom: 0;
     }
 
-    #screen-3 .topic-header--duo-speaks .topic-question {
+    #screen-4 .topic-header--duo-speaks .topic-question {
       margin-top: -18px;
     }
 
-    #screen-3 .topic-picker-grid {
+    #screen-4 .topic-picker-grid {
       margin-top: clamp(-26px, -4vh, -16px);
       flex: 1 1 0;
       min-height: 0;
@@ -771,7 +800,7 @@
       align-content: stretch;
     }
 
-    #screen-3 .topic-picker-grid .topic-btn {
+    #screen-4 .topic-picker-grid .topic-btn {
       min-height: 0;
       height: 100%;
       align-self: stretch;
@@ -781,7 +810,7 @@
     }
 
     /* Vaste canvas: alle PNG's zelfde slot als Art & Creativity (vierkant, contain) */
-    #screen-3 .topic-card-img {
+    #screen-4 .topic-card-img {
       width: clamp(58px, 18vw, 72px);
       height: clamp(58px, 18vw, 72px);
       flex-shrink: 0;
@@ -790,25 +819,26 @@
     }
 
     /* Iets grotere sprites: Beginner, Pop, Travel */
-    #screen-3 .topic-btn[data-topic="beginner"] .topic-card-img,
-    #screen-3 .topic-btn[data-topic="pop"] .topic-card-img,
-    #screen-3 .topic-btn[data-topic="travel"] .topic-card-img {
+    #screen-4 .topic-btn[data-topic="beginner"] .topic-card-img,
+    #screen-4 .topic-btn[data-topic="pop"] .topic-card-img,
+    #screen-4 .topic-btn[data-topic="travel"] .topic-card-img {
       width: clamp(68px, 22vw, 86px);
       height: clamp(68px, 22vw, 86px);
     }
 
     /* Nog groter: Culture & Traditions */
-    #screen-3 .topic-btn[data-topic="culture"] .topic-card-img {
+    #screen-4 .topic-btn[data-topic="culture"] .topic-card-img {
       width: clamp(78px, 27vw, 100px);
       height: clamp(78px, 27vw, 100px);
     }
 
-    #screen-3 .topic-label {
+    #screen-4 .topic-label {
       font-size: clamp(11px, 3.1vw, 13px);
       line-height: 1.12;
     }
 
-    #screen-2 .language-list {
+    #screen-2 .language-list,
+    #screen-3 .language-list {
       flex: 1 1 auto;
       min-height: 0;
       overflow-y: auto;
@@ -820,11 +850,13 @@
       scrollbar-color: var(--green) #e3e8f0;
     }
 
-    #screen-2 .language-list::-webkit-scrollbar {
+    #screen-2 .language-list::-webkit-scrollbar,
+    #screen-3 .language-list::-webkit-scrollbar {
       width: 11px;
     }
 
-    #screen-2 .language-list::-webkit-scrollbar-track {
+    #screen-2 .language-list::-webkit-scrollbar-track,
+    #screen-3 .language-list::-webkit-scrollbar-track {
       background: linear-gradient(180deg, #f0f2f7 0%, #e5e9f2 100%);
       border-radius: 999px;
       margin: 8px 0 10px;
@@ -832,7 +864,8 @@
       box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.85);
     }
 
-    #screen-2 .language-list::-webkit-scrollbar-thumb {
+    #screen-2 .language-list::-webkit-scrollbar-thumb,
+    #screen-3 .language-list::-webkit-scrollbar-thumb {
       background: linear-gradient(180deg, #89e92e 0%, var(--green) 42%, var(--green-dark) 100%);
       border-radius: 999px;
       border: 2px solid #e8ecf4;
@@ -841,7 +874,8 @@
         0 2px 4px rgba(70, 163, 2, 0.22);
     }
 
-    #screen-2 .language-list::-webkit-scrollbar-thumb:active {
+    #screen-2 .language-list::-webkit-scrollbar-thumb:active,
+    #screen-3 .language-list::-webkit-scrollbar-thumb:active {
       background: linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%);
     }
 
@@ -851,7 +885,8 @@
     #screen-4 .progress-wrap,
     #screen-5 .progress-wrap,
     #screen-6 .progress-wrap,
-    #screen-7 .progress-wrap {
+    #screen-7 .progress-wrap,
+    #screen-8 .progress-wrap {
       position: absolute;
       top: calc(clamp(16px, 3.8vh, 24px) + env(safe-area-inset-top));
       left: var(--screen-pad-x);
@@ -867,7 +902,8 @@
     #screen-4 .reward-pill,
     #screen-5 .reward-pill,
     #screen-6 .reward-pill,
-    #screen-7 .reward-pill {
+    #screen-7 .reward-pill,
+    #screen-8 .reward-pill {
       position: absolute;
       top: calc(clamp(14px, 3.6vh, 22px) + env(safe-area-inset-top));
       right: var(--screen-pad-x);
@@ -879,9 +915,10 @@
     #screen-2 .bottom-wrap,
     #screen-3 .bottom-wrap,
     #screen-4 .bottom-wrap,
-    #screen-6 .bottom-wrap,
+    #screen-5 .bottom-wrap,
     #screen-7 .bottom-wrap,
-    #screen-8 .bottom-wrap {
+    #screen-8 .bottom-wrap,
+    #screen-9 .bottom-wrap {
       position: absolute;
       left: var(--screen-pad-x);
       right: var(--screen-pad-x);
@@ -891,26 +928,26 @@
       z-index: 3;
     }
 
-    #screen-4 .translate-stage {
+    #screen-5 .translate-stage {
       margin-top: clamp(12px, 3.4vh, 18px);
     }
 
-    #screen-6 .listen-stage,
-    #screen-7 .finish-stage {
+    #screen-7 .listen-stage,
+    #screen-8 .finish-stage {
       margin-top: clamp(6px, 2vh, 12px);
       padding-bottom: 84px;
     }
 
-    #screen-6 .bottom-wrap {
+    #screen-7 .bottom-wrap {
       gap: 2px;
     }
 
-    #screen-6 .listen-lines {
+    #screen-7 .listen-lines {
       margin-top: 6px;
       margin-bottom: 10px;
     }
 
-    #screen-6 .word-bank-grid {
+    #screen-7 .word-bank-grid {
       column-gap: 10px;
       row-gap: 8px;
       margin-top: -4px;
@@ -1039,7 +1076,7 @@
       line-height: 1;
     }
 
-    #screen-4 .bottom-wrap {
+    #screen-5 .bottom-wrap {
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -1136,7 +1173,7 @@
       font-weight: 900;
     }
 
-    #screen-5 {
+    #screen-6 {
       padding-bottom: calc(166px + env(safe-area-inset-bottom));
     }
 
@@ -1490,31 +1527,37 @@
     }
 
     @media (prefers-reduced-motion: no-preference) {
-      #screen-2:not(.active) .language-duo-enter-wrap {
+      #screen-2:not(.active) .language-duo-enter-wrap,
+      #screen-3:not(.active) .language-duo-enter-wrap {
         transform: translate3d(calc(-100vw - 40px), 0, 0);
         animation: none;
       }
 
-      #screen-2.active .language-duo-enter-wrap {
+      #screen-2.active .language-duo-enter-wrap,
+      #screen-3.active .language-duo-enter-wrap {
         animation: languageDuoFlyInFromLeft var(--lang-duo-enter-dur) cubic-bezier(0.22, 1, 0.36, 1) both;
       }
 
-      #screen-2 .language-duo.duo-airborne {
+      #screen-2 .language-duo.duo-airborne,
+      #screen-3 .language-duo.duo-airborne {
         animation: duoAirborne 2.9s ease-in-out var(--lang-duo-enter-dur) infinite;
       }
 
-      #screen-2 .language-header--duo-speaks .language-question {
+      #screen-2 .language-header--duo-speaks .language-question,
+      #screen-3 .language-header--duo-speaks .language-question {
         opacity: 0;
         transform: translateX(14px);
       }
 
-      #screen-2:not(.active) .language-header--duo-speaks .language-question {
+      #screen-2:not(.active) .language-header--duo-speaks .language-question,
+      #screen-3:not(.active) .language-header--duo-speaks .language-question {
         animation: none;
         opacity: 0;
         transform: translateX(14px);
       }
 
-      #screen-2.active .language-header--duo-speaks .language-question {
+      #screen-2.active .language-header--duo-speaks .language-question,
+      #screen-3.active .language-header--duo-speaks .language-question {
         animation: languageQuestionReveal 0.5s cubic-bezier(0.22, 1, 0.36, 1) var(--lang-duo-enter-dur) forwards;
       }
     }
@@ -1543,6 +1586,12 @@
     .language-list .lang-btn.selected {
       border-color: var(--blue);
       background: #ecf8ff;
+    }
+
+    .language-list .lang-btn.is-disabled {
+      opacity: 0.42;
+      pointer-events: none;
+      filter: grayscale(0.15);
     }
 
     .flag {
@@ -1792,7 +1841,8 @@
         transition: none !important;
       }
 
-      #screen-2 .language-duo-enter-wrap {
+      #screen-2 .language-duo-enter-wrap,
+      #screen-3 .language-duo-enter-wrap {
         transform: none !important;
       }
     }
@@ -1846,24 +1896,51 @@
         <div class="language-duo-enter-wrap">
           <img class="mascot-img language-duo duo-airborne" src="./assets/duo%20flying.png" alt="Duo mascot" width="288" height="188" loading="eager" decoding="async">
         </div>
-        <div class="language-question" data-i18n="languageQuestion">What language do you like to learn?</div>
+        <div class="language-question" data-i18n="speechLanguageQuestion">Which language do you speak?</div>
       </div>
       <div class="language-list">
-        <button class="lang-btn" data-lang="en"><span class="flag flag-en" aria-hidden="true"></span><span class="flag-label" data-i18n="langEnglish">English</span></button>
-        <button class="lang-btn" data-lang="nl"><span class="flag flag-nl" aria-hidden="true"></span><span class="flag-label" data-i18n="langDutch">Dutch</span></button>
-        <button class="lang-btn" data-lang="fr"><span class="flag flag-fr" aria-hidden="true"></span><span class="flag-label" data-i18n="langFrench">French</span></button>
-        <button class="lang-btn" data-lang="de"><span class="flag flag-de" aria-hidden="true"></span><span class="flag-label" data-i18n="langGerman">German</span></button>
-        <button class="lang-btn" data-lang="it"><span class="flag flag-it" aria-hidden="true"></span><span class="flag-label" data-i18n="langItalian">Italian</span></button>
-        <button class="lang-btn" data-lang="es"><span class="flag flag-es" aria-hidden="true"></span><span class="flag-label" data-i18n="langSpanish">Spanish</span></button>
-        <button class="lang-btn" data-lang="ja"><span class="flag flag-jp" aria-hidden="true"></span><span class="flag-label" data-i18n="langJapanese">Japanese</span></button>
-        <button class="lang-btn" data-lang="zh"><span class="flag flag-cn" aria-hidden="true"></span><span class="flag-label" data-i18n="langChinese">Chinese</span></button>
+        <button class="lang-btn" data-speech-lang="en"><span class="flag flag-en" aria-hidden="true"></span><span class="flag-label" data-i18n="langEnglish">English</span></button>
+        <button class="lang-btn" data-speech-lang="nl"><span class="flag flag-nl" aria-hidden="true"></span><span class="flag-label" data-i18n="langDutch">Dutch</span></button>
+        <button class="lang-btn" data-speech-lang="fr"><span class="flag flag-fr" aria-hidden="true"></span><span class="flag-label" data-i18n="langFrench">French</span></button>
+        <button class="lang-btn" data-speech-lang="de"><span class="flag flag-de" aria-hidden="true"></span><span class="flag-label" data-i18n="langGerman">German</span></button>
+        <button class="lang-btn" data-speech-lang="it"><span class="flag flag-it" aria-hidden="true"></span><span class="flag-label" data-i18n="langItalian">Italian</span></button>
+        <button class="lang-btn" data-speech-lang="es"><span class="flag flag-es" aria-hidden="true"></span><span class="flag-label" data-i18n="langSpanish">Spanish</span></button>
+        <button class="lang-btn" data-speech-lang="ja"><span class="flag flag-jp" aria-hidden="true"></span><span class="flag-label" data-i18n="langJapanese">Japanese</span></button>
+        <button class="lang-btn" data-speech-lang="zh"><span class="flag flag-cn" aria-hidden="true"></span><span class="flag-label" data-i18n="langChinese">Chinese</span></button>
       </div>
       <div class="bottom-wrap">
-        <button class="btn btn-primary" data-action="languageContinue" data-i18n="continue">Continue</button>
+        <button class="btn btn-primary" data-action="speechLanguageContinue" data-i18n="continue">Continue</button>
       </div>
     </section>
 
     <section class="screen" id="screen-3">
+      <div class="progress-wrap"><div class="progress-bar" data-progress="36"></div></div>
+      <div class="reward-pill" aria-label="reward">
+        <span class="xp-label">XP</span>
+        <span data-xp-count>0</span>
+      </div>
+      <div class="language-header language-header--duo-speaks">
+        <div class="language-duo-enter-wrap">
+          <img class="mascot-img language-duo duo-airborne" src="./assets/duo%20flying.png" alt="Duo mascot" width="288" height="188" loading="lazy" decoding="async">
+        </div>
+        <div class="language-question" data-i18n="learnLanguageQuestion">Which language do you want to learn?</div>
+      </div>
+      <div class="language-list">
+        <button class="lang-btn" data-learn-lang="en"><span class="flag flag-en" aria-hidden="true"></span><span class="flag-label" data-i18n="langEnglish">English</span></button>
+        <button class="lang-btn" data-learn-lang="nl"><span class="flag flag-nl" aria-hidden="true"></span><span class="flag-label" data-i18n="langDutch">Dutch</span></button>
+        <button class="lang-btn" data-learn-lang="fr"><span class="flag flag-fr" aria-hidden="true"></span><span class="flag-label" data-i18n="langFrench">French</span></button>
+        <button class="lang-btn" data-learn-lang="de"><span class="flag flag-de" aria-hidden="true"></span><span class="flag-label" data-i18n="langGerman">German</span></button>
+        <button class="lang-btn" data-learn-lang="it"><span class="flag flag-it" aria-hidden="true"></span><span class="flag-label" data-i18n="langItalian">Italian</span></button>
+        <button class="lang-btn" data-learn-lang="es"><span class="flag flag-es" aria-hidden="true"></span><span class="flag-label" data-i18n="langSpanish">Spanish</span></button>
+        <button class="lang-btn" data-learn-lang="ja"><span class="flag flag-jp" aria-hidden="true"></span><span class="flag-label" data-i18n="langJapanese">Japanese</span></button>
+        <button class="lang-btn" data-learn-lang="zh"><span class="flag flag-cn" aria-hidden="true"></span><span class="flag-label" data-i18n="langChinese">Chinese</span></button>
+      </div>
+      <div class="bottom-wrap">
+        <button class="btn btn-primary" data-action="learningLanguageContinue" data-i18n="continue">Continue</button>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-4">
       <div class="progress-wrap"><div class="progress-bar" data-progress="42"></div></div>
       <div class="reward-pill" aria-label="reward">
         <span class="xp-label">XP</span>
@@ -1906,7 +1983,7 @@
       </div>
     </section>
 
-    <section class="screen" id="screen-4">
+    <section class="screen" id="screen-5">
       <div class="progress-wrap"><div class="progress-bar" data-progress="56"></div></div>
       <div class="reward-pill" aria-label="reward">
         <span class="xp-label">XP</span>
@@ -1919,6 +1996,7 @@
           <div class="translate-prompt" data-i18n="exercise1Prompt">Good morning</div>
         </div>
         <input class="translate-answer" type="text" inputmode="text" autocomplete="off" spellcheck="false" data-i18n-placeholder="answerInEnglish" placeholder="Answer in english">
+        <div class="answer-feedback" data-role="exerciseFeedback" aria-live="polite"></div>
       </div>
       <div class="bottom-wrap">
         <button class="speak-btn" type="button">
@@ -1929,7 +2007,7 @@
       </div>
     </section>
 
-    <section class="screen" id="screen-5">
+    <section class="screen" id="screen-6">
       <div class="progress-wrap"><div class="progress-bar" data-progress="70"></div></div>
       <div class="reward-pill" aria-label="reward">
         <span class="xp-label">XP</span>
@@ -1950,7 +2028,7 @@
       </div>
     </section>
 
-    <section class="screen" id="screen-6">
+    <section class="screen" id="screen-7">
       <div class="progress-wrap"><div class="progress-bar" data-progress="84"></div></div>
       <div class="reward-pill" aria-label="reward">
         <span class="xp-label">XP</span>
@@ -1980,6 +2058,7 @@
           <button class="word-chip" data-word="word-7" data-i18n="ex2word7">bread</button>
           <button class="word-chip" data-word="word-8" data-i18n="ex2word8">please</button>
         </div>
+        <div class="answer-feedback" data-role="listenFeedback" aria-live="polite"></div>
         <div class="cant-listen" data-i18n="cantListenNow">Cant listen right now</div>
       </div>
       <div class="bottom-wrap">
@@ -1991,7 +2070,7 @@
       </div>
     </section>
 
-    <section class="screen" id="screen-7">
+    <section class="screen" id="screen-8">
       <div class="progress-wrap"><div class="progress-bar" data-progress="90"></div></div>
       <div class="reward-pill" aria-label="reward">
         <span class="xp-label">XP</span>
@@ -2007,13 +2086,14 @@
           <button class="finish-option-btn" data-finish-option="word-3" data-i18n="ex3opt3">book</button>
           <button class="finish-option-btn" data-finish-option="word-4" data-i18n="ex3opt4">green</button>
         </div>
+        <div class="answer-feedback" data-role="finishFeedback" aria-live="polite"></div>
       </div>
       <div class="bottom-wrap">
         <button class="btn btn-primary btn-inactive" data-action="finishContinue" data-role="finishContinue" data-i18n="continue" disabled>Continue</button>
       </div>
     </section>
 
-    <section class="screen" id="screen-8">
+    <section class="screen" id="screen-9">
       <div class="streak-stage">
         <img class="mascot-img streak-hero" src="./assets/xp%20foto.png" alt="Streak visual" loading="lazy" decoding="async">
         <div class="streak-number">1</div>
@@ -2051,7 +2131,8 @@
 
       const state = {
         currentStep: 0,
-        selectedLanguage: "en",
+        uiLanguage: "en",
+        learningLanguage: "",
         selectedTopic: "",
         xp: 0,
         animatedProgress: 0,
@@ -2066,6 +2147,43 @@
         navStack: []
       };
 
+      const LESSON_BY_PAIR = {
+        "nl-en": {
+          exercise1Prompt: "Goedemorgen",
+          exercise1: ["good morning"],
+          exercise2: ["word-1", "word-2", "word-3"],
+          exercise3: "word-1",
+          ex2word1: "I",
+          ex2word2: "like",
+          ex2word3: "coffee",
+          ex2word4: "water",
+          ex2word5: "you",
+          ex2word6: "drink",
+          ex2word7: "bread",
+          ex2word8: "please",
+          finishSentenceStart: "I drink",
+          finishSentenceEnd: "every day.",
+          answerPlaceholder: "Type your answer in English"
+        },
+        "en-nl": {
+          exercise1Prompt: "Good morning",
+          exercise1: ["goedemorgen", "goede morgen"],
+          exercise2: ["word-1", "word-2", "word-3", "word-4"],
+          exercise3: "word-1",
+          ex2word1: "Ik",
+          ex2word2: "hou",
+          ex2word3: "van",
+          ex2word4: "koffie",
+          ex2word5: "water",
+          ex2word6: "jij",
+          ex2word7: "brood",
+          ex2word8: "alsjeblieft",
+          finishSentenceStart: "Ik drink",
+          finishSentenceEnd: "elke dag.",
+          answerPlaceholder: "Typ je antwoord in het Nederlands"
+        }
+      };
+
       const translations = {
         en: {
           brand: "duolingo",
@@ -2076,7 +2194,9 @@
           welcomeBubble: "Welcome to your first short lesson",
           chooseLanguage: "Choose your language",
           pickLanguage: "Pick one to start your lesson",
-          languageQuestion: "What language do you like to learn?",
+          speechLanguageQuestion: "Which language do you speak?",
+          learnLanguageQuestion: "Which language do you want to learn?",
+          languageQuestion: "Which language do you want to learn?",
           langEnglish: "English",
           langDutch: "Dutch",
           langFrench: "French",
@@ -2098,6 +2218,8 @@
           exercise1Title: "Translate this sentence",
           exercise1Prompt: "Good morning",
           answerInEnglish: "Type your answer",
+          answerCorrect: "Correct!",
+          answerTryAgain: "Try again",
           tapToSpeak: "Tap to speak",
           listenTitle: "Type what you hear",
           ex2word1: "I",
@@ -2150,6 +2272,8 @@
           welcomeBubble: "Welkom bij je eerste korte les",
           chooseLanguage: "Kies je taal",
           pickLanguage: "Kies een taal om te beginnen",
+          speechLanguageQuestion: "Welke taal spreek je?",
+          learnLanguageQuestion: "Welke taal wil je leren?",
           languageQuestion: "Welke taal wil je leren?",
           langEnglish: "Engels",
           langDutch: "Nederlands",
@@ -2172,6 +2296,8 @@
           exercise1Title: "Vertaal deze zin",
           exercise1Prompt: "Goedemorgen",
           answerInEnglish: "Typ je antwoord",
+          answerCorrect: "Goed!",
+          answerTryAgain: "Probeer opnieuw",
           tapToSpeak: "Tik om te spreken",
           listenTitle: "Typ wat je hoort",
           ex2word1: "Ik",
@@ -2523,7 +2649,9 @@
       window.exitAd = exitAd;
 
       const screens = Array.from(document.querySelectorAll(".screen"));
-      const languageButtons = Array.from(document.querySelectorAll(".lang-btn"));
+      const speechLanguageButtons = Array.from(document.querySelectorAll("[data-speech-lang]"));
+      const learnLanguageButtons = Array.from(document.querySelectorAll("[data-learn-lang]"));
+      const translatePromptNode = document.querySelector(".translate-prompt");
       const topicButtons = Array.from(document.querySelectorAll(".topic-btn"));
       const app = document.getElementById("app");
       const backBtn = document.getElementById("backBtn");
@@ -2537,29 +2665,52 @@
       const finishOptionButtons = Array.from(document.querySelectorAll(".finish-option-btn"));
       const xpResultValue = document.querySelector(".xp-result-value");
       const resultStatus = document.querySelector(".result-status");
+      const exerciseFeedback = document.querySelector('[data-role="exerciseFeedback"]');
+      const listenFeedback = document.querySelector('[data-role="listenFeedback"]');
+      const finishFeedback = document.querySelector('[data-role="finishFeedback"]');
 
       function getT(key) {
-        const langPack = translations[state.selectedLanguage] || translations.en;
+        const langPack = translations[state.uiLanguage] || translations.en;
         return langPack[key] || translations.en[key] || key;
+      }
+
+      function getLessonPairKey() {
+        return state.uiLanguage + "-" + state.learningLanguage;
+      }
+
+      function getLessonPack() {
+        return LESSON_BY_PAIR[getLessonPairKey()] || LESSON_BY_PAIR["en-nl"];
       }
 
       function safeAdvance(nextStep) {
         const step = Number.isInteger(nextStep) ? nextStep : state.currentStep + 1;
-        const clamped = Math.max(0, Math.min(8, step));
+        const clamped = Math.max(0, Math.min(9, step));
         showScreen(clamped);
       }
 
       function resetInteractiveStateForStep(step) {
-        if (step <= 3) {
+        if (step <= 4) {
           state.answers.exercise1 = null;
           state.answers.exercise2 = null;
           state.answers.exercise3 = null;
           state.sentenceWords = [];
         }
+        if (step === 5) {
+          clearFeedback(exerciseFeedback);
+          if (exerciseAnswerInput) exerciseAnswerInput.classList.remove("correct", "wrong");
+        }
+        if (step === 7) {
+          clearFeedback(listenFeedback);
+          wordChipButtons.forEach(function (btn) { btn.classList.remove("correct", "wrong"); });
+        }
+        if (step === 8) {
+          clearFeedback(finishFeedback);
+          finishOptionButtons.forEach(function (btn) { btn.classList.remove("correct", "wrong"); });
+        }
       }
 
       function shouldShowBack(step) {
-        return step >= 2 && step <= 8;
+        return step >= 2 && step <= 9;
       }
 
       function showScreen(step, opts) {
@@ -2614,7 +2765,7 @@
       }
 
       function triggerResultAnimations(step) {
-        if (step !== 5) return;
+        if (step !== 6) return;
         if (xpResultValue) {
           xpResultValue.classList.remove("xp-pop-in");
           void xpResultValue.offsetWidth;
@@ -2633,7 +2784,7 @@
         const all = Array.from(screen.querySelectorAll("h1, h2, p, .bubble, .card, .mascot-img, .btn, .lang-btn, .topic-btn, .option-btn, .word-btn, .sentence-box, .audio-pill, .dots"));
         const nodes = all.filter(function (node) {
           if (!node.classList.contains("language-duo")) return true;
-          return step !== 2 && step !== 3;
+          return step !== 2 && step !== 3 && step !== 4;
         });
         const nodesWithoutIdleCharacters = nodes.filter(function (node) {
           if (!node.classList) return true;
@@ -2692,7 +2843,7 @@
       }
 
       function applyTranslations() {
-        document.documentElement.lang = state.selectedLanguage;
+        document.documentElement.lang = state.uiLanguage;
         document.querySelectorAll("[data-i18n]").forEach((node) => {
           const key = node.getAttribute("data-i18n");
           node.textContent = getT(key);
@@ -2700,6 +2851,36 @@
         document.querySelectorAll("[data-i18n-placeholder]").forEach((node) => {
           const key = node.getAttribute("data-i18n-placeholder");
           node.setAttribute("placeholder", getT(key));
+        });
+        updateLessonContent();
+      }
+
+      function updateLessonContent() {
+        if (!state.learningLanguage || state.learningLanguage === state.uiLanguage) return;
+        const lesson = getLessonPack();
+        if (translatePromptNode) translatePromptNode.textContent = lesson.exercise1Prompt;
+        if (exerciseAnswerInput) exerciseAnswerInput.setAttribute("placeholder", lesson.answerPlaceholder);
+        wordChipButtons.forEach(function (btn) {
+          const key = btn.getAttribute("data-i18n");
+          if (key && lesson[key]) btn.textContent = lesson[key];
+        });
+        document.querySelectorAll("[data-i18n='finishSentenceStart']").forEach(function (node) {
+          node.textContent = lesson.finishSentenceStart;
+        });
+        document.querySelectorAll("[data-i18n='finishSentenceEnd']").forEach(function (node) {
+          node.textContent = lesson.finishSentenceEnd;
+        });
+      }
+
+      function updateLearnLanguageAvailability() {
+        learnLanguageButtons.forEach(function (btn) {
+          const lang = btn.dataset.learnLang;
+          const isDisabled = lang === state.uiLanguage;
+          btn.classList.toggle("is-disabled", isDisabled);
+          if (isDisabled && btn.classList.contains("selected")) {
+            btn.classList.remove("selected");
+            state.learningLanguage = "";
+          }
         });
       }
 
@@ -2719,14 +2900,31 @@
         };
       }
 
-      function selectLanguage(lang) {
+      function selectSpeechLanguage(lang) {
         if (!translations[lang]) return;
-        state.selectedLanguage = lang;
-        languageButtons.forEach((btn) => {
-          btn.classList.toggle("selected", btn.dataset.lang === lang);
+        state.uiLanguage = lang;
+        speechLanguageButtons.forEach(function (btn) {
+          btn.classList.toggle("selected", btn.dataset.speechLang === lang);
         });
+        if (state.learningLanguage === lang) {
+          state.learningLanguage = "";
+          learnLanguageButtons.forEach(function (btn) { btn.classList.remove("selected"); });
+        }
         state.sentenceWords = [];
+        clearFeedback(exerciseFeedback);
+        clearFeedback(listenFeedback);
+        clearFeedback(finishFeedback);
         applyTranslations();
+        updateLearnLanguageAvailability();
+      }
+
+      function selectLearningLanguage(lang) {
+        if (!translations[lang] || lang === state.uiLanguage) return;
+        state.learningLanguage = lang;
+        learnLanguageButtons.forEach(function (btn) {
+          btn.classList.toggle("selected", btn.dataset.learnLang === lang);
+        });
+        updateLessonContent();
       }
 
       function selectTopic(topic) {
@@ -2738,6 +2936,8 @@
 
       function updateExerciseContinueState() {
         if (!exerciseContinueButton || !exerciseAnswerInput) return;
+        exerciseAnswerInput.classList.remove("correct", "wrong");
+        clearFeedback(exerciseFeedback);
         const hasAnswer = exerciseAnswerInput.value.trim().length > 0;
         exerciseContinueButton.disabled = !hasAnswer;
         exerciseContinueButton.classList.toggle("btn-inactive", !hasAnswer);
@@ -2767,27 +2967,129 @@
         });
       }
 
+      function normalizeAnswer(value) {
+        return String(value || "").trim().toLowerCase().replace(/\s+/g, " ");
+      }
+
+      function getCorrectAnswerPack() {
+        return getLessonPack();
+      }
+
+      function getSelectedWords() {
+        return wordChipButtons
+          .filter(function (btn) { return btn.classList.contains("selected"); })
+          .map(function (btn) { return btn.dataset.word; })
+          .sort();
+      }
+
+      function hasExactWords(selected, expected) {
+        const sortedExpected = expected.slice().sort();
+        return selected.length === sortedExpected.length
+          && selected.every(function (word, idx) { return word === sortedExpected[idx]; });
+      }
+
+      function showFeedback(node, key, type) {
+        if (!node) return;
+        node.textContent = getT(key);
+        node.classList.remove("is-correct", "is-wrong");
+        node.classList.add("is-visible", type === "correct" ? "is-correct" : "is-wrong");
+      }
+
+      function clearFeedback(node) {
+        if (!node) return;
+        node.textContent = "";
+        node.classList.remove("is-visible", "is-correct", "is-wrong");
+      }
+
+      function replayStateClass(node, className) {
+        if (!node) return;
+        node.classList.remove(className);
+        void node.offsetWidth;
+        node.classList.add(className);
+      }
+
+      function addXpAndAdvance(amount, step) {
+        state.xp += amount;
+        updateXpCounters();
+        lockFor(FLOW_DELAYS.answer, function () { safeAdvance(step); });
+      }
+
+      function checkExerciseAnswer() {
+        if (!exerciseAnswerInput) return false;
+        const answer = normalizeAnswer(exerciseAnswerInput.value);
+        const expectedAnswers = getCorrectAnswerPack().exercise1.map(normalizeAnswer);
+        const isCorrect = expectedAnswers.indexOf(answer) !== -1;
+        exerciseAnswerInput.classList.remove("correct", "wrong");
+
+        if (!isCorrect) {
+          replayStateClass(exerciseAnswerInput, "wrong");
+          showFeedback(exerciseFeedback, "answerTryAgain", "wrong");
+          return false;
+        }
+
+        exerciseAnswerInput.classList.add("correct");
+        showFeedback(exerciseFeedback, "answerCorrect", "correct");
+        addXpAndAdvance(10, 6);
+        return true;
+      }
+
+      function checkListenAnswer() {
+        const selected = getSelectedWords();
+        const isCorrect = hasExactWords(selected, getCorrectAnswerPack().exercise2);
+        wordChipButtons.forEach(function (btn) { btn.classList.remove("correct", "wrong"); });
+
+        if (!isCorrect) {
+          wordChipButtons.forEach(function (btn) {
+            if (btn.classList.contains("selected")) replayStateClass(btn, "wrong");
+          });
+          showFeedback(listenFeedback, "answerTryAgain", "wrong");
+          return false;
+        }
+
+        wordChipButtons.forEach(function (btn) {
+          if (btn.classList.contains("selected")) btn.classList.add("correct");
+        });
+        showFeedback(listenFeedback, "answerCorrect", "correct");
+        addXpAndAdvance(10, 8);
+        return true;
+      }
+
+      function checkFinishAnswer() {
+        const selected = finishOptionButtons.find(function (btn) {
+          return btn.classList.contains("selected");
+        });
+        const isCorrect = selected && selected.dataset.finishOption === getCorrectAnswerPack().exercise3;
+        finishOptionButtons.forEach(function (btn) { btn.classList.remove("correct", "wrong"); });
+
+        if (!isCorrect) {
+          replayStateClass(selected, "wrong");
+          showFeedback(finishFeedback, "answerTryAgain", "wrong");
+          return false;
+        }
+
+        selected.classList.add("correct");
+        showFeedback(finishFeedback, "answerCorrect", "correct");
+        addXpAndAdvance(10, 9);
+        return true;
+      }
+
       function bindStaticActions() {
         const map = {
           welcomeContinue: function () { safeAdvance(2); },
-          languageContinue: function () { safeAdvance(3); },
-          topicContinue: function () { safeAdvance(4); },
-          exerciseContinue: function () {
-            state.xp += 10;
-            updateXpCounters();
-            safeAdvance(5);
+          speechLanguageContinue: function () {
+            if (!state.uiLanguage) return;
+            safeAdvance(3);
           },
-          resultContinue: function () { safeAdvance(6); },
-          listenContinue: function () {
-            state.xp += 10;
-            updateXpCounters();
-            safeAdvance(7);
+          learningLanguageContinue: function () {
+            if (!state.learningLanguage || state.learningLanguage === state.uiLanguage) return;
+            updateLessonContent();
+            safeAdvance(4);
           },
-          finishContinue: function () {
-            state.xp += 10;
-            updateXpCounters();
-            safeAdvance(8);
-          },
+          topicContinue: function () { safeAdvance(5); },
+          exerciseContinue: checkExerciseAnswer,
+          resultContinue: function () { safeAdvance(7); },
+          listenContinue: checkListenAnswer,
+          finishContinue: checkFinishAnswer,
           streakContinue: function () { exitAd(); },
           goBack: function () {
             if (!state.navStack.length) return;
@@ -2805,9 +3107,15 @@
       }
 
       function bindOptionPickers() {
-        languageButtons.forEach((btn) => {
+        speechLanguageButtons.forEach(function (btn) {
           btn.addEventListener("click", handleTap(function () {
-            selectLanguage(btn.dataset.lang);
+            selectSpeechLanguage(btn.dataset.speechLang);
+          }), { passive: false });
+        });
+
+        learnLanguageButtons.forEach(function (btn) {
+          btn.addEventListener("click", handleTap(function () {
+            selectLearningLanguage(btn.dataset.learnLang);
           }), { passive: false });
         });
 
@@ -2831,6 +3139,8 @@
 
         wordChipButtons.forEach(function (btn) {
           btn.addEventListener("click", handleTap(function () {
+            wordChipButtons.forEach(function (wordBtn) { wordBtn.classList.remove("correct", "wrong"); });
+            clearFeedback(listenFeedback);
             btn.classList.toggle("selected");
             updateListenContinueState();
           }), { passive: false });
@@ -2838,7 +3148,8 @@
 
         finishOptionButtons.forEach(function (btn) {
           btn.addEventListener("click", handleTap(function () {
-            finishOptionButtons.forEach(function (b) { b.classList.remove("selected"); });
+            finishOptionButtons.forEach(function (b) { b.classList.remove("selected", "correct", "wrong"); });
+            clearFeedback(finishFeedback);
             btn.classList.add("selected");
             updateFinishContinueState();
           }), { passive: false });
@@ -2848,7 +3159,8 @@
       function init() {
         bindStaticActions();
         bindOptionPickers();
-        selectLanguage("en");
+        selectSpeechLanguage("en");
+        updateLearnLanguageAvailability();
         selectTopic("travel");
         updateXpCounters();
         updateExerciseContinueState();
