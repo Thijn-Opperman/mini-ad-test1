@@ -2094,7 +2094,7 @@
         <h2 class="translate-title" data-i18n="exercise1Title">Translate this sentence.</h2>
         <div class="translate-header">
           <img class="mascot-img translate-character" src="./assets/eddy.png" alt="Lesson character" loading="lazy" decoding="async">
-          <div class="translate-prompt" data-i18n="exercise1Prompt">Good morning</div>
+          <div class="translate-prompt" data-lesson-key="exercise1Prompt">Good morning</div>
         </div>
         <input class="translate-answer" type="text" inputmode="text" autocomplete="off" spellcheck="false" data-i18n-placeholder="answerInEnglish" placeholder="Answer in english">
         <div class="answer-feedback" data-role="exerciseFeedback" aria-live="polite"></div>
@@ -2153,14 +2153,14 @@
           <div class="listen-line"></div>
         </div>
         <div class="word-bank-grid">
-          <button class="word-chip" data-word="word-1" data-i18n="ex2word1">I</button>
-          <button class="word-chip" data-word="word-2" data-i18n="ex2word2">like</button>
-          <button class="word-chip" data-word="word-3" data-i18n="ex2word3">coffee</button>
-          <button class="word-chip" data-word="word-4" data-i18n="ex2word4">water</button>
-          <button class="word-chip" data-word="word-5" data-i18n="ex2word5">you</button>
-          <button class="word-chip" data-word="word-6" data-i18n="ex2word6">drink</button>
-          <button class="word-chip" data-word="word-7" data-i18n="ex2word7">bread</button>
-          <button class="word-chip" data-word="word-8" data-i18n="ex2word8">please</button>
+          <button class="word-chip" data-word="word-1" data-lesson-key="ex2word1">I</button>
+          <button class="word-chip" data-word="word-2" data-lesson-key="ex2word2">like</button>
+          <button class="word-chip" data-word="word-3" data-lesson-key="ex2word3">coffee</button>
+          <button class="word-chip" data-word="word-4" data-lesson-key="ex2word4">water</button>
+          <button class="word-chip" data-word="word-5" data-lesson-key="ex2word5">you</button>
+          <button class="word-chip" data-word="word-6" data-lesson-key="ex2word6">drink</button>
+          <button class="word-chip" data-word="word-7" data-lesson-key="ex2word7">bread</button>
+          <button class="word-chip" data-word="word-8" data-lesson-key="ex2word8">please</button>
         </div>
         <div class="answer-feedback" data-role="listenFeedback" aria-live="polite"></div>
         <div class="exercise-help-links">
@@ -2186,12 +2186,12 @@
       <div class="finish-stage">
         <h2 class="finish-title" data-i18n="finishTitle">Finish the sentence</h2>
         <img class="mascot-img finish-character" src="./assets/junior.png" alt="Lesson character" loading="lazy" decoding="async">
-        <p class="finish-sentence"><span data-i18n="finishSentenceStart">I drink</span> <span class="finish-blank"></span> <span data-i18n="finishSentenceEnd">every day.</span></p>
+        <p class="finish-sentence"><span data-lesson-key="finishSentenceStart">I drink</span> <span class="finish-blank"></span> <span data-lesson-key="finishSentenceEnd">every day.</span></p>
         <div class="finish-options">
-          <button class="finish-option-btn" data-finish-option="word-1" data-i18n="ex3opt1">water</button>
-          <button class="finish-option-btn" data-finish-option="word-2" data-i18n="ex3opt2">house</button>
-          <button class="finish-option-btn" data-finish-option="word-3" data-i18n="ex3opt3">book</button>
-          <button class="finish-option-btn" data-finish-option="word-4" data-i18n="ex3opt4">green</button>
+          <button class="finish-option-btn" data-finish-option="word-1" data-lesson-key="ex3opt1">water</button>
+          <button class="finish-option-btn" data-finish-option="word-2" data-lesson-key="ex3opt2">house</button>
+          <button class="finish-option-btn" data-finish-option="word-3" data-lesson-key="ex3opt3">book</button>
+          <button class="finish-option-btn" data-finish-option="word-4" data-lesson-key="ex3opt4">green</button>
         </div>
         <div class="answer-feedback" data-role="finishFeedback" aria-live="polite"></div>
         <div class="exercise-help-links">
@@ -2270,40 +2270,154 @@
         helaasContinueStep: null
       };
 
-      const LESSON_BY_PAIR = {
+      const LESSONS_BY_PAIR = {
         "nl-en": {
-          exercise1Prompt: "Goedemorgen",
-          exercise1: ["good morning"],
-          exercise2: ["word-1", "word-2", "word-3"],
-          exercise3: "word-1",
-          ex2word1: "I",
-          ex2word2: "like",
-          ex2word3: "coffee",
-          ex2word4: "water",
-          ex2word5: "you",
-          ex2word6: "drink",
-          ex2word7: "bread",
-          ex2word8: "please",
-          finishSentenceStart: "I drink",
-          finishSentenceEnd: "every day.",
-          answerPlaceholder: "Type your answer in English"
+          art: {
+            exercise1Prompt: "Dit kunstwerk is groen en geel",
+            exercise1: ["this artwork is green and yellow", "this art piece is green and yellow"],
+            exercise2: ["word-1", "word-2", "word-3", "word-4"],
+            exercise3: "word-1",
+            ex2word1: "I", ex2word2: "see", ex2word3: "two", ex2word4: "colors",
+            ex2word5: "flower", ex2word6: "chair", ex2word7: "slow", ex2word8: "blue",
+            finishSentenceStart: "The artist mixes",
+            finishSentenceEnd: "very carefully.",
+            ex3opt1: "paint", ex3opt2: "music", ex3opt3: "bread", ex3opt4: "window",
+            answerPlaceholder: "Type your answer in English"
+          },
+          culture: {
+            exercise1Prompt: "Hoe gaat het met jou?",
+            exercise1: ["how are you", "how are you doing"],
+            exercise2: ["word-1", "word-2", "word-3", "word-4"],
+            exercise3: "word-1",
+            ex2word1: "Nice", ex2word2: "to", ex2word3: "meet", ex2word4: "you",
+            ex2word5: "hello", ex2word6: "they", ex2word7: "late", ex2word8: "from",
+            finishSentenceStart: "We shake hands to show",
+            finishSentenceEnd: "in our culture.",
+            ex3opt1: "respect", ex3opt2: "coffee", ex3opt3: "train", ex3opt4: "yellow",
+            answerPlaceholder: "Type your answer in English"
+          },
+          travel: {
+            exercise1Prompt: "Het vliegtuig vertrekt om negen uur",
+            exercise1: ["the plane leaves at nine", "the plane departs at nine o'clock"],
+            exercise2: ["word-1", "word-2", "word-3", "word-4"],
+            exercise3: "word-1",
+            ex2word1: "Where", ex2word2: "is", ex2word3: "my", ex2word4: "passport",
+            ex2word5: "hotel", ex2word6: "ticket", ex2word7: "slow", ex2word8: "map",
+            finishSentenceStart: "Our hotel is near the",
+            finishSentenceEnd: "terminal.",
+            ex3opt1: "airport", ex3opt2: "garden", ex3opt3: "purple", ex3opt4: "cold",
+            answerPlaceholder: "Type your answer in English"
+          },
+          beginner: {
+            exercise1Prompt: "Zij leert drie nieuwe woorden",
+            exercise1: ["she learns three new words", "she is learning three new words"],
+            exercise2: ["word-1", "word-2", "word-3"],
+            exercise3: "word-1",
+            ex2word1: "This", ex2word2: "word", ex2word3: "is",
+            ex2word4: "new", ex2word5: "easy", ex2word6: "book", ex2word7: "hard", ex2word8: "old",
+            finishSentenceStart: "He practices every",
+            finishSentenceEnd: "after school.",
+            ex3opt1: "day", ex3opt2: "river", ex3opt3: "green", ex3opt4: "fast",
+            answerPlaceholder: "Type your answer in English"
+          },
+          food: {
+            exercise1Prompt: "Mag ik de rekening, alstublieft?",
+            exercise1: ["can i have the bill please", "may i have the bill please"],
+            exercise2: ["word-1", "word-2", "word-3", "word-4"],
+            exercise3: "word-1",
+            ex2word1: "I", ex2word2: "would", ex2word3: "like", ex2word4: "soup",
+            ex2word5: "pasta", ex2word6: "sweet", ex2word7: "chair", ex2word8: "salt",
+            finishSentenceStart: "The soup tastes very",
+            finishSentenceEnd: "tonight.",
+            ex3opt1: "good", ex3opt2: "ticket", ex3opt3: "blue", ex3opt4: "train",
+            answerPlaceholder: "Type your answer in English"
+          },
+          pop: {
+            exercise1Prompt: "Ik kijk vanavond een spannende film",
+            exercise1: ["i am watching an exciting movie tonight", "i'm watching an exciting film tonight"],
+            exercise2: ["word-1", "word-2", "word-3", "word-4"],
+            exercise3: "word-1",
+            ex2word1: "She", ex2word2: "reads", ex2word3: "the", ex2word4: "news",
+            ex2word5: "song", ex2word6: "game", ex2word7: "late", ex2word8: "story",
+            finishSentenceStart: "He listens to",
+            finishSentenceEnd: "on the radio.",
+            ex3opt1: "music", ex3opt2: "airport", ex3opt3: "table", ex3opt4: "cold",
+            answerPlaceholder: "Type your answer in English"
+          }
         },
         "en-nl": {
-          exercise1Prompt: "Good morning",
-          exercise1: ["goedemorgen", "goede morgen"],
-          exercise2: ["word-1", "word-2", "word-3", "word-4"],
-          exercise3: "word-1",
-          ex2word1: "Ik",
-          ex2word2: "hou",
-          ex2word3: "van",
-          ex2word4: "koffie",
-          ex2word5: "water",
-          ex2word6: "jij",
-          ex2word7: "brood",
-          ex2word8: "alsjeblieft",
-          finishSentenceStart: "Ik drink",
-          finishSentenceEnd: "elke dag.",
-          answerPlaceholder: "Typ je antwoord in het Nederlands"
+          art: {
+            exercise1Prompt: "This artwork is green and yellow",
+            exercise1: ["dit kunstwerk is groen en geel", "dit kunstwerk is groen en geel."],
+            exercise2: ["word-1", "word-2", "word-3", "word-4"],
+            exercise3: "word-1",
+            ex2word1: "Ik", ex2word2: "zie", ex2word3: "twee", ex2word4: "kleuren",
+            ex2word5: "bloem", ex2word6: "stoel", ex2word7: "langzaam", ex2word8: "blauw",
+            finishSentenceStart: "De kunstenaar mengt",
+            finishSentenceEnd: "heel voorzichtig.",
+            ex3opt1: "verf", ex3opt2: "muziek", ex3opt3: "brood", ex3opt4: "raam",
+            answerPlaceholder: "Typ je antwoord in het Nederlands"
+          },
+          culture: {
+            exercise1Prompt: "How are you doing?",
+            exercise1: ["hoe gaat het met jou", "hoe gaat het met jou?"],
+            exercise2: ["word-1", "word-2", "word-3", "word-4"],
+            exercise3: "word-1",
+            ex2word1: "Leuk", ex2word2: "je", ex2word3: "te", ex2word4: "ontmoeten",
+            ex2word5: "hallo", ex2word6: "zij", ex2word7: "laat", ex2word8: "van",
+            finishSentenceStart: "Wij geven een hand als teken van",
+            finishSentenceEnd: "in onze cultuur.",
+            ex3opt1: "respect", ex3opt2: "koffie", ex3opt3: "trein", ex3opt4: "geel",
+            answerPlaceholder: "Typ je antwoord in het Nederlands"
+          },
+          travel: {
+            exercise1Prompt: "The plane departs at nine o'clock",
+            exercise1: ["het vliegtuig vertrekt om negen uur", "het vliegtuig vertrekt om negen uur."],
+            exercise2: ["word-1", "word-2", "word-3", "word-4"],
+            exercise3: "word-1",
+            ex2word1: "Waar", ex2word2: "is", ex2word3: "mijn", ex2word4: "paspoort",
+            ex2word5: "hotel", ex2word6: "kaartje", ex2word7: "langzaam", ex2word8: "kaart",
+            finishSentenceStart: "Ons hotel ligt bij het",
+            finishSentenceEnd: "gebouw.",
+            ex3opt1: "vliegveld", ex3opt2: "park", ex3opt3: "paars", ex3opt4: "koud",
+            answerPlaceholder: "Typ je antwoord in het Nederlands"
+          },
+          beginner: {
+            exercise1Prompt: "She is learning three new words",
+            exercise1: ["zij leert drie nieuwe woorden", "ze leert drie nieuwe woorden"],
+            exercise2: ["word-1", "word-2", "word-3"],
+            exercise3: "word-1",
+            ex2word1: "Dit", ex2word2: "woord", ex2word3: "is",
+            ex2word4: "nieuw", ex2word5: "makkelijk", ex2word6: "boek", ex2word7: "moeilijk", ex2word8: "oud",
+            finishSentenceStart: "Hij oefent elke",
+            finishSentenceEnd: "na school.",
+            ex3opt1: "dag", ex3opt2: "rivier", ex3opt3: "groen", ex3opt4: "snel",
+            answerPlaceholder: "Typ je antwoord in het Nederlands"
+          },
+          food: {
+            exercise1Prompt: "May I have the bill, please?",
+            exercise1: ["mag ik de rekening alstublieft", "mag ik de rekening, alstublieft"],
+            exercise2: ["word-1", "word-2", "word-3", "word-4"],
+            exercise3: "word-1",
+            ex2word1: "Ik", ex2word2: "wil", ex2word3: "graag", ex2word4: "soep",
+            ex2word5: "pasta", ex2word6: "zoet", ex2word7: "stoel", ex2word8: "zout",
+            finishSentenceStart: "De soep smaakt erg",
+            finishSentenceEnd: "vanavond.",
+            ex3opt1: "lekker", ex3opt2: "kaartje", ex3opt3: "blauw", ex3opt4: "trein",
+            answerPlaceholder: "Typ je antwoord in het Nederlands"
+          },
+          pop: {
+            exercise1Prompt: "I am watching an exciting movie tonight",
+            exercise1: ["ik kijk vanavond een spannende film", "ik kijk vanavond een spannende film."],
+            exercise2: ["word-1", "word-2", "word-3", "word-4"],
+            exercise3: "word-1",
+            ex2word1: "Zij", ex2word2: "leest", ex2word3: "het", ex2word4: "nieuws",
+            ex2word5: "lied", ex2word6: "spel", ex2word7: "laat", ex2word8: "verhaal",
+            finishSentenceStart: "Hij luistert naar",
+            finishSentenceEnd: "op de radio.",
+            ex3opt1: "muziek", ex3opt2: "vliegveld", ex3opt3: "tafel", ex3opt4: "koud",
+            answerPlaceholder: "Typ je antwoord in het Nederlands"
+          }
         }
       };
 
@@ -2810,7 +2924,10 @@
       }
 
       function getLessonPack() {
-        return LESSON_BY_PAIR[getLessonPairKey()] || LESSON_BY_PAIR["en-nl"];
+        const pairLessons = LESSONS_BY_PAIR[getLessonPairKey()];
+        if (!pairLessons) return LESSONS_BY_PAIR["en-nl"].beginner;
+        const topic = state.selectedTopic || "beginner";
+        return pairLessons[topic] || pairLessons.beginner;
       }
 
       function safeAdvance(nextStep) {
@@ -2977,6 +3094,7 @@
       function applyTranslations() {
         document.documentElement.lang = state.uiLanguage;
         document.querySelectorAll("[data-i18n]").forEach((node) => {
+          if (node.hasAttribute("data-lesson-key")) return;
           const key = node.getAttribute("data-i18n");
           node.textContent = getT(key);
         });
@@ -2993,13 +3111,17 @@
         if (translatePromptNode) translatePromptNode.textContent = lesson.exercise1Prompt;
         if (exerciseAnswerInput) exerciseAnswerInput.setAttribute("placeholder", lesson.answerPlaceholder);
         wordChipButtons.forEach(function (btn) {
-          const key = btn.getAttribute("data-i18n");
+          const key = btn.getAttribute("data-lesson-key");
           if (key && lesson[key]) btn.textContent = lesson[key];
         });
-        document.querySelectorAll("[data-i18n='finishSentenceStart']").forEach(function (node) {
+        finishOptionButtons.forEach(function (btn) {
+          const key = btn.getAttribute("data-lesson-key");
+          if (key && lesson[key]) btn.textContent = lesson[key];
+        });
+        document.querySelectorAll("[data-lesson-key='finishSentenceStart']").forEach(function (node) {
           node.textContent = lesson.finishSentenceStart;
         });
-        document.querySelectorAll("[data-i18n='finishSentenceEnd']").forEach(function (node) {
+        document.querySelectorAll("[data-lesson-key='finishSentenceEnd']").forEach(function (node) {
           node.textContent = lesson.finishSentenceEnd;
         });
       }
@@ -3057,6 +3179,8 @@
           btn.classList.toggle("selected", btn.dataset.learnLang === lang);
         });
         updateLessonContent();
+        wordChipButtons.forEach(function (btn) { btn.classList.remove("selected", "correct", "wrong"); });
+        finishOptionButtons.forEach(function (btn) { btn.classList.remove("selected", "correct", "wrong"); });
       }
 
       function selectTopic(topic) {
@@ -3064,6 +3188,7 @@
         topicButtons.forEach((btn) => {
           btn.classList.toggle("selected", btn.dataset.topic === topic);
         });
+        updateLessonContent();
       }
 
       function updateExerciseContinueState() {
@@ -3272,7 +3397,10 @@
             updateLessonContent();
             safeAdvance(4);
           },
-          topicContinue: function () { safeAdvance(5); },
+          topicContinue: function () {
+            updateLessonContent();
+            safeAdvance(5);
+          },
           exerciseContinue: checkExerciseAnswer,
           resultContinue: function () { safeAdvance(7); },
           listenContinue: checkListenAnswer,
