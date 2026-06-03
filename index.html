@@ -1569,6 +1569,10 @@
         #ffffff;
     }
 
+    .flag-nl {
+      background: linear-gradient(to bottom, #ae1c28 33.33%, #ffffff 33.33%, #ffffff 66.66%, #21468b 66.66%);
+    }
+
     .flag-fr {
       background: linear-gradient(to right, #042f7a 33.33%, #ffffff 33.33%, #ffffff 66.66%, #d9142a 66.66%);
     }
@@ -1846,6 +1850,7 @@
       </div>
       <div class="language-list">
         <button class="lang-btn" data-lang="en"><span class="flag flag-en" aria-hidden="true"></span><span class="flag-label" data-i18n="langEnglish">English</span></button>
+        <button class="lang-btn" data-lang="nl"><span class="flag flag-nl" aria-hidden="true"></span><span class="flag-label" data-i18n="langDutch">Dutch</span></button>
         <button class="lang-btn" data-lang="fr"><span class="flag flag-fr" aria-hidden="true"></span><span class="flag-label" data-i18n="langFrench">French</span></button>
         <button class="lang-btn" data-lang="de"><span class="flag flag-de" aria-hidden="true"></span><span class="flag-label" data-i18n="langGerman">German</span></button>
         <button class="lang-btn" data-lang="it"><span class="flag flag-it" aria-hidden="true"></span><span class="flag-label" data-i18n="langItalian">Italian</span></button>
@@ -1911,7 +1916,7 @@
         <h2 class="translate-title" data-i18n="exercise1Title">Translate this sentence.</h2>
         <div class="translate-header">
           <img class="mascot-img translate-character" src="./assets/eddy.png" alt="Lesson character" loading="lazy" decoding="async">
-          <div class="translate-prompt">.................</div>
+          <div class="translate-prompt" data-i18n="exercise1Prompt">Good morning</div>
         </div>
         <input class="translate-answer" type="text" inputmode="text" autocomplete="off" spellcheck="false" data-i18n-placeholder="answerInEnglish" placeholder="Answer in english">
       </div>
@@ -1966,14 +1971,14 @@
           <div class="listen-line"></div>
         </div>
         <div class="word-bank-grid">
-          <button class="word-chip" data-word="dot-1">.....</button>
-          <button class="word-chip" data-word="dot-2">.....</button>
-          <button class="word-chip" data-word="dot-3">.....</button>
-          <button class="word-chip" data-word="dot-4">.....</button>
-          <button class="word-chip" data-word="dot-5">.....</button>
-          <button class="word-chip" data-word="dot-6">.....</button>
-          <button class="word-chip" data-word="dot-7">.....</button>
-          <button class="word-chip" data-word="dot-8">.....</button>
+          <button class="word-chip" data-word="word-1" data-i18n="ex2word1">I</button>
+          <button class="word-chip" data-word="word-2" data-i18n="ex2word2">like</button>
+          <button class="word-chip" data-word="word-3" data-i18n="ex2word3">coffee</button>
+          <button class="word-chip" data-word="word-4" data-i18n="ex2word4">water</button>
+          <button class="word-chip" data-word="word-5" data-i18n="ex2word5">you</button>
+          <button class="word-chip" data-word="word-6" data-i18n="ex2word6">drink</button>
+          <button class="word-chip" data-word="word-7" data-i18n="ex2word7">bread</button>
+          <button class="word-chip" data-word="word-8" data-i18n="ex2word8">please</button>
         </div>
         <div class="cant-listen" data-i18n="cantListenNow">Cant listen right now</div>
       </div>
@@ -1995,12 +2000,12 @@
       <div class="finish-stage">
         <h2 class="finish-title" data-i18n="finishTitle">Finish the sentence</h2>
         <img class="mascot-img finish-character" src="./assets/junior.png" alt="Lesson character" loading="lazy" decoding="async">
-        <p class="finish-sentence">............. <span class="finish-blank"></span> .............</p>
+        <p class="finish-sentence"><span data-i18n="finishSentenceStart">I drink</span> <span class="finish-blank"></span> <span data-i18n="finishSentenceEnd">every day.</span></p>
         <div class="finish-options">
-          <button class="finish-option-btn" data-finish-option="dot-1">.....</button>
-          <button class="finish-option-btn" data-finish-option="dot-2">.....</button>
-          <button class="finish-option-btn" data-finish-option="dot-3">.....</button>
-          <button class="finish-option-btn" data-finish-option="dot-4">.....</button>
+          <button class="finish-option-btn" data-finish-option="word-1" data-i18n="ex3opt1">water</button>
+          <button class="finish-option-btn" data-finish-option="word-2" data-i18n="ex3opt2">house</button>
+          <button class="finish-option-btn" data-finish-option="word-3" data-i18n="ex3opt3">book</button>
+          <button class="finish-option-btn" data-finish-option="word-4" data-i18n="ex3opt4">green</button>
         </div>
       </div>
       <div class="bottom-wrap">
@@ -2015,7 +2020,7 @@
         <div class="streak-label" data-i18n="streakDaysPracticed">days practiced</div>
         <div class="streak-week">
           <div class="streak-days">
-            <span>Ma</span><span>Di</span><span>Wo</span><span>Do</span><span>Vr</span><span>Za</span><span>Zo</span>
+            <span data-i18n="dayMon">Mon</span><span data-i18n="dayTue">Tue</span><span data-i18n="dayWed">Wed</span><span data-i18n="dayThu">Thu</span><span data-i18n="dayFri">Fri</span><span data-i18n="daySat">Sat</span><span data-i18n="daySun">Sun</span>
           </div>
           <div class="streak-dots">
             <span class="streak-dot active">&#10003;</span>
@@ -2073,6 +2078,7 @@
           pickLanguage: "Pick one to start your lesson",
           languageQuestion: "What language do you like to learn?",
           langEnglish: "English",
+          langDutch: "Dutch",
           langFrench: "French",
           langGerman: "German",
           langItalian: "Italian",
@@ -2081,28 +2087,41 @@
           langChinese: "Chinese",
           pickTopic: "Pick a topic",
           topicHint: "Choose what you want to practice",
-          topicQuestion: "What topic do you want to learn?",
-          topicArt: "Art & Creativity",
-          topicCulture: "Culture & Traditions",
-          topicTravel: "Landmarks & Travel",
-          topicBeginner: "Beginner Lessons",
-          topicFood: "Food & Drinks",
-          topicPop: "Pop Culture & Media",
+          topicQuestion: "What do you want to practice today?",
+          topicArt: "Colors",
+          topicCulture: "Greetings",
+          topicTravel: "Travel",
+          topicBeginner: "Easy words",
+          topicFood: "Food & drinks",
+          topicPop: "Everyday phrases",
           topicBasics: "Basics",
           exercise1Title: "Translate this sentence",
-          exercise1Prompt: "I ran worse than before",
-          ex1opt1: "Corri peggio di prima",
-          ex1opt2: "J'ai couru moins bien qu'avant",
-          ex1opt3: "Ich lief schlechter als vorher",
-          ex1opt4: "I ran better than before",
-          answerInEnglish: "Answer in english",
+          exercise1Prompt: "Good morning",
+          answerInEnglish: "Type your answer",
           tapToSpeak: "Tap to speak",
           listenTitle: "Type what you hear",
-          cantListenNow: "Cant listen right now",
+          ex2word1: "I",
+          ex2word2: "like",
+          ex2word3: "coffee",
+          ex2word4: "water",
+          ex2word5: "you",
+          ex2word6: "drink",
+          ex2word7: "bread",
+          ex2word8: "please",
+          cantListenNow: "Can't listen right now",
           finishTitle: "Finish the sentence",
-          streakLead: "Je behoort tot de eerste ",
-          streakTail: " die vandaag leren op Duolingo!",
+          finishSentenceStart: "I drink",
+          finishSentenceEnd: "every day.",
+          streakLead: "You belong to the first ",
+          streakTail: " learning today on Duolingo!",
           streakDaysPracticed: "days practiced",
+          dayMon: "Mon",
+          dayTue: "Tue",
+          dayWed: "Wed",
+          dayThu: "Thu",
+          dayFri: "Fri",
+          daySat: "Sat",
+          daySun: "Sun",
           resultXp: "+ 10XP",
           resultLead: "You belong to the first ",
           resultTail: " learning today on Duolingo!",
@@ -2112,15 +2131,89 @@
           exercise2Title: "Listen and build the sentence",
           tapWords: "Tap words to build the sentence",
           exercise3Title: "Finish the sentence",
-          exercise3Prompt: "I need this new ____ to improve my skills",
-          ex3opt1: "opportunity",
-          ex3opt2: "banana",
-          ex3opt3: "window",
-          ex3opt4: "book",
+          exercise3Prompt: "I drink ____ every day.",
+          ex3opt1: "water",
+          ex3opt2: "house",
+          ex3opt3: "book",
+          ex3opt4: "green",
           streakTitle: "1 day practiced",
           streakSubtitle: "Small steps every day lead to big wins",
           ctaTitle: "Keep your streak going 🔥",
           ctaSubtitle: "You're doing great!"
+        },
+        nl: {
+          brand: "duolingo",
+          back: "Terug",
+          continue: "Verder",
+          check: "Controleren",
+          downloadNow: "Download nu",
+          welcomeBubble: "Welkom bij je eerste korte les",
+          chooseLanguage: "Kies je taal",
+          pickLanguage: "Kies een taal om te beginnen",
+          languageQuestion: "Welke taal wil je leren?",
+          langEnglish: "Engels",
+          langDutch: "Nederlands",
+          langFrench: "Frans",
+          langGerman: "Duits",
+          langItalian: "Italiaans",
+          langSpanish: "Spaans",
+          langJapanese: "Japans",
+          langChinese: "Chinees",
+          pickTopic: "Kies een onderwerp",
+          topicHint: "Kies wat je wilt oefenen",
+          topicQuestion: "Wat wil je vandaag oefenen?",
+          topicArt: "Kleuren",
+          topicCulture: "Groeten",
+          topicTravel: "Reizen",
+          topicBeginner: "Makkelijke woorden",
+          topicFood: "Eten en drinken",
+          topicPop: "Dagelijkse zinnen",
+          topicBasics: "Basis",
+          exercise1Title: "Vertaal deze zin",
+          exercise1Prompt: "Goedemorgen",
+          answerInEnglish: "Typ je antwoord",
+          tapToSpeak: "Tik om te spreken",
+          listenTitle: "Typ wat je hoort",
+          ex2word1: "Ik",
+          ex2word2: "hou",
+          ex2word3: "van",
+          ex2word4: "koffie",
+          ex2word5: "water",
+          ex2word6: "jij",
+          ex2word7: "brood",
+          ex2word8: "alsjeblieft",
+          cantListenNow: "Ik kan nu niet luisteren",
+          finishTitle: "Maak de zin af",
+          finishSentenceStart: "Ik drink",
+          finishSentenceEnd: "elke dag.",
+          streakLead: "Je behoort tot de eerste ",
+          streakTail: " die vandaag leren op Duolingo!",
+          streakDaysPracticed: "dagen geoefend",
+          dayMon: "Ma",
+          dayTue: "Di",
+          dayWed: "Wo",
+          dayThu: "Do",
+          dayFri: "Vr",
+          daySat: "Za",
+          daySun: "Zo",
+          resultXp: "+ 10XP",
+          resultLead: "Je behoort tot de eerste ",
+          resultTail: " die vandaag leren op Duolingo!",
+          resultAmazing: "Geweldig!",
+          xpGreat: "Goed gedaan!",
+          xpMotivation: "Je leert snel. Houd je streak vol.",
+          exercise2Title: "Luister en bouw de zin",
+          tapWords: "Tik op woorden om de zin te maken",
+          exercise3Title: "Maak de zin af",
+          exercise3Prompt: "Ik drink ____ elke dag.",
+          ex3opt1: "water",
+          ex3opt2: "huis",
+          ex3opt3: "boek",
+          ex3opt4: "groen",
+          streakTitle: "1 dag geoefend",
+          streakSubtitle: "Kleine stappen elke dag zorgen voor grote winst",
+          ctaTitle: "Houd je streak vast",
+          ctaSubtitle: "Je doet het goed!"
         },
         es: {
           brand: "duolingo",
