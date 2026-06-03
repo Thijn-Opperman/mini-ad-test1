@@ -942,7 +942,7 @@
       gap: 2px;
     }
 
-    #screen-7 .listen-lines {
+    #screen-7 .listen-sentence-area {
       margin-top: 6px;
       margin-bottom: 10px;
     }
@@ -1265,17 +1265,61 @@
       border-left: 3px solid #d8d8d8;
     }
 
-    .listen-lines {
-      display: grid;
-      grid-template-rows: repeat(3, 1fr);
-      gap: 22px;
+    .listen-sentence-area {
+      min-height: 96px;
       margin: 16px 0 14px;
+      padding: 10px 6px 14px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      align-content: flex-start;
+      gap: 8px;
+      background-image:
+        linear-gradient(#d3d3d3, #d3d3d3),
+        linear-gradient(#d3d3d3, #d3d3d3),
+        linear-gradient(#d3d3d3, #d3d3d3);
+      background-size: 100% 2px;
+      background-position: 0 30px, 0 58px, 0 86px;
+      background-repeat: no-repeat;
     }
 
-    .listen-line {
-      height: 2px;
-      border-radius: 999px;
-      background: #d3d3d3;
+    .listen-sentence-area.is-empty::before {
+      content: "";
+      display: block;
+      width: 100%;
+      min-height: 20px;
+    }
+
+    .listen-sentence-word {
+      border: 2px solid #1cb0f6;
+      border-radius: 12px;
+      background: #eef9ff;
+      color: #1a6f95;
+      font-size: clamp(13px, 3.5vw, 17px);
+      font-weight: 800;
+      padding: 8px 12px;
+      line-height: 1.15;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #bfe9fd;
+      transition: transform 0.08s ease, filter 0.14s ease;
+    }
+
+    .listen-sentence-word:active {
+      transform: scale(0.98);
+    }
+
+    .listen-sentence-word.correct {
+      border-color: var(--success);
+      background: #eaf9ee;
+      color: #2a8a3e;
+      box-shadow: 0 3px 0 #c8e8d0;
+    }
+
+    .listen-sentence-word.wrong {
+      border-color: var(--danger);
+      background: #ffeef0;
+      color: #c0392b;
+      animation: shake 300ms ease;
     }
 
     .word-bank-grid {
@@ -1312,6 +1356,13 @@
       background: #eef9ff;
       box-shadow: 0 4px 0 #bfe9fd;
       color: #1a6f95;
+    }
+
+    .word-chip.is-used {
+      opacity: 0.38;
+      pointer-events: none;
+      box-shadow: none;
+      transform: none;
     }
 
     .exercise-help-links {
@@ -2147,11 +2198,7 @@
             <button class="listen-icon-btn" type="button" aria-label="Slow audio">&#128034;</button>
           </div>
         </div>
-        <div class="listen-lines">
-          <div class="listen-line"></div>
-          <div class="listen-line"></div>
-          <div class="listen-line"></div>
-        </div>
+        <div class="listen-sentence-area is-empty" data-role="listenSentence" aria-live="polite"></div>
         <div class="word-bank-grid">
           <button class="word-chip" data-word="word-1" data-lesson-key="ex2word1">I</button>
           <button class="word-chip" data-word="word-2" data-lesson-key="ex2word2">like</button>
@@ -2904,7 +2951,9 @@
       const listenContinueButton = document.querySelector('[data-role="listenContinue"]');
       const finishContinueButton = document.querySelector('[data-role="finishContinue"]');
       const xpCountNodes = Array.from(document.querySelectorAll("[data-xp-count]"));
+      const wordBankGrid = document.querySelector(".word-bank-grid");
       const wordChipButtons = Array.from(document.querySelectorAll(".word-chip"));
+      const listenSentenceNode = document.querySelector('[data-role="listenSentence"]');
       const finishOptionButtons = Array.from(document.querySelectorAll(".finish-option-btn"));
       const xpResultValue = document.querySelector(".xp-result-value");
       const resultStatus = document.querySelector(".result-status");
@@ -2949,7 +2998,7 @@
         }
         if (step === 7) {
           clearFeedback(listenFeedback);
-          wordChipButtons.forEach(function (btn) { btn.classList.remove("correct", "wrong"); });
+          resetListenExercise();
         }
         if (step === 8) {
           clearFeedback(finishFeedback);
@@ -3124,6 +3173,8 @@
         document.querySelectorAll("[data-lesson-key='finishSentenceEnd']").forEach(function (node) {
           node.textContent = lesson.finishSentenceEnd;
         });
+        shuffleWordBank();
+        resetListenExercise();
       }
 
       function updateLearnLanguageAvailability() {
@@ -3179,7 +3230,6 @@
           btn.classList.toggle("selected", btn.dataset.learnLang === lang);
         });
         updateLessonContent();
-        wordChipButtons.forEach(function (btn) { btn.classList.remove("selected", "correct", "wrong"); });
         finishOptionButtons.forEach(function (btn) { btn.classList.remove("selected", "correct", "wrong"); });
       }
 
@@ -3200,13 +3250,82 @@
         exerciseContinueButton.classList.toggle("btn-inactive", !hasAnswer);
       }
 
+      function shuffleWordBank() {
+        if (!wordBankGrid) return;
+        const chips = Array.from(wordBankGrid.querySelectorAll(".word-chip"));
+        for (let i = chips.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const tmp = chips[i];
+          chips[i] = chips[j];
+          chips[j] = tmp;
+        }
+        chips.forEach(function (chip) {
+          wordBankGrid.appendChild(chip);
+        });
+      }
+
+      function renderListenSentence() {
+        if (!listenSentenceNode) return;
+        listenSentenceNode.innerHTML = "";
+        listenSentenceNode.classList.toggle("is-empty", state.sentenceWords.length === 0);
+        state.sentenceWords.forEach(function (wordId, index) {
+          const chip = wordChipButtons.find(function (btn) {
+            return btn.dataset.word === wordId;
+          });
+          if (!chip) return;
+          const token = document.createElement("button");
+          token.type = "button";
+          token.className = "listen-sentence-word";
+          token.textContent = chip.textContent.trim();
+          token.dataset.word = wordId;
+          token.addEventListener("click", handleTap(function () {
+            removeWordFromSentence(index);
+          }), { passive: false });
+          listenSentenceNode.appendChild(token);
+        });
+      }
+
+      function resetListenExercise() {
+        state.sentenceWords = [];
+        wordChipButtons.forEach(function (btn) {
+          btn.classList.remove("selected", "correct", "wrong", "is-used");
+        });
+        renderListenSentence();
+        updateListenContinueState();
+      }
+
+      function addWordToSentence(wordId) {
+        const lesson = getLessonPack();
+        if (state.sentenceWords.length >= lesson.exercise2.length) return;
+        const chip = wordChipButtons.find(function (btn) {
+          return btn.dataset.word === wordId;
+        });
+        if (!chip || chip.classList.contains("is-used")) return;
+        state.sentenceWords.push(wordId);
+        chip.classList.add("is-used");
+        renderListenSentence();
+        clearFeedback(listenFeedback);
+        wordChipButtons.forEach(function (btn) { btn.classList.remove("correct", "wrong"); });
+        updateListenContinueState();
+      }
+
+      function removeWordFromSentence(index) {
+        const removed = state.sentenceWords.splice(index, 1)[0];
+        const chip = wordChipButtons.find(function (btn) {
+          return btn.dataset.word === removed;
+        });
+        if (chip) chip.classList.remove("is-used");
+        renderListenSentence();
+        clearFeedback(listenFeedback);
+        updateListenContinueState();
+      }
+
       function updateListenContinueState() {
         if (!listenContinueButton) return;
-        const hasSelection = wordChipButtons.some(function (btn) {
-          return btn.classList.contains("selected");
-        });
-        listenContinueButton.disabled = !hasSelection;
-        listenContinueButton.classList.toggle("btn-inactive", !hasSelection);
+        const lesson = getLessonPack();
+        const isComplete = state.sentenceWords.length === lesson.exercise2.length;
+        listenContinueButton.disabled = !isComplete;
+        listenContinueButton.classList.toggle("btn-inactive", !isComplete);
       }
 
       function updateFinishContinueState() {
@@ -3232,17 +3351,13 @@
         return getLessonPack();
       }
 
-      function getSelectedWords() {
-        return wordChipButtons
-          .filter(function (btn) { return btn.classList.contains("selected"); })
-          .map(function (btn) { return btn.dataset.word; })
-          .sort();
+      function getBuiltSentenceWords() {
+        return state.sentenceWords.slice();
       }
 
-      function hasExactWords(selected, expected) {
-        const sortedExpected = expected.slice().sort();
-        return selected.length === sortedExpected.length
-          && selected.every(function (word, idx) { return word === sortedExpected[idx]; });
+      function hasExactWordOrder(selected, expected) {
+        return selected.length === expected.length
+          && selected.every(function (word, idx) { return word === expected[idx]; });
       }
 
       function showFeedback(node, key, type) {
@@ -3273,10 +3388,12 @@
 
       function getListenSentenceText() {
         const lesson = getLessonPack();
-        return ["ex2word1", "ex2word2", "ex2word3", "ex2word4"]
-          .map(function (key) { return lesson[key]; })
-          .filter(Boolean)
-          .join(" ");
+        return lesson.exercise2.map(function (wordId) {
+          const chip = wordChipButtons.find(function (btn) {
+            return btn.dataset.word === wordId;
+          });
+          return chip ? chip.textContent.trim() : "";
+        }).filter(Boolean).join(" ");
       }
 
       function getRevealAnswerText(exerciseType) {
@@ -3346,20 +3463,27 @@
       }
 
       function checkListenAnswer() {
-        const selected = getSelectedWords();
-        const isCorrect = hasExactWords(selected, getCorrectAnswerPack().exercise2);
-        wordChipButtons.forEach(function (btn) { btn.classList.remove("correct", "wrong"); });
+        const selected = getBuiltSentenceWords();
+        const expected = getCorrectAnswerPack().exercise2;
+        const isCorrect = hasExactWordOrder(selected, expected);
+        const sentenceTokens = listenSentenceNode
+          ? Array.from(listenSentenceNode.querySelectorAll(".listen-sentence-word"))
+          : [];
+
+        sentenceTokens.forEach(function (token) {
+          token.classList.remove("correct", "wrong");
+        });
 
         if (!isCorrect) {
-          wordChipButtons.forEach(function (btn) {
-            if (btn.classList.contains("selected")) replayStateClass(btn, "wrong");
+          sentenceTokens.forEach(function (token) {
+            replayStateClass(token, "wrong");
           });
           showFeedback(listenFeedback, "answerTryAgain", "wrong");
           return false;
         }
 
-        wordChipButtons.forEach(function (btn) {
-          if (btn.classList.contains("selected")) btn.classList.add("correct");
+        sentenceTokens.forEach(function (token) {
+          token.classList.add("correct");
         });
         showFeedback(listenFeedback, "answerCorrect", "correct");
         addXpAndAdvance(10, 8);
@@ -3474,10 +3598,8 @@
 
         wordChipButtons.forEach(function (btn) {
           btn.addEventListener("click", handleTap(function () {
-            wordChipButtons.forEach(function (wordBtn) { wordBtn.classList.remove("correct", "wrong"); });
-            clearFeedback(listenFeedback);
-            btn.classList.toggle("selected");
-            updateListenContinueState();
+            if (btn.classList.contains("is-used")) return;
+            addWordToSentence(btn.dataset.word);
           }), { passive: false });
         });
 
