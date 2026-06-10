@@ -255,28 +255,37 @@
     .progress-wrap {
       margin: 6px 0 14px;
       width: 100%;
-      height: 17px;
+      height: 15px;
       border-radius: 999px;
-      background: #e5e5e5;
+      background: #58cc02;
       overflow: hidden;
+      position: relative;
+      box-shadow: none;
     }
 
     .progress-bar {
       height: 100%;
       width: 0%;
-      background: #58cc02;
+      background: transparent;
       transition: width 0.68s cubic-bezier(0.22, 1, 0.36, 1);
       position: relative;
       overflow: hidden;
     }
 
     .progress-bar::after {
+      display: none;
+    }
+
+    .progress-wrap::after {
       content: "";
       position: absolute;
-      inset: 0;
-      background: linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, 0.26) 50%, transparent 100%);
-      transform: translateX(-120%);
-      animation: progressShimmer 1.4s ease-out;
+      left: 8px;
+      right: 8px;
+      top: 4px;
+      height: 3px;
+      border-radius: 999px;
+      background: #89e82a;
+      pointer-events: none;
     }
 
     .grid {
@@ -723,7 +732,7 @@
     .reward-pill {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       color: #e880cb;
       font-size: 18px;
       font-weight: 900;
@@ -936,8 +945,8 @@
       position: absolute;
       top: calc(clamp(86px, 8.8vh, 90px) + env(safe-area-inset-top));
       left: clamp(60px, 13vw, 64px);
-      right: clamp(112px, 24vw, 120px);
-      width: auto;
+      right: auto;
+      width: clamp(180px, 62vw, 242px);
       margin: 0;
       z-index: 2;
     }
@@ -951,7 +960,7 @@
     #screen-7 .reward-pill,
     #screen-8 .reward-pill {
       position: absolute;
-      top: calc(clamp(82px, 8.4vh, 88px) + env(safe-area-inset-top));
+      top: calc(clamp(86px, 8.8vh, 90px) + env(safe-area-inset-top));
       right: clamp(38px, 8.5vw, 42px);
       margin: 0;
       z-index: 2;
@@ -1007,38 +1016,40 @@
     }
 
     .reward-pill .xp-label {
-      width: 26px;
-      height: 18px;
+      width: 22px;
+      height: 15px;
       border-radius: 4px;
-      background: #ff8bd8;
+      background: #ff8bdd;
       color: transparent;
       font-size: 0;
       line-height: 1;
       position: relative;
-      box-shadow: inset 0 -2px 0 rgba(185, 74, 158, 0.15);
+      top: -1px;
+      box-shadow: none;
+      overflow: visible;
     }
 
     .reward-pill .xp-label::before {
-      content: "⚡";
+      content: "";
       position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #ffffff;
-      font-size: 12px;
-      line-height: 1;
+      left: 7px;
+      top: 3px;
+      width: 7px;
+      height: 9px;
+      background: #ffffff;
+      clip-path: polygon(42% 0, 100% 0, 66% 42%, 100% 42%, 32% 100%, 45% 56%, 0 56%);
+      z-index: 1;
     }
 
     .reward-pill .xp-label::after {
       content: "";
       position: absolute;
       right: -4px;
-      top: 5px;
+      top: 4px;
       width: 4px;
-      height: 8px;
+      height: 7px;
       border-radius: 0 2px 2px 0;
-      background: #ff8bd8;
+      background: #ff8bdd;
     }
 
     .translate-stage {
@@ -1797,6 +1808,28 @@
       #screen-3.active .language-header--duo-speaks .language-question {
         animation: languageQuestionReveal 0.5s cubic-bezier(0.22, 1, 0.36, 1) var(--lang-duo-enter-dur) forwards;
       }
+    }
+
+    #screen-2 .language-duo-enter-wrap,
+    #screen-3 .language-duo-enter-wrap,
+    #screen-4 .language-duo-enter-wrap {
+      animation: none !important;
+      transform: none !important;
+    }
+
+    #screen-2 .language-duo.duo-airborne,
+    #screen-3 .language-duo.duo-airborne,
+    #screen-4 .language-duo.duo-airborne {
+      animation: none !important;
+      transform: none !important;
+    }
+
+    #screen-2 .language-header--duo-speaks .language-question,
+    #screen-3 .language-header--duo-speaks .language-question,
+    #screen-4 .topic-header--duo-speaks .topic-question {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
     }
 
     .language-list {
