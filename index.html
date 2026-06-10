@@ -810,7 +810,7 @@
       align-items: center;
       flex-direction: row-reverse;
       margin-top: 0;
-      margin-bottom: clamp(10px, 1.8vh, 16px);
+      margin-bottom: clamp(8px, 1.4vh, 12px);
     }
 
     #screen-4 .topic-header--duo-speaks .topic-question::after {
@@ -833,11 +833,11 @@
 
     #screen-4 .topic-picker-grid {
       margin-top: 0;
-      flex: 1 1 0;
+      flex: 0 0 clamp(420px, 60vh, 540px);
       min-height: 0;
       overflow: hidden;
       grid-template-rows: repeat(3, minmax(0, 1fr));
-      gap: clamp(10px, 2vh, 18px) clamp(12px, 4.8vw, 22px);
+      gap: clamp(8px, 1.4vh, 14px) clamp(12px, 4.8vw, 22px);
       align-content: stretch;
     }
 
@@ -879,17 +879,18 @@
     }
 
     #screen-4 {
-      padding-bottom: calc(82px + env(safe-area-inset-bottom));
+      padding-top: calc(env(safe-area-inset-top) + clamp(112px, 12vh, 128px));
+      padding-bottom: calc(72px + env(safe-area-inset-bottom));
     }
 
     section#screen-4 .bottom-wrap {
-      bottom: calc(10px + env(safe-area-inset-bottom));
+      bottom: calc(16px + env(safe-area-inset-bottom));
     }
 
     section#screen-4 .bottom-wrap .btn {
-      min-height: clamp(58px, 8vh, 64px);
-      border-radius: 18px;
-      font-size: clamp(23px, 5.6vw, 27px);
+      min-height: clamp(48px, 6.8vh, 56px);
+      border-radius: 17px;
+      font-size: clamp(20px, 5vw, 24px);
     }
 
     #screen-2 .language-list,
@@ -944,9 +945,9 @@
     #screen-8 .progress-wrap {
       position: absolute;
       top: calc(clamp(86px, 8.8vh, 90px) + env(safe-area-inset-top));
-      left: clamp(60px, 13vw, 64px);
+      left: clamp(54px, 13vw, 64px);
       right: auto;
-      width: clamp(180px, 62vw, 242px);
+      width: min(242px, calc(100vw - clamp(54px, 13vw, 64px) - 116px));
       margin: 0;
       z-index: 2;
     }
@@ -961,7 +962,7 @@
     #screen-8 .reward-pill {
       position: absolute;
       top: calc(clamp(86px, 8.8vh, 90px) + env(safe-area-inset-top));
-      right: clamp(38px, 8.5vw, 42px);
+      right: clamp(34px, 8.5vw, 42px);
       margin: 0;
       z-index: 2;
     }
@@ -2120,6 +2121,120 @@
       #screen-2 .language-duo-enter-wrap,
       #screen-3 .language-duo-enter-wrap {
         transform: none !important;
+      }
+    }
+
+    @media (max-width: 390px), (max-height: 760px) {
+      :root {
+        --screen-pad-x: clamp(18px, 5vw, 22px);
+      }
+
+      #screen-1,
+      #screen-2,
+      #screen-3,
+      #screen-5,
+      #screen-6,
+      #screen-7,
+      #screen-8 {
+        padding-top: calc(clamp(106px, 12vh, 126px) + env(safe-area-inset-top));
+        padding-bottom: calc(92px + env(safe-area-inset-bottom));
+      }
+
+      #screen-1 .progress-wrap,
+      #screen-2 .progress-wrap,
+      #screen-3 .progress-wrap,
+      #screen-4 .progress-wrap,
+      #screen-5 .progress-wrap,
+      #screen-6 .progress-wrap,
+      #screen-7 .progress-wrap,
+      #screen-8 .progress-wrap {
+        top: calc(clamp(70px, 8.2vh, 86px) + env(safe-area-inset-top));
+        left: clamp(40px, 12vw, 54px);
+        width: min(242px, calc(100vw - clamp(40px, 12vw, 54px) - 106px));
+      }
+
+      #screen-1 .reward-pill,
+      #screen-2 .reward-pill,
+      #screen-3 .reward-pill,
+      #screen-4 .reward-pill,
+      #screen-5 .reward-pill,
+      #screen-6 .reward-pill,
+      #screen-7 .reward-pill,
+      #screen-8 .reward-pill {
+        top: calc(clamp(70px, 8.2vh, 86px) + env(safe-area-inset-top));
+        right: clamp(24px, 7vw, 34px);
+        font-size: clamp(16px, 4.4vw, 18px);
+      }
+
+      #screen-4 {
+        padding-top: calc(env(safe-area-inset-top) + clamp(94px, 11.5vh, 114px));
+        padding-bottom: calc(74px + env(safe-area-inset-bottom));
+      }
+
+      #screen-4 .topic-header.topic-header--duo-speaks {
+        margin-bottom: clamp(6px, 1vh, 10px);
+      }
+
+      #screen-4 .topic-picker-grid {
+        flex-basis: min(56vh, calc(100vh - clamp(94px, 11.5vh, 114px) - 150px));
+        min-height: 390px;
+        gap: clamp(7px, 1.15vh, 11px) clamp(10px, 4vw, 18px);
+      }
+
+      #screen-4 .topic-picker-grid .topic-btn {
+        padding: clamp(6px, 1vh, 8px) 6px;
+      }
+
+      #screen-4 .topic-card-img {
+        width: clamp(52px, 18vw, 82px);
+        height: clamp(52px, 18vw, 82px);
+      }
+
+      #screen-4 .topic-btn[data-topic="beginner"] .topic-card-img,
+      #screen-4 .topic-btn[data-topic="pop"] .topic-card-img,
+      #screen-4 .topic-btn[data-topic="travel"] .topic-card-img {
+        width: clamp(56px, 19vw, 80px);
+        height: clamp(56px, 19vw, 80px);
+      }
+
+      #screen-4 .topic-btn[data-topic="culture"] .topic-card-img {
+        width: clamp(64px, 21vw, 92px);
+        height: clamp(64px, 21vw, 92px);
+      }
+
+      #screen-4 .topic-label {
+        font-size: clamp(12px, 3.5vw, 17px);
+        line-height: 1.06;
+      }
+
+      section#screen-4 .bottom-wrap .btn {
+        min-height: clamp(46px, 6.6vh, 54px);
+        font-size: clamp(19px, 4.8vw, 23px);
+      }
+
+      .translate-title,
+      .listen-title,
+      .finish-title {
+        font-size: clamp(21px, 6vw, 28px);
+        margin-bottom: clamp(10px, 2vh, 18px);
+      }
+
+      .translate-header {
+        margin-bottom: clamp(12px, 2vh, 20px);
+      }
+
+      .translate-character {
+        width: clamp(92px, 27vw, 122px);
+      }
+
+      .translate-prompt {
+        font-size: clamp(15px, 4vw, 19px);
+        padding: 14px;
+      }
+
+      .translate-answer {
+        min-height: clamp(120px, 19vh, 158px);
+        font-size: clamp(16px, 4.4vw, 20px);
       }
     }
 
