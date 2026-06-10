@@ -1006,6 +1006,14 @@
       padding-bottom: 84px;
     }
 
+    #screen-7 {
+      padding-bottom: calc(clamp(122px, 16vh, 144px) + env(safe-area-inset-bottom));
+    }
+
+    #screen-8 {
+      padding-bottom: calc(clamp(88px, 12vh, 112px) + env(safe-area-inset-bottom));
+    }
+
     #screen-7 .bottom-wrap {
       display: flex;
       flex-direction: column;
@@ -1034,7 +1042,7 @@
     }
 
     #screen-7 .listen-stage {
-      padding-bottom: 118px;
+      padding-bottom: clamp(124px, 16vh, 144px);
     }
 
     #screen-7 .word-bank-grid {
@@ -1042,6 +1050,10 @@
       row-gap: 8px;
       margin-top: -4px;
       margin-bottom: 18px;
+    }
+
+    #screen-8 .finish-stage {
+      padding-bottom: clamp(88px, 12vh, 112px);
     }
 
     .reward-pill span {
@@ -1548,7 +1560,7 @@
 
     .finish-character {
       width: clamp(136px, 40vw, 182px);
-      margin: 8px auto 12px;
+      margin: clamp(4px, 1vh, 8px) auto clamp(6px, 1.4vh, 12px);
       animation: characterBob 2.7s ease-in-out infinite;
     }
 
@@ -1557,7 +1569,7 @@
       font-size: clamp(17px, 4.7vw, 25px);
       line-height: 1.45;
       font-weight: 700;
-      margin-bottom: 16px;
+      margin: 0 0 clamp(8px, 1.8vh, 16px);
     }
 
     .finish-blank {
@@ -1571,9 +1583,9 @@
     .finish-options {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
+      gap: clamp(8px, 1.4vh, 10px);
       margin-top: auto;
-      margin-bottom: 10px;
+      margin-bottom: clamp(6px, 1.3vh, 10px);
       width: 100%;
     }
 
@@ -2198,6 +2210,14 @@
         padding-bottom: calc(126px + env(safe-area-inset-bottom));
       }
 
+      #screen-7 {
+        padding-bottom: calc(118px + env(safe-area-inset-bottom));
+      }
+
+      #screen-8 {
+        padding-bottom: calc(82px + env(safe-area-inset-bottom));
+      }
+
       .btn {
         min-height: clamp(48px, 6.6vh, 56px);
         border-radius: 16px;
@@ -2327,7 +2347,7 @@
 
       #screen-7 .listen-stage {
         margin-top: 0;
-        padding-bottom: 112px;
+        padding-bottom: 120px;
       }
 
       #screen-7 .listen-title {
@@ -2353,7 +2373,7 @@
       }
 
       #screen-7 .listen-sentence-area {
-        min-height: 84px;
+        min-height: clamp(72px, 12vh, 84px);
         margin: 4px 0 8px;
         padding: 8px 6px 10px;
         gap: 6px;
@@ -2388,6 +2408,48 @@
         margin: 4px 0 6px;
         gap: 5px;
       }
+
+      #screen-7 .answer-feedback {
+        min-height: 20px;
+        margin-top: 5px;
+        font-size: 13px;
+      }
+
+      #screen-8 .finish-stage {
+        margin-top: 0;
+        padding-bottom: 90px;
+      }
+
+      #screen-8 .finish-title {
+        margin: 4px 0 8px;
+      }
+
+      #screen-8 .finish-character {
+        width: clamp(96px, 30vw, 136px);
+        margin: 2px auto 6px;
+      }
+
+      #screen-8 .finish-sentence {
+        font-size: clamp(15px, 4vw, 18px);
+        line-height: 1.3;
+        margin-bottom: 8px;
+      }
+
+      #screen-8 .finish-options {
+        gap: 8px;
+        margin-bottom: 6px;
+      }
+
+      #screen-8 .answer-feedback {
+        min-height: 20px;
+        margin-top: 5px;
+        font-size: 13px;
+      }
+
+      #screen-8 .exercise-help-links {
+        margin: 4px 0 6px;
+        gap: 5px;
+      }
     }
 
     @media (max-height: 740px) {
@@ -2402,6 +2464,102 @@
 
       .welcome-duo {
         top: 108px;
+      }
+    }
+
+    @media (max-height: 620px) {
+      #screen-7,
+      #screen-8 {
+        padding-top: calc(88px + env(safe-area-inset-top));
+      }
+
+      #screen-7 {
+        padding-bottom: calc(100px + env(safe-area-inset-bottom));
+      }
+
+      #screen-7 .listen-stage {
+        padding-bottom: 104px;
+      }
+
+      #screen-7 .listen-title {
+        font-size: clamp(19px, 5.4vw, 22px);
+        margin: 0 0 5px;
+      }
+
+      #screen-7 .listen-header {
+        margin-bottom: 2px;
+      }
+
+      #screen-7 .listen-character {
+        width: clamp(54px, 18vw, 66px);
+      }
+
+      #screen-7 .listen-controls {
+        min-height: 44px;
+        max-width: 132px;
+        border-width: 2px;
+      }
+
+      #screen-7 .listen-icon-btn {
+        font-size: 24px;
+      }
+
+      #screen-7 .listen-icon-btn + .listen-icon-btn {
+        border-left-width: 2px;
+      }
+
+      #screen-7 .listen-sentence-area {
+        min-height: 78px;
+        margin: 2px 0 6px;
+        padding: 6px 5px 8px;
+        gap: 5px;
+        background-position: 0 23px, 0 48px, 0 73px;
+      }
+
+      #screen-7 .listen-sentence-word,
+      #screen-7 .word-chip {
+        font-size: clamp(11px, 3.1vw, 13px);
+        padding: 6px 8px;
+        border-radius: 10px;
+      }
+
+      #screen-7 .word-chip {
+        min-height: 34px;
+      }
+
+      #screen-7 .word-bank-grid {
+        row-gap: 6px;
+        column-gap: 7px;
+        margin-bottom: 6px;
+      }
+
+      #screen-7 .answer-feedback {
+        min-height: 18px;
+        margin-top: 3px;
+        font-size: 12px;
+      }
+
+      #screen-7 .exercise-help-links {
+        margin: 2px 0 4px;
+        gap: 3px;
+      }
+
+      #screen-7 .cant-listen {
+        display: none;
+      }
+
+      #screen-7 .bottom-wrap {
+        gap: 4px;
+      }
+
+      #screen-7 .bottom-wrap .speak-btn {
+        min-height: 32px;
+        font-size: 12px;
+      }
+
+      #screen-7 .bottom-wrap .btn {
+        min-height: 42px;
+        font-size: 18px;
       }
     }
   </style>
