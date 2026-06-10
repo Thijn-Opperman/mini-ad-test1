@@ -65,6 +65,39 @@ Open daarna:
 
 - `http://localhost:8080`
 
+## PWA (Progressive Web App)
+
+De app kan als standalone app op je telefoon worden geïnstalleerd (eigen icoon, geen browser-UI).
+
+### PWA-bestanden
+
+- `manifest.webmanifest` — app-naam, kleuren, display-modus en iconen
+- `sw.js` — service worker voor offline cache van pagina, assets en audio
+- `icons/` — app-iconen (192, 512, apple-touch)
+- `vercel.json` — cache-headers voor betrouwbare service worker updates
+
+### Installeren via Vercel (HTTPS)
+
+**Android (Chrome):**
+
+1. Open je Vercel-URL
+2. Menu → **App installeren** of **Toevoegen aan startscherm**
+3. De app opent standalone zonder adresbalk
+
+**iPhone (Safari):**
+
+1. Open je Vercel-URL in Safari
+2. Deel-knop → **Zet op beginscherm**
+3. De app opent standalone
+
+### Offline gedrag
+
+Na de eerste keer laden worden afbeeldingen en audio-bestanden gecached. De lesflow werkt daarna ook zonder internet, behalve de click-out naar Duolingo (`exitAd()` opent nog steeds een externe browser/tab).
+
+### Cache bij updates
+
+Na een nieuwe deploy verhoog `CACHE_VERSION` in `sw.js` zodat gebruikers de nieuwste versie krijgen.
+
 ## Codekwaliteit / netheid
 
 Er is gecontroleerd op lintfouten in de huidige workspace; op dit moment zijn er geen linter errors.
