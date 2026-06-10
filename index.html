@@ -1024,10 +1024,11 @@
     }
 
     .reward-pill .xp-label {
+      --energy-fill: 100%;
       width: 22px;
       height: 15px;
       border-radius: 4px;
-      background: #ff8bdd;
+      background: linear-gradient(90deg, #ff8bdd 0 var(--energy-fill), #d9d9d9 var(--energy-fill) 100%);
       color: transparent;
       font-size: 0;
       line-height: 1;
@@ -1057,6 +1058,10 @@
       width: 4px;
       height: 7px;
       border-radius: 0 2px 2px 0;
+      background: #d9d9d9;
+    }
+
+    .reward-pill .xp-label.has-energy::after {
       background: #ff8bdd;
     }
 
@@ -3205,6 +3210,7 @@
       const listenContinueButton = document.querySelector('[data-role="listenContinue"]');
       const finishContinueButton = document.querySelector('[data-role="finishContinue"]');
       const xpCountNodes = Array.from(document.querySelectorAll("[data-xp-count]"));
+      const energyIconNodes = Array.from(document.querySelectorAll(".xp-label"));
       const wordBankGrid = document.querySelector(".word-bank-grid");
       const wordChipButtons = Array.from(document.querySelectorAll(".word-chip"));
       const listenSentenceNode = document.querySelector('[data-role="listenSentence"]');
@@ -3663,8 +3669,13 @@
       }
 
       function updateXpCounters() {
+        const energyPercent = Math.max(0, Math.min(100, (state.energy / 25) * 100));
         xpCountNodes.forEach(function (node) {
           node.textContent = String(state.energy);
+        });
+        energyIconNodes.forEach(function (node) {
+          node.style.setProperty("--energy-fill", energyPercent + "%");
+          node.classList.toggle("has-energy", state.energy > 0);
         });
       }
 
@@ -3857,6 +3868,7 @@
           }
 
           state.exercise1WrongAttempts += 1;
+          loseEnergy(1);
           if (state.exercise1WrongAttempts >= 2) {
             exerciseAnswerInput.value = correctAnswerPack.exercise1[0];
             exerciseAnswerInput.readOnly = true;
@@ -3908,6 +3920,7 @@
 
         if (!isCorrect) {
           state.exercise2WrongAttempts += 1;
+          loseEnergy(1);
           if (state.exercise2WrongAttempts >= 2) {
             state.sentenceWords = expected.slice();
             wordChipButtons.forEach(function (btn) {
@@ -3958,6 +3971,7 @@
 
         if (!isCorrect) {
           state.exercise3WrongAttempts += 1;
+          loseEnergy(1);
           if (state.exercise3WrongAttempts >= 2) {
             const correctBtn = finishOptionButtons.find(function (btn) {
               return btn.dataset.finishOption === getCorrectAnswerPack().exercise3;
