@@ -1229,6 +1229,22 @@
       gap: clamp(6px, 1.3vh, 10px);
     }
 
+    #screen-8 .bottom-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(5px, 1vh, 8px);
+    }
+
+    #screen-5 .bottom-wrap .show-answer-link,
+    #screen-7 .bottom-wrap .show-answer-link,
+    #screen-8 .bottom-wrap .show-answer-link {
+      align-self: center;
+      font-size: clamp(10px, 2.9vw, 12px);
+      line-height: 1;
+      margin: 0;
+      padding: 0;
+    }
+
     #screen-5 .bottom-wrap .btn,
     #screen-7 .bottom-wrap .btn,
     #screen-8 .bottom-wrap .btn {
@@ -2698,15 +2714,13 @@
         </div>
         <input class="translate-answer" type="text" inputmode="text" autocomplete="off" spellcheck="false" data-i18n-placeholder="answerInEnglish" placeholder="Answer in english">
         <div class="answer-feedback" data-role="exerciseFeedback" aria-live="polite"></div>
-        <div class="exercise-help-links">
-          <button type="button" class="show-answer-link" data-action="revealAnswer" data-exercise="translate" data-i18n="showAnswer">Show answer</button>
-        </div>
       </div>
       <div class="bottom-wrap">
         <button class="speak-btn" type="button">
           <span class="speak-icon">&#127908;</span>
           <span data-i18n="tapToSpeak">Tap to speak</span>
         </button>
+        <button type="button" class="show-answer-link" data-action="revealAnswer" data-exercise="translate" data-i18n="showAnswer">Show answer</button>
         <button class="btn btn-primary btn-inactive" data-action="exerciseContinue" data-role="exerciseContinue" data-i18n="check" disabled>Check</button>
       </div>
     </section>
@@ -2761,7 +2775,6 @@
         <div class="answer-feedback" data-role="listenFeedback" aria-live="polite"></div>
         <div class="exercise-help-links">
           <div class="cant-listen" data-i18n="cantListenNow">Cant listen right now</div>
-          <button type="button" class="show-answer-link" data-action="revealAnswer" data-exercise="listen" data-i18n="showAnswer">Show answer</button>
         </div>
       </div>
       <div class="bottom-wrap">
@@ -2769,6 +2782,7 @@
           <span class="speak-icon">&#127908;</span>
           <span data-i18n="tapToSpeak">Tap to speak</span>
         </button>
+        <button type="button" class="show-answer-link" data-action="revealAnswer" data-exercise="listen" data-i18n="showAnswer">Show answer</button>
         <button class="btn btn-primary btn-inactive" data-action="listenContinue" data-role="listenContinue" data-i18n="check" disabled>Check</button>
       </div>
     </section>
@@ -2790,11 +2804,9 @@
           <button class="finish-option-btn" data-finish-option="word-4" data-lesson-key="ex3opt4">green</button>
         </div>
         <div class="answer-feedback" data-role="finishFeedback" aria-live="polite"></div>
-        <div class="exercise-help-links">
-          <button type="button" class="show-answer-link" data-action="revealAnswer" data-exercise="finish" data-i18n="showAnswer">Show answer</button>
-        </div>
       </div>
       <div class="bottom-wrap">
+        <button type="button" class="show-answer-link" data-action="revealAnswer" data-exercise="finish" data-i18n="showAnswer">Show answer</button>
         <button class="btn btn-primary btn-inactive" data-action="finishContinue" data-role="finishContinue" data-i18n="check" disabled>Check</button>
       </div>
     </section>
