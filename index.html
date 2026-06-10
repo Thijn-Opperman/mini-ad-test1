@@ -257,7 +257,7 @@
       width: 100%;
       height: 15px;
       border-radius: 999px;
-      background: #58cc02;
+      background: #e5e5e5;
       overflow: hidden;
       position: relative;
       box-shadow: none;
@@ -266,17 +266,13 @@
     .progress-bar {
       height: 100%;
       width: 0%;
-      background: transparent;
+      background: #58cc02;
       transition: width 0.68s cubic-bezier(0.22, 1, 0.36, 1);
       position: relative;
       overflow: hidden;
     }
 
     .progress-bar::after {
-      display: none;
-    }
-
-    .progress-wrap::after {
       content: "";
       position: absolute;
       left: 8px;
@@ -346,6 +342,13 @@
       animation: shake 300ms ease;
     }
 
+    .almost {
+      border-color: #ffc800 !important;
+      background: #fff6c7 !important;
+      color: #8a6d00 !important;
+      animation: pop 260ms ease;
+    }
+
     .answer-feedback {
       min-height: 24px;
       margin-top: 10px;
@@ -368,6 +371,10 @@
 
     .answer-feedback.is-correct {
       color: var(--success);
+    }
+
+    .answer-feedback.is-almost {
+      color: #c58a00;
     }
 
     .xp {
@@ -2397,7 +2404,7 @@
           <span class="speak-icon">&#127908;</span>
           <span data-i18n="tapToSpeak">Tap to speak</span>
         </button>
-        <button class="btn btn-primary btn-inactive" data-action="exerciseContinue" data-role="exerciseContinue" data-i18n="continue" disabled>Continue</button>
+        <button class="btn btn-primary btn-inactive" data-action="exerciseContinue" data-role="exerciseContinue" data-i18n="check" disabled>Check</button>
       </div>
     </section>
 
@@ -2459,7 +2466,7 @@
           <span class="speak-icon">&#127908;</span>
           <span data-i18n="tapToSpeak">Tap to speak</span>
         </button>
-        <button class="btn btn-primary btn-inactive" data-action="listenContinue" data-role="listenContinue" data-i18n="continue" disabled>Continue</button>
+        <button class="btn btn-primary btn-inactive" data-action="listenContinue" data-role="listenContinue" data-i18n="check" disabled>Check</button>
       </div>
     </section>
 
@@ -2485,7 +2492,7 @@
         </div>
       </div>
       <div class="bottom-wrap">
-        <button class="btn btn-primary btn-inactive" data-action="finishContinue" data-role="finishContinue" data-i18n="continue" disabled>Continue</button>
+        <button class="btn btn-primary btn-inactive" data-action="finishContinue" data-role="finishContinue" data-i18n="check" disabled>Check</button>
       </div>
     </section>
 
@@ -2543,6 +2550,7 @@
         learningLanguage: "",
         selectedTopic: "",
         xp: 0,
+        energy: 25,
         animatedProgress: 0,
         progressAnimFrame: null,
         answers: {
@@ -2550,6 +2558,9 @@
           exercise2: null,
           exercise3: null
         },
+        exercise1WrongAttempts: 0,
+        exercise2WrongAttempts: 0,
+        exercise3WrongAttempts: 0,
         sentenceWords: [],
         locked: false,
         navStack: [],
@@ -2742,7 +2753,9 @@
           exercise1Prompt: "I ran worse then before",
           answerInEnglish: "Answer in english",
           answerCorrect: "Correct!",
+          answerAlmost: "Almost!",
           answerTryAgain: "Try again",
+          answerShown: "Answer filled in",
           showAnswer: "Show answer",
           helaasTitle: "Unfortunately!",
           helaasSubtitle: "The correct answer is:",
@@ -2823,7 +2836,9 @@
           exercise1Prompt: "Goedemorgen",
           answerInEnglish: "Typ je antwoord",
           answerCorrect: "Goed!",
+          answerAlmost: "Bijna!",
           answerTryAgain: "Probeer opnieuw",
+          answerShown: "Antwoord ingevuld",
           showAnswer: "Toon antwoord",
           helaasTitle: "Helaas!",
           helaasSubtitle: "Het juiste antwoord is:",
@@ -3242,15 +3257,29 @@
         }
         if (step === 5) {
           clearFeedback(exerciseFeedback);
-          if (exerciseAnswerInput) exerciseAnswerInput.classList.remove("correct", "wrong");
+          state.exercise1WrongAttempts = 0;
+          state.answers.exercise1 = null;
+          if (exerciseAnswerInput) {
+            exerciseAnswerInput.value = "";
+            exerciseAnswerInput.readOnly = false;
+            exerciseAnswerInput.classList.remove("correct", "wrong", "almost");
+          }
+          setExerciseButtonMode("check");
+          updateExerciseContinueState();
         }
         if (step === 7) {
           clearFeedback(listenFeedback);
+          state.answers.exercise2 = null;
+          state.exercise2WrongAttempts = 0;
           resetListenExercise();
         }
         if (step === 8) {
           clearFeedback(finishFeedback);
+          state.answers.exercise3 = null;
+          state.exercise3WrongAttempts = 0;
           finishOptionButtons.forEach(function (btn) { btn.classList.remove("correct", "wrong"); });
+          setFinishButtonMode("check");
+          updateFinishContinueState();
         }
       }
 
@@ -3483,13 +3512,51 @@
         updateLessonContent();
       }
 
+      function setExerciseButtonMode(mode) {
+        if (!exerciseContinueButton) return;
+        const key = mode === "continue" ? "continue" : "check";
+        exerciseContinueButton.setAttribute("data-i18n", key);
+        exerciseContinueButton.textContent = getT(key);
+      }
+
+      function setListenButtonMode(mode) {
+        if (!listenContinueButton) return;
+        const key = mode === "continue" ? "continue" : "check";
+        listenContinueButton.setAttribute("data-i18n", key);
+        listenContinueButton.textContent = getT(key);
+      }
+
+      function setFinishButtonMode(mode) {
+        if (!finishContinueButton) return;
+        const key = mode === "continue" ? "continue" : "check";
+        finishContinueButton.setAttribute("data-i18n", key);
+        finishContinueButton.textContent = getT(key);
+      }
+
       function updateExerciseContinueState() {
         if (!exerciseContinueButton || !exerciseAnswerInput) return;
-        exerciseAnswerInput.classList.remove("correct", "wrong");
+        if (state.answers.exercise1 === "correct" || state.answers.exercise1 === "revealed") {
+          exerciseContinueButton.disabled = false;
+          exerciseContinueButton.classList.remove("btn-inactive");
+          setExerciseButtonMode("continue");
+          return;
+        }
+
+        setExerciseButtonMode("check");
+        exerciseAnswerInput.classList.remove("correct", "wrong", "almost");
         clearFeedback(exerciseFeedback);
         const hasAnswer = exerciseAnswerInput.value.trim().length > 0;
         exerciseContinueButton.disabled = !hasAnswer;
         exerciseContinueButton.classList.toggle("btn-inactive", !hasAnswer);
+      }
+
+      function handleExerciseAnswerInput() {
+        if (state.answers.exercise1 === "revealed") {
+          state.answers.exercise1 = null;
+          state.exercise1WrongAttempts = 0;
+          if (exerciseAnswerInput) exerciseAnswerInput.readOnly = false;
+        }
+        updateExerciseContinueState();
       }
 
       function shuffleWordBank() {
@@ -3529,6 +3596,7 @@
 
       function resetListenExercise() {
         state.sentenceWords = [];
+        setListenButtonMode("check");
         wordChipButtons.forEach(function (btn) {
           btn.classList.remove("selected", "correct", "wrong", "is-used");
         });
@@ -3537,8 +3605,7 @@
       }
 
       function addWordToSentence(wordId) {
-        const lesson = getLessonPack();
-        if (state.sentenceWords.length >= lesson.exercise2.length) return;
+        if (state.answers.exercise2 === "correct" || state.answers.exercise2 === "revealed") return;
         const chip = wordChipButtons.find(function (btn) {
           return btn.dataset.word === wordId;
         });
@@ -3552,6 +3619,7 @@
       }
 
       function removeWordFromSentence(index) {
+        if (state.answers.exercise2 === "correct" || state.answers.exercise2 === "revealed") return;
         const removed = state.sentenceWords.splice(index, 1)[0];
         const chip = wordChipButtons.find(function (btn) {
           return btn.dataset.word === removed;
@@ -3564,14 +3632,29 @@
 
       function updateListenContinueState() {
         if (!listenContinueButton) return;
-        const lesson = getLessonPack();
-        const isComplete = state.sentenceWords.length === lesson.exercise2.length;
-        listenContinueButton.disabled = !isComplete;
-        listenContinueButton.classList.toggle("btn-inactive", !isComplete);
+        if (state.answers.exercise2 === "correct" || state.answers.exercise2 === "revealed") {
+          listenContinueButton.disabled = false;
+          listenContinueButton.classList.remove("btn-inactive");
+          setListenButtonMode("continue");
+          return;
+        }
+
+        setListenButtonMode("check");
+        const hasSelection = state.sentenceWords.length > 0;
+        listenContinueButton.disabled = !hasSelection;
+        listenContinueButton.classList.toggle("btn-inactive", !hasSelection);
       }
 
       function updateFinishContinueState() {
         if (!finishContinueButton) return;
+        if (state.answers.exercise3 === "correct" || state.answers.exercise3 === "revealed") {
+          finishContinueButton.disabled = false;
+          finishContinueButton.classList.remove("btn-inactive");
+          setFinishButtonMode("continue");
+          return;
+        }
+
+        setFinishButtonMode("check");
         const hasSelection = finishOptionButtons.some(function (btn) {
           return btn.classList.contains("selected");
         });
@@ -3581,12 +3664,61 @@
 
       function updateXpCounters() {
         xpCountNodes.forEach(function (node) {
-          node.textContent = state.xp > 0 ? "22" : "25";
+          node.textContent = String(state.energy);
         });
+      }
+
+      function loseEnergy(amount) {
+        state.energy = Math.max(0, state.energy - (amount || 1));
+        updateXpCounters();
       }
 
       function normalizeAnswer(value) {
         return String(value || "").trim().toLowerCase().replace(/\s+/g, " ");
+      }
+
+      function getEditDistance(a, b) {
+        const left = normalizeAnswer(a);
+        const right = normalizeAnswer(b);
+        const dp = Array.from({ length: left.length + 1 }, function () {
+          return Array(right.length + 1).fill(0);
+        });
+
+        for (let i = 0; i <= left.length; i++) dp[i][0] = i;
+        for (let j = 0; j <= right.length; j++) dp[0][j] = j;
+
+        for (let i = 1; i <= left.length; i++) {
+          for (let j = 1; j <= right.length; j++) {
+            const cost = left[i - 1] === right[j - 1] ? 0 : 1;
+            dp[i][j] = Math.min(
+              dp[i - 1][j] + 1,
+              dp[i][j - 1] + 1,
+              dp[i - 1][j - 1] + cost
+            );
+          }
+        }
+
+        return dp[left.length][right.length];
+      }
+
+      function getWordOverlapRatio(answer, expected) {
+        const answerWords = normalizeAnswer(answer).split(" ").filter(Boolean);
+        const expectedWords = normalizeAnswer(expected).split(" ").filter(Boolean);
+        if (!answerWords.length || !expectedWords.length) return 0;
+        const expectedSet = new Set(expectedWords);
+        const matchingWords = answerWords.filter(function (word) {
+          return expectedSet.has(word);
+        });
+        return matchingWords.length / expectedWords.length;
+      }
+
+      function isNearExerciseAnswer(answer, expectedAnswers) {
+        if (!answer) return false;
+        return expectedAnswers.some(function (expected) {
+          const distance = getEditDistance(answer, expected);
+          const allowedDistance = Math.max(2, Math.floor(expected.length * 0.22));
+          return distance <= allowedDistance || getWordOverlapRatio(answer, expected) >= 0.7;
+        });
       }
 
       function getCorrectAnswerPack() {
@@ -3605,14 +3737,14 @@
       function showFeedback(node, key, type) {
         if (!node) return;
         node.textContent = getT(key);
-        node.classList.remove("is-correct", "is-wrong");
-        node.classList.add("is-visible", type === "correct" ? "is-correct" : "is-wrong");
+        node.classList.remove("is-correct", "is-wrong", "is-almost");
+        node.classList.add("is-visible", type === "correct" ? "is-correct" : type === "almost" ? "is-almost" : "is-wrong");
       }
 
       function clearFeedback(node) {
         if (!node) return;
         node.textContent = "";
-        node.classList.remove("is-visible", "is-correct", "is-wrong");
+        node.classList.remove("is-visible", "is-correct", "is-wrong", "is-almost");
       }
 
       function replayStateClass(node, className) {
@@ -3701,24 +3833,68 @@
 
       function checkExerciseAnswer() {
         if (!exerciseAnswerInput) return false;
+        if (state.answers.exercise1 === "correct") {
+          addXpAndAdvance(10, 6);
+          return true;
+        }
+        if (state.answers.exercise1 === "revealed") {
+          safeAdvance(6);
+          return true;
+        }
+
         const answer = normalizeAnswer(exerciseAnswerInput.value);
-        const expectedAnswers = getCorrectAnswerPack().exercise1.map(normalizeAnswer);
+        const correctAnswerPack = getCorrectAnswerPack();
+        const expectedAnswers = correctAnswerPack.exercise1.map(normalizeAnswer);
         const isCorrect = expectedAnswers.indexOf(answer) !== -1;
-        exerciseAnswerInput.classList.remove("correct", "wrong");
+        const isNear = isNearExerciseAnswer(answer, expectedAnswers);
+        exerciseAnswerInput.classList.remove("correct", "wrong", "almost");
 
         if (!isCorrect) {
+          if (isNear) {
+            replayStateClass(exerciseAnswerInput, "almost");
+            showFeedback(exerciseFeedback, "answerAlmost", "almost");
+            return false;
+          }
+
+          state.exercise1WrongAttempts += 1;
+          if (state.exercise1WrongAttempts >= 2) {
+            exerciseAnswerInput.value = correctAnswerPack.exercise1[0];
+            exerciseAnswerInput.readOnly = true;
+            state.answers.exercise1 = "revealed";
+            replayStateClass(exerciseAnswerInput, "wrong");
+            showFeedback(exerciseFeedback, "answerShown", "wrong");
+            exerciseContinueButton.disabled = false;
+            exerciseContinueButton.classList.remove("btn-inactive");
+            setExerciseButtonMode("continue");
+            return false;
+          }
+
           replayStateClass(exerciseAnswerInput, "wrong");
           showFeedback(exerciseFeedback, "answerTryAgain", "wrong");
           return false;
         }
 
+        state.exercise1WrongAttempts = 0;
+        state.answers.exercise1 = "correct";
+        exerciseAnswerInput.readOnly = true;
         exerciseAnswerInput.classList.add("correct");
         showFeedback(exerciseFeedback, "answerCorrect", "correct");
-        addXpAndAdvance(10, 6);
+        exerciseContinueButton.disabled = false;
+        exerciseContinueButton.classList.remove("btn-inactive");
+        setExerciseButtonMode("continue");
         return true;
       }
 
       function checkListenAnswer() {
+        if (state.answers.exercise2 === "correct") {
+          addXpAndAdvance(10, 8);
+          return true;
+        }
+        if (state.answers.exercise2 === "revealed") {
+          safeAdvance(8);
+          return true;
+        }
+
         const selected = getBuiltSentenceWords();
         const expected = getCorrectAnswerPack().exercise2;
         const isCorrect = hasExactWordOrder(selected, expected);
@@ -3731,6 +3907,22 @@
         });
 
         if (!isCorrect) {
+          state.exercise2WrongAttempts += 1;
+          if (state.exercise2WrongAttempts >= 2) {
+            state.sentenceWords = expected.slice();
+            wordChipButtons.forEach(function (btn) {
+              btn.classList.toggle("is-used", expected.indexOf(btn.dataset.word) !== -1);
+            });
+            renderListenSentence();
+            Array.from(listenSentenceNode.querySelectorAll(".listen-sentence-word")).forEach(function (token) {
+              token.classList.add("wrong");
+            });
+            state.answers.exercise2 = "revealed";
+            showFeedback(listenFeedback, "answerShown", "wrong");
+            updateListenContinueState();
+            return false;
+          }
+
           sentenceTokens.forEach(function (token) {
             replayStateClass(token, "wrong");
           });
@@ -3738,15 +3930,26 @@
           return false;
         }
 
+        state.exercise2WrongAttempts = 0;
+        state.answers.exercise2 = "correct";
         sentenceTokens.forEach(function (token) {
           token.classList.add("correct");
         });
         showFeedback(listenFeedback, "answerCorrect", "correct");
-        addXpAndAdvance(10, 8);
+        updateListenContinueState();
         return true;
       }
 
       function checkFinishAnswer() {
+        if (state.answers.exercise3 === "correct") {
+          addXpAndAdvance(10, 9);
+          return true;
+        }
+        if (state.answers.exercise3 === "revealed") {
+          safeAdvance(9);
+          return true;
+        }
+
         const selected = finishOptionButtons.find(function (btn) {
           return btn.classList.contains("selected");
         });
@@ -3754,14 +3957,31 @@
         finishOptionButtons.forEach(function (btn) { btn.classList.remove("correct", "wrong"); });
 
         if (!isCorrect) {
+          state.exercise3WrongAttempts += 1;
+          if (state.exercise3WrongAttempts >= 2) {
+            const correctBtn = finishOptionButtons.find(function (btn) {
+              return btn.dataset.finishOption === getCorrectAnswerPack().exercise3;
+            });
+            finishOptionButtons.forEach(function (btn) { btn.classList.remove("selected", "correct", "wrong"); });
+            if (correctBtn) {
+              correctBtn.classList.add("selected", "wrong");
+            }
+            state.answers.exercise3 = "revealed";
+            showFeedback(finishFeedback, "answerShown", "wrong");
+            updateFinishContinueState();
+            return false;
+          }
+
           replayStateClass(selected, "wrong");
           showFeedback(finishFeedback, "answerTryAgain", "wrong");
           return false;
         }
 
+        state.exercise3WrongAttempts = 0;
+        state.answers.exercise3 = "correct";
         selected.classList.add("correct");
         showFeedback(finishFeedback, "answerCorrect", "correct");
-        addXpAndAdvance(10, 9);
+        updateFinishContinueState();
         return true;
       }
 
@@ -3849,7 +4069,7 @@
         }
 
         if (exerciseAnswerInput) {
-          exerciseAnswerInput.addEventListener("input", updateExerciseContinueState, { passive: true });
+          exerciseAnswerInput.addEventListener("input", handleExerciseAnswerInput, { passive: true });
         }
 
         if (listenPlayButton) {
@@ -3866,6 +4086,7 @@
 
         wordChipButtons.forEach(function (btn) {
           btn.addEventListener("click", handleTap(function () {
+            if (state.answers.exercise2 === "correct" || state.answers.exercise2 === "revealed") return;
             if (btn.classList.contains("is-used")) return;
             addWordToSentence(btn.dataset.word);
           }), { passive: false });
@@ -3873,6 +4094,7 @@
 
         finishOptionButtons.forEach(function (btn) {
           btn.addEventListener("click", handleTap(function () {
+            if (state.answers.exercise3 === "correct" || state.answers.exercise3 === "revealed") return;
             finishOptionButtons.forEach(function (b) { b.classList.remove("selected", "correct", "wrong"); });
             clearFeedback(finishFeedback);
             btn.classList.add("selected");
