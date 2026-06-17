@@ -1,153 +1,116 @@
 # Mini Lesson Playable Ad
 
-Dit project is een mobiele playable ad in Duolingo-stijl, opgebouwd als een lineaire flow van schermen in een enkel HTML-document.
+A mobile-first, Duolingo-style playable ad that walks users through a short language lesson — from splash screen to three interactive exercises and a streak finale. Everything runs in the browser with no build step.
 
-## Waarom dit project uit 1 HTML-bestand bestaat
+The project is **hosted on Vercel** and can also be installed as a PWA on your phone (standalone, no browser chrome).
 
-Voor playable ads is een single-file aanpak vaak bewust de beste keuze.  
-Hier is de reden (oorzaak) en het effect (gevolg):
+## Live demo
 
-- Oorzaak: ad-platforms stellen vaak strikte eisen aan laadtijd, bestandsgrootte, hosting en runtime-complexiteit.
-- Gevolg: minder externe requests en minder afhankelijkheden zorgen voor sneller en betrouwbaarder laden.
+**Vercel URL:** [INSERT VERCEL LINK]
 
-- Oorzaak: een playable ad moet meestal "drop-in" geleverd kunnen worden zonder complexe build pipeline.
-- Gevolg: 1 `index.html` met inline CSS/JS is direct deploybaar en eenvoudiger over te dragen aan media/ad teams.
+Open the link above on your phone to try the full flow. On Android (Chrome) or iPhone (Safari), you can also add it to your home screen for an app-like experience.
 
-- Oorzaak: tracking, click-out en flow-gedrag moeten voorspelbaar zijn in sandboxed ad-omgevingen.
-- Gevolg: alle logica op een plek maakt testen, reviewen en debuggen eenvoudiger en consistenter.
+## What it does
 
-- Oorzaak: veel advertentiekanalen draaien op webviews met beperkte of wisselende support voor tooling.
-- Gevolg: een simpele, framework-loze implementatie verlaagt risico op compatibiliteitsproblemen.
+Users pick their languages and a topic, then complete three question types:
 
-Kort: voor reguliere apps zou je sneller splitsen naar meerdere bestanden/modules, maar voor playable ads is compact en self-contained vaak de juiste trade-off.
+1. **Translate** — type a full sentence
+2. **Listen** — build a sentence from a word bank after hearing audio
+3. **Finish** — pick the missing word to complete a sentence
 
-## Projectstructuur
+Along the way they earn XP, lose energy on wrong answers, and see progress on a level bar. After the lesson, a streak screen links out to Duolingo.
 
-- `index.html`: complete playable flow (HTML + CSS + JavaScript)
-- `assets/`: karakterafbeeldingen en visuals
-- `assets/audio/`: MP3-bestanden voor “Type what you hear”
+The experience is designed for portrait mobile screens and uses responsive sizing so layouts stay usable on smaller devices (e.g. iPhone 12).
 
-### Audio (MP3) voor listen-oefeningen
+## Tech stack
 
-Plaats je MP3’s in deze mappen met **exact deze bestandsnamen**:
+- **HTML, CSS, JavaScript** — single file (`index.html`), no framework or build tooling
+- **Static assets** — PNG mascots and MP3 audio in `assets/`
+- **PWA** — `manifest.webmanifest` + `sw.js` for installability and offline caching
+- **Hosting** — [Vercel](https://vercel.com) (HTTPS, static deploy)
 
-**`assets/audio/nl-en/`** (Nederlands spreken → Engels leren)
+Typography uses **Arial Rounded MT Bold** throughout.
 
-- `art.mp3`, `culture.mp3`, `travel.mp3`, `beginner.mp3`, `food.mp3`, `pop.mp3`
+## Run locally
 
-**`assets/audio/en-nl/`** (Engels spreken → Nederlands leren)
-
-- `art.mp3`, `culture.mp3`, `travel.mp3`, `beginner.mp3`, `food.mp3`, `pop.mp3`
-
-De play-knop speelt het bestand af; de schildpad-knop hetzelfde bestand op langzame snelheid (72%). Je hoeft geen aparte slow-MP3 te maken.
-
-## Huidige flow (globaal)
-
-1. Splash
-2. Intro/welcome
-3. Taalkeuze
-4. Onderwerpkeuze
-5. Translate scherm
-6. XP-resultaat
-7. Bea oefenscherm (type what you hear)
-8. Junior oefenscherm (finish sentence)
-9. Streak eindscherm + click-out
-
-## Lokaal draaien
-
-Gebruik bijvoorbeeld:
+You need a simple static file server — opening `index.html` directly in the browser won't work reliably (especially for audio and the service worker).
 
 ```bash
 python3 -m http.server 8080
 ```
 
-Open daarna:
+Then open [http://localhost:8080](http://localhost:8080).
 
-- `http://localhost:8080`
+Alternatively, use the VS Code launch config (`.vscode/launch.json`) to open Chrome against `localhost:8080`.
 
-## PWA (Progressive Web App)
+## Folder structure
 
-De app kan als standalone app op je telefoon worden geïnstalleerd (eigen icoon, geen browser-UI).
+```
+mini-ad-test1/
+├── index.html              # Entire app: markup, styles, and logic
+├── manifest.webmanifest    # PWA manifest (name, icons, standalone mode)
+├── sw.js                   # Service worker (precache + offline assets)
+├── vercel.json             # Vercel headers (SW cache control)
+├── icons/                  # PWA app icons (192, 512, apple-touch)
+├── assets/
+│   ├── *.png               # Mascots and topic card images
+│   └── audio/
+│       ├── nl-en/          # Audio when UI is Dutch, learning English
+│       └── en-nl/          # Audio when UI is English, learning Dutch
+└── README.md
+```
 
-### PWA-bestanden
+### Audio files
 
-- `manifest.webmanifest` — app-naam, kleuren, display-modus en iconen
-- `sw.js` — service worker voor offline cache van pagina, assets en audio
-- `icons/` — app-iconen (192, 512, apple-touch)
-- `vercel.json` — cache-headers voor betrouwbare service worker updates
+Listen exercises load MP3s from `assets/audio/` based on language pair and topic. Each folder needs these files:
 
-### Installeren via Vercel (HTTPS)
+`art.mp3`, `culture.mp3`, `travel.mp3`, `beginner.mp3`, `food.mp3`, `pop.mp3`
 
-**Android (Chrome):**
+The slow-play button reuses the same file at 72% speed — no separate slow MP3 needed.
 
-1. Open je Vercel-URL
-2. Menu → **App installeren** of **Toevoegen aan startscherm**
-3. De app opent standalone zonder adresbalk
+## Screen flow
 
-**iPhone (Safari):**
+| Step | Screen | Purpose |
+|------|--------|---------|
+| 0 | Splash | Duo eyes intro |
+| 1 | Welcome | First lesson bubble |
+| 2–3 | Language pick | UI language + learning language |
+| 4 | Topic pick | Six topic cards |
+| 5 | Translate | Open-answer exercise |
+| 6 | XP result | +10 XP celebration |
+| 7 | Listen | Word-bank + audio |
+| 8 | Finish | Multiple-choice blank |
+| 9 | Streak | Days practiced + click-out |
 
-1. Open je Vercel-URL in Safari
-2. Deel-knop → **Zet op beginscherm**
-3. De app opent standalone
+Screens use IDs like `screen-0`, `screen-1`, etc. State lives in a single `state` object at the bottom of `index.html`.
 
-### Offline gedrag
+## Things to know before you continue
 
-Na de eerste keer laden worden afbeeldingen en audio-bestanden gecached. De lesflow werkt daarna ook zonder internet, behalve de click-out naar Duolingo (`exitAd()` opent nog steeds een externe browser/tab).
+**Single-file by design.** The whole playable lives in one HTML file on purpose — fast to load, easy to hand off to ad platforms, no npm or bundler. If you split files later, keep deploy and caching in mind.
 
-### Cache bij updates
+**Answer flow on exercises.** Each question gives two attempts. Close answers show yellow “Almost!” feedback. After two wrong tries, the correct answer is filled in automatically and the user can continue. Correct answers trigger a checkmark animation on the button before it switches to “Continue”.
 
-Na een nieuwe deploy verhoog `CACHE_VERSION` in `sw.js` zodat gebruikers de nieuwste versie krijgen.
+**Energy and progress.** Wrong answers reduce energy (visualized on the battery icon). The level bar starts grey and fills green as the user advances.
 
-## Codekwaliteit / netheid
+**Responsive layout.** Bottom buttons and question content use `clamp()` and media queries. The listen and finish screens needed extra care for small viewports — test on real phones, not just desktop DevTools.
 
-Er is gecontroleerd op lintfouten in de huidige workspace; op dit moment zijn er geen linter errors.
+**PWA cache updates.** After deploying changes, bump `CACHE_VERSION` in `sw.js` so returning users get fresh assets.
 
-Aanvullend advies voor onderhoud:
+**Click-out.** `exitAd()` opens [duolingo.com](https://www.duolingo.com) in a new tab. Change only that URL if a platform requires a different landing page.
 
-- Houd componentnamen en screen-id's consequent (`screen-1`, `screen-2`, ...)
-- Groepeer styles per schermsectie
-- Houd interactieve states expliciet (`disabled`, `selected`, `active`)
-- Documenteer grote flow-wijzigingen in deze README
+**i18n.** Copy is driven by a `translations` object in `index.html` with `data-i18n` attributes on elements. UI language is set early in the flow.
 
-## Technische constraints voor playable ads
+## Deploying to Vercel
 
-Bij inlevering op ad-platforms gelden meestal onderstaande aandachtspunten:
+Push to your connected repo — Vercel serves the project as static files. No build command needed.
 
-- **Bestandsgrootte:** assets optimaliseren (compressie, juiste afmetingen, geen onnodig zware PNG's).
-- **Laadtijd:** first interaction snel beschikbaar houden; geen zware externe dependencies.
-- **Webview-compatibiliteit:** geen moderne API's gebruiken zonder fallback als target-webviews oud kunnen zijn.
-- **Netwerkafhankelijkheid:** flow moet werken zonder runtime API-calls; assets lokaal bundelen.
-- **Click-out gedrag:** eindscherm moet een duidelijke en betrouwbare doorgang naar de landingspagina hebben.
+After deploy, update the live demo link at the top of this README.
 
-## Optimalisatie-aanpak (aanbevolen)
+## Quick test checklist
 
-- Gebruik waar mogelijk gecomprimeerde assets (WebP/JPG) met behoud van visuele kwaliteit.
-- Houd animaties subtiel en performant (transform/opacity boven layout-heavy animaties).
-- Vermijd onnodige DOM updates in de hoofdflow.
-- Test op meerdere viewporthoogtes (vooral kleinere iPhones/Android toestellen).
-
-## Testplan voor oplevering
-
-Controleer minimaal:
-
-- Splash en schermovergangen lopen zonder haperingen.
-- Progress bar loopt correct op per scherm.
-- XP teller loopt op na de bedoelde vraagmomenten.
-- Disabled/enabled states van `Continue` werken op oefenschermen.
-- Animaties van `bea`, `junior`, `eddy` en `eyes duo` zijn zichtbaar.
-- Laatste `Continue` opent [duolingo.com](https://www.duolingo.com).
-- Layout blijft bruikbaar in portrait op kleine en grote mobiele schermen.
-
-## Inleverchecklist
-
-- [x] Single-file playable (`index.html`) met assets in `assets/`
-- [x] Volledige schermflow inclusief eindscherm
-- [x] Click-out naar productie-URL
-- [x] README met architectuurkeuzes en constraints
-- [x] Geen linter errors in huidige workspace
-
-## Handoff-notes
-
-- Als een platform een strikte maximum-grootte hanteert, voer eerst asset-compressie uit.
-- Als een platform een eigen click macro vereist, vervang alleen de URL in `exitAd()` en laat de rest van de flow intact.
-- Houd toekomstige wijzigingen bij voorkeur binnen de bestaande screen-structuur om regressies te beperken.
+- [ ] Full flow runs without layout overlap on a small phone
+- [ ] Progress bar and energy update correctly
+- [ ] All three exercises: check → correct/wrong → continue
+- [ ] Listen audio plays (normal + slow)
+- [ ] PWA installs from the Vercel URL
+- [ ] Final Continue opens Duolingo
